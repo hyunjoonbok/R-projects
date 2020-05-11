@@ -1,5 +1,5 @@
 ## R-projects
-This Repository contains the portfolio and projects of data science projects. 
+This Repo contains the portfolio and projects of data science projects. 
 
 Presented in the form of either R Script (.R) or R markdown (.rmd).
 
