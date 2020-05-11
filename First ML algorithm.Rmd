@@ -1,0 +1,762 @@
+---
+title: "Famous Tiatatic Survival ML algorithm in R"
+author: "HyunJoon Bok"
+date: "February 11, 2018"
+output: html_document
+---
+
+
+```{r}
+setwd("C:/Users/bokhy/Desktop")
+# Download data from Kaggle
+
+#Reading data
+train <- read.csv("train.csv")
+test <- read.csv("test.csv")
+
+#Adding survived variable to test-set
+test.survived <- data.frame(survived = rep("NA", nrow(test)),test[,])
+
+#Row binding to data-set
+combined_data <- rbind(train, test.survived)
+
+#Make necessary variables into factors
+str(combined_data)
+combined_data$survived <- as.factor(combined_data$survived)
+combined_data$pclass <- as.factor(combined_data$pclass)
+
+table(combined_data$survived) #data is a little skewed -> have more people survived!
+
+
+require(ggplot2)
+train$pclass <- as.factor(train$pclass)
+ggplot(train, aes(x=pclass, fill = factor(survived))) +
+  geom_histogram(binwidth = 0.5) + ylab("Total # of people") + xlab("Pclass") 
+
+# First few names in the combined-set
+head(as.character(combined_data$name))
+
+# Number of unique names in the train and test
+length(unique(as.character(combined_data$name))) # Two duplicate names in the combined_set
+
+#1. find duplicate names and make it as vector
+duplicate_name <- as.character(combined_data[which(duplicated(as.character(combined_data$name))),"name"]) ;duplicate_name
+
+#2. pull out the raw that contains those names in the combined set
+combined_data[which(combined_data$name %in% duplicate_name),] # we could see those two are different people with same name
+
+require(stringr)
+
+# Can we see any interesting things in Ms. and Mr. ? 
+
+misses <- combined_data[which(str_detect(combined_data$name,"Miss.")),]
+misses[1:10,]
+# We could see the Miss. meanes the non-married women in the data-set
+
+# Can we also see correlation between variables?
+## correlation between name and age
+mires <- combined_data[which(str_detect(combined_data$name,"Mrs.")),]
+mires[1:10,]
+
+# Create a utility function to help with title extraction
+# NOTE - Using the grep function here, but could have used the str_detect function as well.
+extractTitle <- function(name) {
+  name <- as.character(name)
+  
+  if (length(grep("Miss.", name)) > 0) {
+    return ("Miss.")
+  } else if (length(grep("Master.", name)) > 0) {
+    return ("Master.")
+  } else if (length(grep("Mrs.", name)) > 0) {
+    return ("Mrs.")
+  } else if (length(grep("Mr.", name)) > 0) {
+    return ("Mr.")
+  } else {
+    return ("Other")
+  }
+}
+
+# NOTE - The code below uses a for loop which is not a very R way of
+#        doing things
+titles <- NULL
+for (i in 1:nrow(combined_data)) {
+  titles <- c(titles, extractTitle(combined_data[i,"name"]))
+}
+combined_data$title <- as.factor(titles)
+
+
+# Since we only have survived lables for the train set, only use the
+# first 891 rows
+ggplot(combined_data[1:891,], aes(x = title, fill = survived)) +
+  geom_bar() +
+  facet_wrap(~pclass) + 
+  ggtitle("Pclass") +
+  xlab("Title") +
+  ylab("Total Count") +
+  labs(fill = "Survived")
+
+# The dist of females to males
+table(combined_data$sex)
+ggplot(combined_data[1:891,],aes(x=sex, fill=survived)) +
+  geom_histogram(stat= "count")+
+  facet_wrap(~pclass)
+## We can see that age and sex are important variables
+
+ggplot(combined_data[1:891,],aes(x=age, fill=survived))+
+  geom_histogram(stat = "count", bins = 10)+
+  facet_wrap(~sex+pclass) 
+
+# Lets see whether "Master." is a good close proxy for male children
+boys <- combined_data[which(combined_data$title == "Master."),]
+boys$age
+summary(boys$age) # 8 missing value of 263 missing value
+
+# Lets see whether "Miss." is a good close proxy for female children
+misess <- combined_data[which(combined_data$title == "Miss."),]
+summary(misses$age) # 50 missing value of 263 missing value
+# It does not neccesarily represents children..
+
+ggplot(misses[misses$survived != "NA",], aes(x=age, fill=survived)) +
+  geom_histogram(binwidth = 5) + 
+  facet_wrap(~pclass) 
+
+
+## Now "Sibsp" variable 
+summary(combined_data$sibsp)
+combined_data$sibsp <- as.factor(combined_data$sibsp)
+# basic visualization
+ggplot(combined_data[1:891,], aes(x=sibsp, fill = survived)) + 
+  geom_histogram(stat = "count")+
+  facet_wrap(~pclass)
+
+# Some feature engineering. creating a family size feature??
+temp.sibsp <- c(train$sibsp, test$sibsp)
+temp.parch <- c(train$parch, test$parch)
+combined_data$family_size <- as.factor(temp.sibsp+temp.parch +1)
+
+# See if it is predictive
+ggplot(combined_data[1:891,], aes(x=family_size, fill=survived))+
+  geom_histogram(stat = "count") +
+  facet_wrap(~pclass)
+
+
+
+## Now "ticket" variable 
+str(combined_data$ticket)
+
+combined_data$ticket <- as.character(combined_data$ticket)
+combined_data$ticket[1:15]
+
+# No signigicant structure in dataset, so find one!
+# 1. first character of each row 
+ticket.first.char <- ifelse(combined_data$ticket == ""," ",substr(combined_data$ticket,1,1))
+unique(ticket.first.char)
+
+# 2. So , we don't have missing variables. We make a factor for visualization
+combined_data$ticket.first.char <- as.factor(ticket.first.char)
+
+# 3. Visualize
+ggplot(combined_data[1:891,], aes(x = ticket.first.char, fill = survived)) +
+  geom_bar() +
+  ggtitle("Survivability by ticket.first.char") +
+  xlab("ticket.first.char") +
+  ylab("Total Count") +
+  ylim(0,350)
+
+# 3.1
+ggplot(combined_data[1:891,], aes(x = ticket.first.char, fill = survived)) +
+  geom_bar() +
+  facet_wrap(~pclass)
+
+
+
+
+## Now "fare" variable 
+summary(combined_data$fare) # mean is double median -> skewed to highend
+
+## Visualize
+ggplot(combined_data, aes(x = fare)) +
+  geom_histogram(binwidth = 5) +
+  ggtitle("Combined Fare Distribution") 
+
+
+# Let's check to see if fare has predictive power
+ggplot(combined_data[1:891,], aes(x = fare, fill = survived)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~pclass + title) + 
+  ggtitle("Pclass, Title") 
+
+# Fare is not significant to add! rather than simply having class!
+
+
+
+# Now "cabin" variable
+table(combined_data$cabin)
+summary(combined_data$cabin)
+combined_data$cabin <- as.character(combined_data$cabin)
+combined_data$cabin[1:70]
+
+
+# Replace missing value with U
+combined_data[which(combined_data$cabin == ""),"cabin"] <- "Unknown"
+combined_data$cabin[1:70]
+
+# first character of each row 
+cabin.first.char <- as.factor(substr(combined_data$cabin, 1, 1))
+str(cabin.first.char)
+levels(cabin.first.char)
+
+## Visualize
+ggplot(combined_data[1:891,], aes(x = cabin.first.char, fill = survived)) +
+  geom_bar() +
+  ylim(0,750)
+
+#==============================================================================#
+## Overall , Pclass and Title features are good at prediction based on the 
+## visulziation of high-level graphs
+#==============================================================================#
+
+
+
+
+
+
+
+#==============================================================================
+#
+# Random Forest ML modeling
+#
+#==============================================================================
+
+require(randomForest)
+
+## 1. Train using pclass and title
+rf.train.1 <- combined_data[1:891, c("pclass","title")]
+rf.label <- as.factor(train$survived)
+
+# Reproducibility
+set.seed(0623)
+rf.1 <- randomForest(x=rf.train.1, y=rf.label, importance = TRUE, ntree = 1000);rf.1
+# importance = TRUE, keep track of important features!
+# ntree = individual trees in each
+varImpPlot(rf.1) # Farther the variable goes right, the more important the variable is!!!
+
+
+## 2. Train using pclass,title and sibsp
+rf.train.2 <- combined_data[1:891, c("pclass", "title", "sibsp")]
+rf.2 <- randomForest(x =rf.train.2, y =rf.label, importance = TRUE, ntree = 1000);rf.2
+varImpPlot(rf.2)
+
+
+## 3. Train using pclass,title and parch
+rf.train.3 <- combined_data[1:891, c("pclass", "title", "parch")]
+rf.3 <- randomForest(x =rf.train.3, y =rf.label, importance = TRUE, ntree = 1000);rf.3
+varImpPlot(rf.3)
+
+
+# 4.  Train using pclass, title, sibsp, parch
+rf.train.4 <- combined_data[1:891, c("pclass", "title", "sibsp", "parch")]
+rf.4 <- randomForest(x = rf.train.4, y = rf.label, importance = TRUE, ntree = 1000);rf.4
+varImpPlot(rf.4)
+
+
+# 5.  Train using pclass, title, & family.size
+rf.train.5 <- combined_data[1:891, c("pclass", "title", "family_size")]
+rf.5 <- randomForest(x = rf.train.5, y = rf.label, importance = TRUE, ntree = 1000);rf.5
+varImpPlot(rf.5)
+
+## Finally got the best model!!
+
+
+
+
+#==============================================================================
+#
+# Cross Validation
+#
+#==============================================================================
+
+## But when you just submit using above results, we usually have lower accuracy
+## because it will overfit almost always.
+## So, lets use CV to get more accurate estimates
+require(caret)
+require(doSNOW)
+
+# Research has shown that 10-fold CV repeated 10 times is the best place to start,
+# 10-fold CV means spliting train-data into 10 logical chunks, 
+# and grab 1 chucks to hold that out as test-set, and train other 9
+# Use all of data to train models!
+
+set.seed(0623)
+# 1. Make inital folds
+# create 100 total folds, but ensure that the ratio of those
+# that survived and died in each fold matches the overall training set. This
+# is known as stratified cross validation and generally provides better results.
+cv.10.fold <- createMultiFolds(rf.label, k=10, times = 10)
+
+
+# 2. Setting up traincontrl object per above
+caret.1 <- trainControl(method = "repeatedcv", number = 10, repeats = 10, index = cv.10.fold)
+# Train my model using repeatedcv using 100 collectino of index, 10 fold cv repeated 10 times.
+
+# 3. Setting up multi-core threading environment(because we have lots of trees..)
+
+c1 <- makeCluster(4, type = "SOCK")
+registerDoSNOW(c1)
+
+
+# 4. Let's train the model!
+set.seed(0623)
+require(e1071)
+rf.5.cv.1 <- train(x=rf.train.5, y=rf.label, method = "rf", tuneLength = 3, ntree = 1000, trControl = caret.1)
+
+# 5. Stop cluster
+stopCluster(c1)
+
+ # 6. Check result
+rf.5.cv.1
+## Accuracy at myty=2 is actually lower than the result before CV!
+
+
+# The above is only slightly more pessimistic than the rf.5 OOB prediction, but 
+# not pessimistic enough. Let's try 5-fold CV repeated 10 times.
+
+#set.seed(5983)
+#cv.5.folds <- createMultiFolds(rf.label, k = 5, times = 10)
+
+#ctrl.2 <- trainControl(method = "repeatedcv", number = 5, repeats = 10,index = cv.5.folds)
+
+#c1 <- makeCluster(4, type = "SOCK")
+#registerDoSNOW(c1)
+
+#set.seed(89472)
+#rf.5.cv.2 <- train(x = rf.train.5, y = rf.label, method = "rf", tuneLength = 3,ntree = 1000, trControl = ctrl.2)
+
+#Shutdown cluster
+#stopCluster(cl)
+
+# Check out results
+#rf.5.cv.2
+
+
+# 5-fold CV isn't better. Move to 3-fold CV repeated 10 times. 
+#set.seed(0623)
+#cv.3.folds <- createMultiFolds(rf.label, k = 3, times = 10)
+
+#ctrl.3 <- trainControl(method = "repeatedcv", number = 3, repeats = 10, index = cv.3.folds)
+
+#c1 <- makeCluster(4, type = "SOCK")
+#registerDoSNOW(c1)
+
+#set.seed(94622)
+#rf.5.cv.3 <- train(x = rf.train.5, y = rf.label, method = "rf", tuneLength = 3, ntree = 64, trControl = ctrl.3)
+
+#Shutdown cluster
+stopCluster(c1)
+
+# Check out results
+rf.5.cv.3
+
+## Only slight increase, but still has better result!
+
+
+
+
+#==============================================================================
+#
+# Exploratory Modeling 2
+#
+#==============================================================================
+# Let's use a single decision tree to better understand what's going on with our
+# features. Obviously Random Forests are far more powerful than single trees,
+# but single trees have the advantage of being easier to understand.
+
+require(rpart)
+require(rpart.plot)
+require(ipred)
+
+# Per last cv, let's use 3-fold CV repeated 10 times 
+
+# Create utility function
+rpart.cv <- function(seed, training, labels, ctrl) {
+  cl <- makeCluster(4, type = "SOCK")
+  registerDoSNOW(cl)
+  
+  set.seed(seed)
+  # Leverage formula interface for training
+  rpart.cv <- train(x = training, y = labels, method = "rpart", tuneLength = 30, 
+                    trControl = ctrl)
+  
+  #Shutdown cluster
+  stopCluster(cl)
+  
+  return (rpart.cv)
+}
+
+# Grab features we are going to use
+rpart.train.1 <- combined_data[1:891,  c("pclass", "title", "family_size")]
+
+# Run CV and check out results
+rpart.1.cv.1 <- rpart.cv(0623, rpart.train.1, rf.label, ctrl.3)
+rpart.1.cv.1
+
+# Plot!!
+prp(rpart.1.cv.1$finalModel, type = 0, extra = 4, under = TRUE)
+# rpart.1.cv.1$finalModel
+
+
+# The plot bring out some interesting lines of investigation. Namely:
+#      1 - Titles of "Mr." and "Other" are predicted to perish at an 
+#          overal  l accuracy rate of 83.2 %.
+#      2 - Titles of "Master.", "Miss.", & "Mrs." in 1st & 2nd class
+#          are predicted to survive at an overall accuracy rate of 94.9%.
+#      3 - Titles of "Master.", "Miss.", & "Mrs." in 3rd class with 
+#          family sizes equal to 5, 6, 8, & 11 are predicted to perish
+#          with 100% accuracy.
+#      4 - Titles of "Master.", "Miss.", & "Mrs." in 3rd class with 
+#          family sizes not equal to 5, 6, 8, or 11 are predicted to 
+#          survive with 59.6% accuracy.
+
+
+# Both rpart and rf confirm that title is important, let's investigate further
+# Lets go deeper on Title first
+table(combined_data$title)
+
+# Parse out last name and title
+# Last name first
+combined_data[1:25, "name"]
+
+name.splits <- str_split(combined_data$name, ",")
+name.splits[1]
+last.names <- sapply(name.splits, "[", 1)
+last.names[1:10]
+
+# Add last names to dataframe in case we find it useful later
+combined_data$last.name <- last.names
+
+# Now for titles
+name.splits <- str_split(sapply(name.splits, "[", 2), " ")
+titles <- sapply(name.splits, "[", 2)
+unique(titles)
+
+# What's up with a title of 'the'?
+combined_data[which(titles == "the"),]
+
+# Re-map titles to be more exact
+titles[titles %in% c("Dona.", "the")] <- "Lady."
+titles[titles %in% c("Ms.", "Mlle.")] <- "Miss."
+titles[titles == "Mme."] <- "Mrs."
+titles[titles %in% c("Jonkheer.", "Don.")] <- "Sir."
+titles[titles %in% c("Col.", "Capt.", "Major.")] <- "Officer"
+table(titles)
+
+# Make title a factor
+combined_data$new.title <- as.factor(titles)
+
+# Visualize new version of title
+ggplot(combined_data[1:891,], aes(x = new.title, fill = survived)) +
+  geom_bar() +
+  facet_wrap(~ pclass) + 
+  ggtitle("Surival Rates for new.title by pclass")
+
+# Collapse titles based on visual analysis
+indexes <- which(combined_data$new.title == "Lady.")
+combined_data$new.title[indexes] <- "Mrs."
+
+indexes <- which(combined_data$new.title == "Dr." | 
+                   combined_data$new.title == "Rev." |
+                   combined_data$new.title == "Sir." |
+                   combined_data$new.title == "Officer")
+combined_data$new.title[indexes] <- "Mr."
+
+# Visualize 
+ggplot(combined_data[1:891,], aes(x = new.title, fill = survived)) +
+  geom_bar() +
+  facet_wrap(~ pclass) +
+  ggtitle("Surival Rates for Collapsed new.title by pclass")
+
+
+# Grab features
+rpart.train.2 <- combined_data[1:891, c("pclass", "new.title", "family_size")]
+
+# Run CV and check out results
+rpart.2.cv.1 <- rpart.cv(0623, rpart.train.2, rf.label, ctrl.3)
+rpart.2.cv.1
+
+# Plot
+prp(rpart.2.cv.1$finalModel, type = 0, extra = 1, under = TRUE)
+
+
+# Dive in on 1st class "Mr."
+indexes.first.mr <- which(combined_data$new.title == "Mr." & combined_data$pclass == "1")
+first.mr.df <- combined_data[indexes.first.mr, ]
+summary(first.mr.df)
+
+# One female?
+first.mr.df[first.mr.df$sex == "female",]
+
+# Update new.title feature
+indexes <- which(combined_data$new.title == "Mr." & 
+                   combined_data$sex == "female")
+combined_data$new.title[indexes] <- "Mrs."
+
+# Any other gender slip-ups?
+length(which(combined_data$sex == "female" & 
+               (combined_data$new.title == "Master." |
+                  combined_data$new.title == "Mr.")))
+
+# Refresh data frame
+indexes.first.mr <- which(combined_data$new.title == "Mr." & combined_data$pclass == "1")
+first.mr.df <- combined_data[indexes.first.mr, ]
+
+
+# 1.
+# Let's look at surviving 1st class "Mr."
+summary(first.mr.df[first.mr.df$survived == "1",])
+View(first.mr.df[first.mr.df$survived == "1",])
+
+# Take a look at some of the high fares
+indexes <- which(combined_data$ticket == "PC 17755" |
+                   combined_data$ticket == "PC 17611" |
+                   combined_data$ticket == "113760")
+View(combined_data[indexes,])
+
+# Visualize survival rates for 1st class "Mr." by fare
+ggplot(first.mr.df, aes(x = fare, fill = survived)) +
+  geom_density(alpha = 0.5) +
+  ggtitle("1st Class 'Mr.' Survival Rates by fare")
+
+
+# Engineer features based on all the passengers with the same ticket
+ticket.party.size <- rep(0, nrow(combined_data))
+avg.fare <- rep(0.0, nrow(combined_data))
+tickets <- unique(combined_data$ticket)
+
+for (i in 1:length(tickets)) {
+  current.ticket <- tickets[i]
+  party.indexes <- which(combined_data$ticket == current.ticket)
+  current.avg.fare <- combined_data[party.indexes[1], "fare"] / length(party.indexes)
+  
+  for (k in 1:length(party.indexes)) {
+    ticket.party.size[party.indexes[k]] <- length(party.indexes)
+    avg.fare[party.indexes[k]] <- current.avg.fare
+  }
+}
+
+combined_data$ticket.party.size <- ticket.party.size
+combined_data$avg.fare <- avg.fare
+
+# Refresh 1st class "Mr." dataframe
+first.mr.df <- combined_data[indexes.first.mr, ]
+summary(first.mr.df)
+
+
+# Visualize new features
+ggplot(first.mr.df[first.mr.df$survived != "None",], aes(x = ticket.party.size, fill = survived)) +
+  geom_density(alpha = 0.5) +
+  ggtitle("Survival Rates 1st Class 'Mr.' by ticket.party.size")
+
+ggplot(first.mr.df[first.mr.df$survived != "None",], aes(x = avg.fare, fill = survived)) +
+  geom_density(alpha = 0.5) +
+  ggtitle("Survival Rates 1st Class 'Mr.' by avg.fare")
+
+
+# Hypothesis - ticket.party.size is highly correlated with avg.fare
+summary(combined_data$avg.fare)
+
+# One missing value, take a look
+combined_data[is.na(combined_data$avg.fare), ]
+
+# Get records for similar passengers and summarize avg.fares
+indexes <- with(combined_data, which(pclass == "3" & title == "Mr." & family_size == 1 &
+                                       ticket != "3701"))
+similar.na.passengers <- combined_data[indexes,]
+summary(similar.na.passengers$avg.fare)
+
+# Use median since it is close to mean and a little higher than mean
+combined_data[is.na(avg.fare), "avg.fare"] <- 7.840
+
+
+## Important from here!!
+##
+
+# Leverage caret's preProcess function to normalize data
+preproc.data.combined <- combined_data[, c("ticket.party.size", "avg.fare")]
+preProc <- preProcess(preproc.data.combined, method = c("center", "scale"))
+
+postproc.data.combined <- predict(preProc, preproc.data.combined)
+
+# Hypothesis refuted for all data
+cor(postproc.data.combined$ticket.party.size, postproc.data.combined$avg.fare)
+# Very low correlation -> good! 
+
+
+# How about for just 1st class all-up?
+indexes <- which(combined_data$pclass == "1")
+cor(postproc.data.combined$ticket.party.size[indexes], 
+    postproc.data.combined$avg.fare[indexes])
+# Hypothesis refuted again
+
+
+# OK, let's see if our feature engineering has made any difference
+rpart.train.3 <- combined_data[1:891, c("pclass", "new.title", "family_size", "ticket.party.size", "avg.fare")]
+
+# Run CV and check out results
+rpart.3.cv.1 <- rpart.cv(0623, rpart.train.3, rf.label, ctrl.3)
+rpart.3.cv.1
+
+# Plot
+prp(rpart.3.cv.1$finalModel, type = 0, extra = 1, under = TRUE)
+
+
+
+
+#==============================================================================
+#
+###  Submitting, scoring, and some analysis.
+#
+#==============================================================================
+
+#
+# Below Rpart scores 0.80383
+#
+# Subset our test records and features
+test.submit.df <- combined_data[892:1309, c("pclass", "new.title", "family_size", "ticket.party.size", "avg.fare")]
+
+# Make predictions
+rpart.3.preds <- predict(rpart.3.cv.1$finalModel, test.submit.df, type = "class") # for rpart, we need to specify type
+table(rpart.3.preds)
+
+# Write out a CSV file for submission to Kaggle
+submit.df <- data.frame(PassengerId = rep(892:1309), Survived = rpart.3.preds)
+
+write.csv(submit.df, file = "RPART_SUB_20160619_1.csv", row.names = FALSE)
+
+
+#
+# Below Random forest scores 0.80861
+#
+features <- c("pclass", "new.title", "ticket.party.size", "avg.fare")
+rf.train.temp <- combined_data[1:891, features]
+
+set.seed(1234)
+rf.temp <- randomForest(x = rf.train.temp, y = rf.label, ntree = 1000)
+rf.temp
+
+
+test.submit.df <- combined_data[892:1309, features]
+
+# Make predictions
+rf.preds <- predict(rf.temp, test.submit.df)
+table(rf.preds)
+
+# Write out a CSV file for submission to Kaggle
+submit.df <- data.frame(PassengerId = rep(892:1309), Survived = rf.preds)
+
+write.csv(submit.df, file = "RF_SUB_20160619_1.csv", row.names = FALSE)
+
+
+
+#==============================================================================
+#
+###  Lets get better!!
+#
+#==============================================================================
+#
+# If we want to improve our model, a good place to start is focusing on where it
+# gets things wrong!
+#
+
+##
+#1 . Mutual Information
+# whether the feature I engineered is acutally useful for not
+# First, let's explore our collection of features using mutual information to
+# gain some additional insight. Our intuition is that the plot of our tree
+# should align well to the definition of mutual information.
+require(infotheo)
+
+## Higher the number, the better! 
+mutinformation(rf.label, combined_data$pclass[1:891])
+# If i only know about the information of pclass, how much does that affect that amount that I know of survival
+mutinformation(rf.label, combined_data$sex[1:891])
+mutinformation(rf.label, combined_data$sibsp[1:891])
+mutinformation(rf.label, combined_data$parch[1:891])
+mutinformation(rf.label, discretize(combined_data$fare[1:891]))
+mutinformation(rf.label, combined_data$embarked[1:891])
+mutinformation(rf.label, combined_data$title[1:891])
+mutinformation(rf.label, combined_data$family_size[1:891])
+mutinformation(rf.label, combined_data$ticket.first.char[1:891])
+mutinformation(rf.label, combined_data$new.title[1:891])
+mutinformation(rf.label, combined_data$ticket.party.size[1:891])
+mutinformation(rf.label, discretize(combined_data$avg.fare[1:891]))
+
+
+# OK, now let's leverage the tsne algorithm to create a 2-D representation of our data 
+# suitable for visualization starting with folks our model gets right very often - folks
+# with titles other than 'Mr."
+
+require(Rtsne)
+most.correct <- combined_data[combined_data$new.title != "Mr.",]
+indexes <- which(most.correct$survived != "NA")
+
+
+# NOTE - Bug fix for original version. Rtsne needs a seed to ensure consistent
+# output between runs.
+set.seed(0623)
+tsne.1 <- Rtsne(most.correct[, c("pclass", "new.title", "ticket.party.size", "avg.fare")], check_duplicates = FALSE)
+ggplot(NULL, aes(x = tsne.1$Y[indexes, 1], y = tsne.1$Y[indexes, 2], 
+                 color = most.correct$survived[indexes])) +
+  geom_point() +
+  labs(color = "Survived") +
+  ggtitle("tsne 2D Visualization of Features for new.title Other than 'Mr.'")
+
+
+# To get a baseline, let's use conditional mutual information on the tsne X and
+# Y features for females and boys in 1st and 2nd class. The intuition here is that
+# the combination of these features should be higher than any individual feature
+# we looked at above.
+condinformation(most.correct$survived[indexes], discretize(tsne.1$Y[indexes,]))
+
+
+# As one more comparison, we can leverage conditional mutual information using
+# the top two features used in our tree plot - new.title and pclass
+condinformation(rf.label, combined_data[1:891, c("new.title", "pclass")])
+
+
+# OK, now let's take a look at adult males since our model has the biggest 
+# potential upside for improving (i.e., the tree predicts incorrectly for 86
+# adult males). Let's visualize with tsne.
+misters <- combined_data[combined_data$new.title == "Mr.",]
+indexes <- which(misters$survived != "NA")
+
+tsne.2 <- Rtsne(misters[, c("pclass", "new.title", "ticket.party.size", "avg.fare")], check_duplicates = FALSE)
+ggplot(NULL, aes(x = tsne.2$Y[indexes, 1], y = tsne.2$Y[indexes, 2], 
+                 color = misters$survived[indexes])) +
+  geom_point() +
+  labs(color = "Survived") +
+  ggtitle("tsne 2D Visualization of Features for new.title of 'Mr.'")
+
+
+# Now conditional mutual information for tsne features for adult males
+condinformation(misters$survived[indexes], discretize(tsne.2$Y[indexes,]))
+
+
+#
+# Idea - How about creating tsne featues for all of the training data and
+# using them in our model?
+#
+tsne.3 <- Rtsne(combined_data[, c("pclass", "new.title", "ticket.party.size", "avg.fare")], check_duplicates = FALSE)
+ggplot(NULL, aes(x = tsne.3$Y[1:891, 1], y = tsne.3$Y[1:891, 2], 
+                 color = combined_data$survived[1:891])) +
+  geom_point() +
+  labs(color = "Survived") +
+  ggtitle("tsne 2D Visualization of Features for all Training Data")
+
+# Now conditional mutual information for tsne features for all training
+condinformation(combined_data$survived[1:891], discretize(tsne.3$Y[1:891,]))
+
+# Add the tsne features to our data frame for use in model building
+combined_data$tsne.x <- tsne.3$Y[,1]
+combined_data$tsne.y <- tsne.3$Y[,2]
+```
+

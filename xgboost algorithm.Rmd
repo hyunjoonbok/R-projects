@@ -1,0 +1,48 @@
+---
+title: "Simple XGboost Algorithm (universal)"
+author: "HyunJoon Bok"
+date: "February 14, 2018"
+output: html_document
+---
+
+```{r}
+require(xgboost)
+set.seed(0623)
+data("agaricus.train")
+data("agaricus.test")
+
+# Load data
+train <- agaricus.train
+test <- agaricus.test
+
+# Setting up parameters
+param <- list("objective" = "binary:logistic",
+              "eval_metric" = "logloss",
+              "eta" = 0.4, "max.depth" = 2)
+
+# Cross Validation
+## we should take a look at "test-logloss", enlarge nrounds until "test-logloss" is increasing (usually more than 200)
+bst.cv <- xgb.cv(params = param, data = as.matrix(train$data), label = train$label, nfold = 10, nrounds = 20)
+
+## little plot of above CV result
+plot(log(bst.cv$evaluation_log$test_logloss_mean), type = "l")
+
+# Xgboost
+## This shows train-error, which we don't need to care a lot
+bst <- xgboost(data = as.matrix(train$data), label = train$label, max.depth = 2, eta = 0.5, nrounds = 5, objective = "binary:logistic")
+## predict 
+pred = predict(bst, test$data)
+
+## little plot of prediction
+trees = xgb.model.dt.tree(dimnames(train$data)[[2]], model = bst);trees
+
+```
+
+```{r}
+## Feature Selection
+names <- dimnames(train$data)[[2]]
+imprt_matrix <- xgb.importance(names,model=bst)
+xgb.plot.importance(imprt_matrix[1:10]) # we should take variables with higher value
+require(DiagrammeR)
+xgb.plot.tree(feature_names = names, model = bst, n_first_tree = 2)
+```
