@@ -1,0 +1,137 @@
+outcome,ID,age,gender,province,district,city,date_of_onset,date_of_report,date_of_provincial_confirmation,date_of_china_CDC_confirmation,date_of_notification_to_WHO,date_of_hospitalization,date_of_death,date_of_discharge,possible_source_of_exposure,number_contacts_investigated,severity,notes
+death,1,87,m,Shanghai,,Shanghai,19-Feb-13,31-Mar-13,,30-Mar-13,31-Mar-13,,4-Mar-13,,,,critical,"son also died, confirmed H7N9, likely exposure from live poultry bought 2 weeks before got sick, ID73. 88 cases among IDs 1,2 and 3"
+death,2,27,m,Shanghai,Minhang,Shanghai,27-Feb-13,31-Mar-13,,30-Mar-13,31-Mar-13,3-Mar-13,10-Mar-13,,pigs?,,critical,"pork butcher. History of hepatitis B. Did not receive antiviral treatment until the second week (the recommended window for this treatment should be two days, was delayed as one of the first cases). 88 cases among IDs 1,2 and 3."
+death,3,35,f,Anhui,,Chuzhou ,9-Mar-13,31-Mar-13,,30-Mar-13,31-Mar-13,19-Mar-13,9-Apr-13,,poultry,,critical,"Purchased live birds 5 days before onset.  88 cases among IDs 1,2 and 3"
+,4,45,f,Jiangsu,Jiangning,Nanjing,19-Mar-13,2-Apr-13,30-Mar-13,2-Apr-13,3-Apr-13,27-Mar-13,,,poultry,49,critical,Poultry butcher. Weibo leak of diagnosis 30-mar-2013
+cleared,5,48,f,Jiangsu,,Suquian Shuyang,19-Mar-13,2-Apr-13,30-Mar-13,2-Apr-13,3-Apr-13,30-Mar-13,,15-May-13,,60,critical,
+death,6,32,f,Jiangsu,Binhu,Wuxi,21-Mar-13,2-Apr-13,31-Mar-13,2-Apr-13,3-Apr-13,28-Mar-13,26-Apr-13,,poultry,43,critical,"owned backyard poultry. Might be cluster case, with father age 60 (ID120) onset on 8-mar-2013 (http://www.nejm.org/doi/full/10.1056/NEJMoa1304617#t=articleTop)"
+death,7,83,m,Jiangsu,Suzhou Wujiang,,20-Mar-13,2-Apr-13,1-Apr-13,2-Apr-13,3-Apr-13,29-Mar-13,9-Apr-13,,,15,,
+death,8,38,m,Zhejiang,Hangzhou Jiande,,7-Mar-13,3-Apr-13,1-Apr-13,3-Apr-13,4-Apr-13,18-Mar-13,27-Mar-13,,poultry,125,,"chef, worked in Taicang city, Jiangsu province. Bought chicken on 8-mar-2013"
+,9,67,m,Zhejiang,,Hangzhou,25-Mar-13,3-Apr-13,2-Apr-13,3-Apr-13,4-Apr-13,25-Mar-13,,,,58,critical,
+death,10,48,m,Shanghai,,Rugao(?),28-Mar-13,4-Apr-13,2-Apr-13,,4-Apr-13,1-Apr-13,3-Apr-13,,poultry-chicken and duck,8,,worked in chicken and duck transportation
+death,11,64,m,Zhejiang,Wuxing,Huzhou,29-Mar-13,4-Apr-13,3-Apr-13,4-Apr-13,4-Apr-13,31-Mar-13,4-Apr-13,,farm animals?,55,,farmer
+death,12,52,f,Shanghai,,,27-Mar-13,4-Apr-13,4-Apr-13,,5-Apr-13,,3-Apr-13,,,,,"husband is ID 45. One close contact developed fever and runny nose, possibly husband? Daughter suffered from fever recently as well, recovered."
+death,13,67,f,Shanghai,,,22-Mar-13,4-Apr-13,,,5-Apr-13,25-Mar-13,3-Apr-13,,,,critical,Was initially reported as male case.
+cleared,14,4,m,Shanghai,,,31-Mar-13,4-Apr-13,,,5-Apr-13,,,10-Apr-13,,,mild,
+,15,61,f,Jiangsu,Qinhuai,Nanjing,20-Mar-13,,5-Apr-13,,5-Apr-13,,,,,12,critical,
+,16,79,m,Jiangsu,Qinhuai,Nanjing,21-Mar-13,,5-Apr-13,,5-Apr-13,,,,,53,critical,
+death,17,74,m,Shanghai,,Shanghai,28-Mar-13,,6-Apr-13,,6-Apr-13,3-Apr-13,11-Apr-13,,poultry,,critical,Farmer. Poultry at home. Coronary Heart Disease. Chronic Hepatic schistosomiasis
+cleared,18,66,m,Shanghai,,Shanghai,29-Mar-13,,6-Apr-13,,6-Apr-13,2-Apr-13,,18-Apr-13,,,mild,Think this is: case with Hypertension; articular gout; benign prostatic hyperplasia. Exposure to live poultry markets on 29-mar-2013
+death,19,59,m,Shanghai,,Shanghai,25-Mar-13,,7-Apr-13,,7-Apr-13,30-Mar-13,31-May-13,,,,critical,"Hypertension. Exposure to poultry at live markets, last visit 19-mar-2013."
+cleared,20,55,m,Anhui,,Bozhou,28-Mar-13,,,,7-Apr-13,1-Apr-13,,19-Apr-13,poultry,,stable,Sells and slaughters poultry.
+cleared,21,67,m,Shanghai,,Shanghai,29-Mar-13,,7-Apr-13,,7-Apr-13,30-Mar-13,,21-Apr-13,,,mild,
+,22,85,m,Jiangsu,Xiaguan,Nanjing,28-Mar-13,8-Apr-13,8-Apr-13,,9-Apr-13,1-Apr-13,,,,34,critical,
+cleared,23,25,f,Jiangsu,Runzhou,Zhenjiang,30-Mar-13,8-Apr-13,8-Apr-13,,9-Apr-13,30-Mar-13,,15-May-13,poultry,18,critical,"4-5 months Pregnant. Father in live poultry business - chickens, ducks and geese. She often visits market."
+death,24,64,m,Shanghai,,Shanghai,1-Apr-13,,,,9-Apr-13,,7-Apr-13,,,,,
+cleared,25,62,m,Shanghai,,,1-Apr-13,,8-Apr-13,,10-Apr-13,1-Apr-13,,6-May-13,,,,10 contacts between ID 25 and 26
+death,26,77,m,Shanghai,,,3-Apr-13,,9-Apr-13,,10-Apr-13,7-Apr-13,14-Apr-13,,,,, 10 contacts between ID 25 and 26
+cleared,27,51,f,Zhejiang,Runzhou,,13-Mar-13,,9-Apr-13,,10-Apr-13,9-Apr-13,,19-Apr-13,,,stable,
+,28,79,m,Zhejiang,,Hangzhou,29-Mar-13,,9-Apr-13,,10-Apr-13,,,,,,critical,
+cleared,29,76,f,Shanghai,,Shanghai,1-Apr-13,,9-Apr-13,,11-Apr-13,5-Apr-13,,3-May-13,,,stable,9 contacts between ID 29 and 30
+cleared,30,81,f,Shanghai,,Shanghai,4-Apr-13,,9-Apr-13,,11-Apr-13,,,27-Apr-13,farm animals?,,,farmer.  9 contacts between ID 29 and 30
+,31,70,m,Jiangsu,Huishan,Wuxi,29-Mar-13,,10-Apr-13,,11-Apr-13,,,,,,,
+,32,74,m,Jiangsu,Jiangyin,Wuxi,2-Apr-13,,10-Apr-13,,11-Apr-13,,,,,,,
+cleared,33,65,m,Zhejiang,,,3-Apr-13,,10-Apr-13,,11-Apr-13,,,27-Apr-13,farm animals?,,,farmer? released as one of 6 cleared patients on 27-apr-2013
+death,34,74,m,Shanghai,,,31-Mar-13,,10-Apr-13,,11-Apr-13,5-Apr-13,11-Apr-13,,,7,,"might have died 11-apr-2013, or ould be ID 17"
+death,35,83,f,Shanghai,,,2-Apr-13,,10-Apr-13,,11-Apr-13,7-Apr-13,10-May-13,,,44,stable,
+cleared,36,68,m,Shanghai,,,4-Apr-13,,10-Apr-13,,11-Apr-13,,,21-Apr-13,,19,,
+cleared,37,31,m,Jiangsu,,Yangzhou,31-Mar-13,,11-Apr-13,,11-Apr-13,,,15-May-13,,19,critical,chef
+,38,56,m,Jiangsu,,Suzhou,3-Apr-13,,11-Apr-13,,11-Apr-13,,,,,33,critical,Teacher
+,39,66,m,Zhejiang,,Hangzhou,8-Apr-13,,12-Apr-13,,12-Apr-13,8-Apr-13,,,,,,
+,40,74,m,Zhejiang,,Hangzhou,6-Apr-13,,12-Apr-13,,12-Apr-13,11-Apr-13,,,,,,
+,41,54,f,Zhejiang,,Huzhou,6-Apr-13,,12-Apr-13,,12-Apr-13,12-Apr-13,,,farm animals?,,,farmer
+,42,53,m,Shanghai,,,3-Apr-13,,11-Apr-13,,12-Apr-13,10-Apr-13,,,,,,fever on 05-apr-2013
+death,43,86,m,Shanghai,,,3-Apr-13,,11-Apr-13,,12-Apr-13,6-Apr-13,21-Apr-13,,,,,
+cleared,44,7,f,Beijing,Shunyi,,11-Apr-13,,13-Apr-13,13-Apr-13,13-Apr-13,11-Apr-13,,17-Apr-13,poultry-chicken,24,stable,Parents in live poultry trade. Contact with chicken from Tianjin
+death,45,56,m,Shanghai,,,1-Apr-13,,13-Apr-13,,13-Apr-13,4-Apr-13,26-Jun-13,,,,,wife is ID 12
+death,46,77,f,Jiangsu,Baixia,Nanjing,5-Apr-13,,,,13-Apr-13,,14-Apr-13,,,,critical,16 contacts between ID 46 and 47
+,47,72,m,Jiangsu,,Changshu,1-Apr-13,,,,13-Apr-13,,,,,,critical,16 contacts between ID 46 and 47
+,48,65,m,Zhejiang,,,3-Apr-13,,,,13-Apr-13,9-Apr-13,,,,,,
+cleared,49,38,m,Zhejiang,,,6-Apr-13,,,,13-Apr-13,11-Apr-13,,4-May-13,,,,"Wife said that he first felt symptoms on March 26, prior to their visit to a poultry market on March 31st. His symptoms worsened on April 5th and he went back to his home in Jiangxi on April 8th. He then became seriously ill and returned to Hangzhou via ambulance, where he was hospitalized on April 11. "
+cleared,50,34,m,Henan,Weishi County,Kaifeng City Bridge,6-Apr-13,,11-Apr-13,14-Apr-13,14-Apr-13,9-Apr-13,,,poultry?,,critical,chef. 19 contacts between ID 50 and 51
+cleared,51,65,m,Henan,Chuanhai,Zhoukou,8-Apr-13,,11-Apr-13,14-Apr-13,14-Apr-13,10-Apr-13,,23-Apr-13,farm animals?,,,farmer. 19 contacts between ID 50 and 51. Might have been discharged 23-apr-2013
+,52,64,f,Zhejiang,,,6-Apr-13,,,,15-Apr-13,,,,farm animals?,,,farmer?
+death,53,62,f,Zhejiang,,Huzhou,29-Mar-13,,,,15-Apr-13,,20-Apr-13,,,,,
+,54,75,m,Zhejiang,,,6-Apr-13,,,,15-Apr-13,,,,,,,still in hospital 21-june-2013
+cleared,55,79,m,Zhejiang,,Hangzhou,9-Apr-13,,,,15-Apr-13,,,27-Apr-13,,,,released as one of 6 cleared patients on 27-apr-2013
+,56,73,m,Shanghai,,,5-Apr-13,,13-Apr-13,,15-Apr-13,11-Apr-13,,,,9,,"25 contacts between ID 56, 57 and 58"
+cleared,57,54,m,Shanghai,,Jiangxi,8-Apr-13,,13-Apr-13,,15-Apr-13,12-Apr-13,,21-Apr-13,,9,,"25 contacts between ID 56, 57 and 58"
+cleared,58,78,m,Shanghai,,,4-Apr-13,,13-Apr-13,,15-Apr-13,8-Apr-13,,5-May-13,,7,,"25 contacts between ID 56, 57 and 58"
+cleared,59,50,m,Jiangsu,,,1-Apr-13,,14-Apr-13,,15-Apr-13,,,8-May-13,,8,,
+cleared,60,26,m,Jiangsu,,Yancheng,8-Apr-13,,14-Apr-13,,15-Apr-13,,,26-Apr-13,,21,,
+death,61,60,m,Jiangsu,,Kunshan,6-Apr-13,,15-Apr-13,,16-Apr-13,,16-Apr-13,,,3,,
+,62,68,f,Zhejiang,,Huzhou,3-Apr-13,,15-Apr-13,,16-Apr-13,,,,farm animals?,3,critical,Farmer
+,63,60,m,Anhui,,Tiangchang,10-Apr-13,,15-Apr-13,,16-Apr-13,,,,,25,,
+cleared,64,56,m,Jiangsu,Qinhuai,Nanjing,,,16-Apr-13,,,,,11-May-13,,7,critical,
+cleared,65,21,f,Jiangsu,,Kunshan,,,16-Apr-13,,,,,16-May-13,,12,critical,think she was discharged on 16-may-2013
+,66,72,m,Jiangsu,,Suzhou,,,16-Apr-13,,,,,,,6,critical,
+,67,56,m,Zhejiang,Hangzhou,Hangzhou,12-Apr-13,,16-Apr-13,,,,,,poultry-pigeon,,critical,Works in meat pigeon breeding/sale
+,68,57,m,Zhejiang,Hangzhou,Hangzhou,10-Apr-13,,16-Apr-13,,,,,,,,critical,
+,69,62,m,Zhejiang,Hangzhou,Hangzhou,10-Apr-13,,16-Apr-13,,,,,,,,critical,
+,70,58,f,Zhejiang,Hangzhou,Hangzhou,11-Apr-13,,16-Apr-13,,,,,,farm animals?,,critical,Farmer
+,71,72,f,Zhejiang,Hangzhou,Hangzhou,10-Apr-13,,16-Apr-13,,,,,,,,critical,
+cleared,72,47,m,Shanghai,,,10-Apr-13,,15-Apr-13,,,15-Apr-13,,27-Apr-13,,,,
+cleared,73,69,m,Shanghai,,,,,,15-Apr-13,,,,?,,,,restrospective diagnosis. Cleared infection. Son of patient ID 1. Brother of ID76. 
+cleared,74,?,?,Shanghai,,,,,,15-Apr-13,,,,?,,,,restrospective diagnosis.  Cleared infection
+death,75,?,?,Shanghai,,,,,,15-Apr-13,,,,,,,,restrospective diagnosis. 
+death,76,55,m,Shanghai,,,,,,15-Apr-13,,,,,,,,"restrospective diagnosis. Son of ID 1, brother of ID 73. likely exposure from live poultry bought 2 weeks before got sick."
+cleared,77,2,m,Shanghai,Putuo,,17-Mar-13,,,,,,,?,,,,"travelled with parents from Shanghai to Changsha city (Hunan). Returned 19-mar-2013, now fully recovered. Treated first in Hunan, transferred back to Shanghai"
+death,78,89,m,Shanghai,,,12-Apr-13,,,,,16-Apr-13,29-Apr-13,,,9,stable,"Initially reported as Jiangsu, but hospitalised and died in Shanghai."
+cleared,79,37,f,Zhejiang,,,11-Apr-13,,,,,,,27-Apr-13,farm animals?,,,farmer? released as one of 6 cleared patients on 27-apr-2013
+,80,74,m,Zhejiang,,,8-Apr-13,,,,,,,,,,critical,
+death,81,86,m,Zhejiang,,Hangzhou,13-Apr-13,,17-Apr-13,,,,23-Apr-13,,,,critical,
+cleared,82,41,m,Zhejiang,,,14-Apr-13,,,,,,,22-Apr-13,poultry,,stable,Took part in government organised culling of poultry on 8-apr-2013
+cleared,83,38,m,Henan,Guangcheng,,,,,,,,,,poultry,,critical,Live poultry slaughterer and seller
+,84,26,f,Jiangsu,Xuanwu,Nanjing,,,18-Apr-13,,,,,,,5,,
+,85,80,f,Shanghai,,,9-Apr-13,,17-Apr-13,,,16-Apr-13,,,,,stable,
+,86,54,f,Zhejiang,,Jiaxing,13-Apr-13,,,,,,,,,,critical,
+death,87,69,m,Zhejiang,,Hangzhou,11-Apr-13,,18-Apr-13,,,,19-Apr-13,,,,critical,
+,88,4,m,Beijing,,,,,,,,,,,poultry or ID 44,,no symptoms,"found while testing contacts of ID 44, under observation as currently no symptoms. parents are poultry and fish sellers. "
+cleared,89,54,m,Jiangsu,Xuanwu,Nanjing,9-Apr-13,,,17-Apr-13,19-Apr-13,15-Apr-13,,15-May-13,,4,critical,
+,90,43,m,Zhejiang,,Hangzhou,12-Apr-13,,,18-Apr-13,19-Apr-13,15-Apr-13,,,,,critical,
+cleared,91,48,m,Zhejiang,,,11-Apr-13,,,19-Apr-13,19-Apr-13,17-Apr-13,,27-Apr-13,,,critical,released as one of 6 cleared patients on 27-apr-2013
+,92,66,f,Zhejiang,,Huzhou,10-Apr-13,,,19-Apr-13,19-Apr-13,17-Apr-13,,,poultry,,critical,history of exposure to live poultry
+,93,56,m,Zhejiang,,Hangzhou,11-Apr-13,,20-Apr-13,,20-Apr-13,,,,farm animals?,,,farmer
+cleared,94,35,f,Zhejiang,,Hangzhou,14-Apr-13,,20-Apr-13,,20-Apr-13,,,27-Apr-13,,,,released as one of 6 cleared patients on 27-apr-2013
+,95,37,m,Zhejiang,,Hangzhou,30-Mar-13,,20-Apr-13,,20-Apr-13,,,,,,,
+,96,43,m,Jiangsu,Xuanwu,Nanjing,7-Apr-13,,20-Apr-13,,20-Apr-13,,,,,23,critical,
+cleared,97,75,f,Shanghai,,,13-Apr-13,,19-Apr-13,,,18-Apr-13,,5-May-13,,15,stable,"Possible died, 21-apr-2013"
+death,98,76,m,Zhejiang,,Jiaxing,8-Apr-13,,21-Apr-13,,21-Apr-13,,21-Apr-13,,farm animals?,,,farmer. Some reports that there was a delay in his diagnosis.
+,99,68,f,Zhejiang,,Hangzhou,12-Apr-13,,21-Apr-13,,21-Apr-13,,,,farm animals?,,critical,farmer
+,100,58,m,Zhejiang,,Hangzhou,16-Apr-13,,21-Apr-13,,21-Apr-13,,,,,,critical,
+,101,79,f,Zhejiang,,Hangzhou,13-Apr-13,,21-Apr-13,,21-Apr-13,,,,farm animals?,,critical,farmer
+,102,81,m,Zhejiang,,Huzhou,12-Apr-13,,21-Apr-13,,21-Apr-13,,,,,,critical,
+,103,68,m,Jiangsu,,Liyang,13-Apr-13,,20-Apr-13,,21-Apr-13,19-Apr-13,,,,3,,diagnosed in Shanghai? Might be from Shanghai?
+,104,54,f,Zhejiang,,Hangzhou,16-Apr-13,,22-Apr-13,,22-Apr-13,,,,,,mild,
+,105,32,m,Zhejiang,,Huzhou,14-Apr-13,,22-Apr-13,,22-Apr-13,,,,farm animals?,,mild,farmer
+cleared,106,36,m,Shandong,,Zaozhuang,16-Apr-13,,22-Apr-13,23-Apr-13,23-Apr-13,22-Apr-13,,16-May-13,,9,critical,Wife reports no contact with live poultry. Lives 100m from live poultry market. Father of ID 127.
+death,107,91,m,Anhui,Tianchang,Chuzhou,14-Apr-13,,23-Apr-13,,23-Apr-13,,5-May-13,,,35,critical,
+,108,84,m,Zhejiang,,Hangzhou,15-Apr-13,,23-Apr-13,,23-Apr-13,,,,,,critical,
+,109,62,m,Zhejiang,,Hangzhou,15-Apr-13,,23-Apr-13,,23-Apr-13,,,,,,critical,
+,110,53,m,Taiwan,,,12-Apr-13,,24-Apr-13,,25-Apr-13,16-Apr-13,,,,139,critical,"Was in Suzhou, Jiangsu from 28 March to 9 Apr 2013, frequent traveller for work. Taiwanese citizen. Hepatitis B carrier. No contact with poultry reported. Swabs tested twice with no h7n9 before found."
+death,111,56,m,Henan,Zhongyuan,Zhengzhou,17-Apr-13,,25-Apr-13,,29-Apr-13,,9-May-13,,poultry,7,critical,"no obvious poultry contact, but residents on his corridor often have birds in cages in corridor?"
+,112,69,m,Jiangxi,,Nanchang,17-Apr-13,,24-Apr-13,,29-Apr-13,,,,,14,,Patient lives few hundred metres from live poultry market. 24 contacts between this and ID117
+,113,60,f,Zhejiang,,Huzhou,15-Apr-13,,25-Apr-13,,29-Apr-13,,,,farm animals?,,critical,farmer
+,114,50,f,Zhejiang,,Shaoxing,18-Apr-13,,25-Apr-13,,29-Apr-13,,,,farm animals?,,critical,farmer
+,115,38,m,Zhejiang,,Huzhou,17-Apr-13,,26-Apr-13,,29-Apr-13,,,,farm animals?,,serious,farmer
+cleared,116,65,m,Fujian,,Longyan,18-Apr-13,,,26-Apr-13,29-Apr-13,23-Apr-13,,9-May-13,poultry-chicken,37,,confirmed contact with live chickens in week before onset. Daughter in law involved in poultry transport and he had helped. Daugter in law fine.
+cleared,117,76,f,Jiangxi,,Nanchang,19-Apr-13,,26-Apr-13,,29-Apr-13,,,17-May-13,"poultry - chickens, ducks",10,,"24 contacts between this and ID112. No connection with ID112. Some of the chicken and ducks she raised had died, testing for h7n9."
+,118,49,m,Jiangsu,Lishui,Nanjing,17-Apr-13,,26-Apr-13,,29-Apr-13,,,,,,stable,
+cleared,119,36,m,Jiangsu,,Xuzhou Xinyi,19-Apr-13,,26-Apr-13,,29-Apr-13,,,15-May-13,,,serious,
+,120,60,m,Jiangsu,Binhu,,8-Mar-13,,26-Apr-13,,29-Apr-13,,,,,,critical,think he is father of ID6
+death,121,64,f,Hunan,,Shaoyang,14-Apr-13,25-Apr-13,27-Apr-13,,29-Apr-13,19-Apr-13,14-May-13,,poultry,41,critical,exposed to poultry 4 days before developing fever. Transferred to Hunan province for treatment/diagnosis?
+,122,38,m,Zhejiang,,Hangzhou,18-Apr-13,,28-Apr-13,,29-Apr-13,,,,,,serious,
+death,123,54,m,Jiangxi,Tonggu,Yichun,15-Apr-13,,26-Apr-13,27-Apr-13,,22-Apr-13,1-May-13,,pigs,51,,Works in pork transportation. sought treatment from 17-apr-2013
+cleared,124,80,m,Jiangxi,,Nanchang,21-Apr-13,,28-Apr-13,,29-Apr-13,,,8-May-13,poultry-chickens,,stable,home raising chickens. Contacts all fine.
+cleared,125,31,f,Jiangxi,,Nanchang,23-Apr-13,,28-Apr-13,,29-Apr-13,,,13-May-13,poultry-chickens,,serious,"vegetalbe vendor, stalls next to chicken and poultry pitch"
+,126,80,m,Fujian,,Yang Fuqing,17-Apr-13,,28-Apr-13,,29-Apr-13,27-Apr-13,,,farm animals?,33,critical,farmers? No association between this and ID116
+cleared,127,4,m,Shandong,,Zaozhuang,27-Apr-13,,28-Apr-13,,29-Apr-13,,,6-May-13,,,stable,Might be child of ID106.
+cleared,128,58,m,Fujian,Cangshan,Fuzhou,21-Apr-13,,30-Apr-13,,2-May-13,28-Apr-13,,13-May-13,,,serious,
+cleared,129,69,m,Hunan,Wugang,Shaoyang,23-Apr-13,,30-Apr-13,,2-May-13,27-Apr-13,,21-May-13,poultry,50,critical,farmer. Exposure to poultry confirmed.
+,130,69,m,Fujian,Fuzhou,Fuqing city,29-Apr-13,,,5-May-13,7-May-13,30-Apr-13,,,,9,,town farmer.
+cleared,131,9,m,Fujian,Cangshan,,26-Apr-13,,,6-May-13,7-May-13,27-Apr-13,,,,,mild,
+,132,79,f,Jiangxi,,Nanchang,3-May-13,,7-May-13,,8-May-13,3-May-13,,,poultry,11,stable,"farmer, with free range poultry (chickens and ducks) at home"
+cleared,133,6,m,Beijing,Haidan,,21-May-13,,,28-May-13,29-May-13,21-May-13,,23-May-13,,50,,"Back to nursery on 24-May. Temperature normal since 23-May. Monitored since, normal temperature."
+cleared,134,15,m,Jiangsu,,,25-Apr-13,,,,4-Jul-13,26-Apr-13,,2-May-13,,,,The results of molecular diagnostics were positive for H3N2 seasonal influenza virus and H7N9 avian influenza virus. Lancet case report  http://www.sciencedirect.com/science/article/pii/S0140673613611356
+died,135,61,f,Hebei,,Langfang,10-Jul-13,,20-Jul-13,,20-Jul-13,13-Jul-13,11-Aug-13,,,9,critical,transferred to Beijing Hospital on 18-July-2013
+,136,51,f,Guangdong,,Huizhou,27-Jul-13,,6-Aug-13,10-Aug-13,11-Aug-13,28-Jul-13,,,poultry,36,severe,Was transferred to Huizhou hospital on 3-ahu-20913. found during routine screening of patients in Huizhou central hospital. Slaughters live poultry in boluo County markets (?)
