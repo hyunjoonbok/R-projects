@@ -48,14 +48,15 @@ I tried to include the usage of packages and methods that have been consistently
    July 10, 2017
    
    ### [ML Model Interpretability with DALEX](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/ML%20Model%20Interpretability%20with%20DALEX.R): 
+     #### [2nd DALEX R file](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Model%20Interpretability%20with%20DALEX.R)
+   May 25, 2018
    <p>
    Often times, ML models are critized as being black-box (untracakble complex inside that magiaclaly solves the problem). Here we look at the problem of predicting the apartment prices using Linear Regression, SVM, Random Forest, and get the pacakge DALEX to help look how much each variables affect this prediction. 
    </p>
-   [2nd DALEX R file](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Model%20Interpretability%20with%20DALEX.R)
-   May 25, 2018
    
-   ### [ML Model with Caret to predict Employee Chrun](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Predict%20Employee%20Churn%20with%20CARET.R)
-   ### [ML Model with LIME to understand and prevent Employee Chrun](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/ML%20Model%20Interpretability%20with%20DALEX.R): 
+   ### Employee Churn Modeling
+   #### [ML Model with Caret to predict Employee Chrun](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Predict%20Employee%20Churn%20with%20CARET.R)
+   #### [ML Model with LIME to understand and prevent Employee Chrun](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/ML%20Model%20Interpretability%20with%20DALEX.R): 
    <p>
    With the help of powerful Caret pacakge that help build ML model . Has complete steps to pre-process, fine-tune, train, and get ROC curve. Then, I use LIME (Local Interpretable Model-Agnostic Explanation) to understand ML model created. Use H2O to initiate modeling, and with the help of LIME, it gives both global and local interpretation of predictor variables. It gives a clear visual explanation of variable importance and how model is affected by those. 
    </p>
