@@ -1,4 +1,5 @@
 ## High performance deep learning algorithm that does an excellent job at predicting ten years of sunspots
+## Taken from "https://www.business-science.io/timeseries-analysis/2018/04/18/keras-lstm-sunspots-time-series-prediction.html"
 
 # Develop a Stateful LSTM Model with the keras package, which connects to the R TensorFlow backend.
 # Apply a Keras Stateful LSTM Model to a famous time series, Sunspots.
