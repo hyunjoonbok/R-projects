@@ -3,7 +3,7 @@ setwd("C:/Users/bokhy/Desktop/ATG")
 
 a <- read.csv("export_all_total_serving_time_report.csv")
 b <- read.csv("session_byuser_export.csv")
-c <- read_xlsx("Streaming_payments.xlsx")
+c <- read.csv("Streaming_payments.csv")
 
 ##=============================================================##
 # Load packages
@@ -41,7 +41,7 @@ a_1 <- a %>%
   select(Email,Total.Serving.Time, Service.Type) %>% 
   group_by(Service.Type) %>% 
   summarise(total_hours = sum(Total.Serving.Time)/3600)
-sum(a_1$Total.Serving.Time)
+sum(a_1$total_hours)
 
 # Usage bucket
 
@@ -119,7 +119,7 @@ b <- b %>%
   mutate(count = n()) %>% 
   select(User,Email, Service.Duration,Service.Type, month, count) 
   
-
+# Avg.Usage per Session (graph)
 b_1 <- b %>% 
   group_by(Email, Service.Type) %>% 
   filter(Service.Duration != 0) %>% 
@@ -127,7 +127,6 @@ b_1 <- b %>%
   mutate(usage_per_session = (total_hours / count)*60) %>% # in minutes
   arrange(desc(usage_per_session)) 
 
-# Avg.Usage per Session (graph)
 b_1 %>% 
   filter(usage_per_session < 50) %>% 
   ggplot(aes(x = usage_per_session)) +
@@ -168,7 +167,7 @@ b %>%
   filter(month != "") %>% 
   group_by(month, Service) %>% 
   summarise(Hours_consumed = sum(Service.Duration/3600)) %>%
-  mutate(percentage = prop.table(Hours_consumed))
+  mutate(percentage = prop.table(Hours_consumed)) %>% 
   ggplot(aes(x = month , y = Hours_consumed, fill = Service)) +
   geom_bar(position="dodge", stat="identity") +
   labs(x= "Month", y = "Streaming Hours Consumed") +
@@ -206,10 +205,10 @@ b %>%
 
 # read data
 setwd("C:/Users/bokhy/Desktop/ATG")
-c <- read_xlsx("Streaming_payments.xlsx")
+c <- read.csv("Streaming_payments.csv")
 
 # [1] Total # of Users
-c %>% group_by(`Customer Email`) %>% count()
+c %>% group_by(Customer.Email) %>% count()
 
 # [2] Total Purchase Amount $
 sum(c$Amount)
@@ -221,21 +220,21 @@ ft <- flextable(c_1)
 ft <- autofit(ft)
 plot(ft)
 
-c %>% group_by(`Customer Email`) %>% tally() %>% arrange(desc(n)) # any mutiple purchase user?
+c %>% group_by(Customer.Email) %>% tally() %>% arrange(desc(n)) # any mutiple purchase user?
 
 # Processing
 c <- c %>%
   mutate(
     purchase_term = case_when(
-      as.numeric(`Days Passed since Log-in Creation`) >= 8 & as.numeric(`Days Passed since Log-in Creation`) < 16 ~ '1 wk to \n 2 wks',
-      as.numeric(`Days Passed since Log-in Creation`) >= 16 & as.numeric(`Days Passed since Log-in Creation`) < 60 ~ '2 wks to \n 2 month',
-      as.numeric(`Days Passed since Log-in Creation`) >= 60 ~ 'Over \n 2 month',
+      Days.Passed.since.Log.in.Creation >= 8 & Days.Passed.since.Log.in.Creation < 16 ~ '1 wk to \n 2 wks',
+      Days.Passed.since.Log.in.Creation >= 16 & Days.Passed.since.Log.in.Creation < 60 ~ '2 wks to \n 2 month',
+      Days.Passed.since.Log.in.Creation >= 60 ~ 'Over \n 2 month',
       TRUE ~ 'NA'
     )
   )
-c$purchase_term <- ifelse(c$purchase_term == 'NA', c$`Days Passed since Log-in Creation`, c$purchase_term)
-c$`Created (UTC)` <- as.Date(c$`Created (UTC)`)
-c$month <- month(c$`Created (UTC)`)
+
+c$purchase_term <- ifelse(c$purchase_term == 'NA', paste0(c$Days.Passed.since.Log.in.Creation," ","days"), c$purchase_term)
+c$month <- month(as.POSIXlt(c$Created..UTC., format="%m/%d/%Y %H:%M"))
 c$month <- month.abb[c$month]
 
 # Make sure to add month
@@ -278,7 +277,7 @@ c %>% group_by(New_customer) %>% tally()
 
 # Consolidated Purchase Term
 c %>% 
-  mutate(purchase_term = factor(purchase_term, levels = c("0 day", "1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", 
+  mutate(purchase_term = factor(purchase_term, levels = c("0 days", "1 days", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", 
                                                           "1 wk to \n 2 wks", "2 wks to \n 2 month", "Over \n 2 month"))) %>% 
   ggplot(aes(x = purchase_term, fill = New_customer)) +
   geom_bar(stat="count", position = 'identity', alpha=.9, width=.7) +
@@ -291,7 +290,7 @@ c %>%
 
 # Purchase Term Breakdown per month
 c %>% 
-  mutate(purchase_term = factor(purchase_term, levels = c("0 day", "1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", 
+  mutate(purchase_term = factor(purchase_term, levels = c("0 days", "1 days", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", 
                                                           "1 wk to \n 2 wks", "2 wks to \n 2 month", "Over \n 2 month"))) %>% 
   ggplot(aes(x = purchase_term, fill = New_customer)) +
   geom_bar(stat="count", position = 'identity', alpha=.9, width=.7) +

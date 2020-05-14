@@ -2,7 +2,7 @@
 title: "Famous Tiatatic Survival ML algorithm in R"
 author: "HyunJoon Bok"
 date: "February 11, 2018"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 

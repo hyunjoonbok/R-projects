@@ -2,7 +2,7 @@
 title: "Simple XGboost Algorithm (universal)"
 author: "HyunJoon Bok"
 date: "February 14, 2018"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r}
