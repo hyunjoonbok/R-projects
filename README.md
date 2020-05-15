@@ -22,7 +22,6 @@ I tried to include the usage of packages and methods that have been consistently
 
 ## Table of contents
 * [All Projects](#Projects)
-* [Technologies](#Libraries)
 * [Setup](#setup)
 * [TO-DOs](#TO-DOs)
 * [Contact](#contact)
@@ -247,31 +246,25 @@ I tried to include the usage of packages and methods that have been consistently
 
 - ## Statistic Concepts with real-world examples
 
-   ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
+   ### [Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Logistic%20Regression.R)
    <p>
-   Learn to serach tweets by length, location or any criteria set. Retrieve a list of all the accounts a user follows. Then plot the frequency of tweets for each user over time.
+   Concept of Logistic Regression displayed in R code. Solves a binary classification problem.
    </p>
-   Jul 28, 2019  
+   
+   ### [Mutinomial Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Multinomial%20Regression.R)
+   <p>
+   Multinomial regression is similar to logistic regression, but fits better when the response variable is a categorical variable with more than 2 levels.
+   </p>   
 
-<hr>
+   ### [Ordinal Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ordinal%20logistic%20regression.R)
+   <p>
+    Ordinal logistic regression can be used to model a ordered factor response. Here, we use ordered logistic regression to predict the car evaluation.
+   </p>   
 
-## Libraries
-* XGBoost
-* h2o
-* tidyquant
-* ggplot2
-* tidyverse
-* h2o
-* XGBoost
-* h2o
-* XGBoost
-* h2o
-* XGBoost
-* h2o
-* XGBoost
-* h2o
-* XGBoost
-* h2o
+   ### [Ridge Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ridge%20Regression.R)
+   <p>
+    Ridge Regression is a commonly used technique to address the problem of "multi-collinearity". We looks at the result of Linear Regression vs Ridge Regression
+   </p>   
 
 <hr>
 
