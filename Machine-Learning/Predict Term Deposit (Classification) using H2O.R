@@ -1,4 +1,4 @@
-# Predict which customers more likely to enroll in Term Deposit (Product in bank)
+# Predict which customers more likely to enroll in Bank's Term Deposit (Product in bank)
 # And explain why
 
 # random Grid Search combined with Stacked Ensembles is a powerful combination
@@ -23,9 +23,6 @@ data_joined_tbl
 data_joined_tbl %>%
   slice(1:10) %>%
   knitr::kable()
-
-
-
 
 
 ## Machine Learning - Labeling

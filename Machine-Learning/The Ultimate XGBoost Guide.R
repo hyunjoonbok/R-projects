@@ -10,7 +10,8 @@ require(xgboost)
 require(caret)
 setwd("C:/Users/bokhy/Desktop/R")
 power_plant = as.data.frame(read_excel("Folds5x2_pp.xlsx"))
-# PE (Power Output) is the value we are trying to predict given the measurements above.
+# PE (Power Output) in the dataset 
+# is the value we are trying to predict given the measurements above.
 
 set.seed(0623)
 # Create index for testing and training data

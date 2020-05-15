@@ -1,12 +1,13 @@
 # Explaining Machine Learning
+# From  BUSINESS SCIENCE LEARNING LABS
 
-# sucstiptions
-#1. use random forest to model behavior
+
+# Use random forest to model behavior
 # sample data could be (gender, citizen, dependate, tenure, etc)
 
 # 4 different method to explain what's going on 
-# Global PDP ICE
-# Local LIME Shapley (each feature contribute to churn)
+# Global: PDP ICE
+# Local: LIME Shapley (each feature contribute to churn)
 
 # Partial Dependence Plot (PDP): We take few different observations (100 ), we calucate predictino holding except just one feature
 # averageing all the restuls (e.x. chrun rate for Female/Male)
@@ -33,7 +34,7 @@
 
 
 ## ========================================= ##
-## Pro Tips ##
+## Tips ##
 # 1. Use Correctional Funnel Package: Help investigate each feature. Focus on top features
 # 2. Use PDP and ICE to make story about specific feature (i.e. Monthyl charge, tenure)
 # that would be related to Churn
