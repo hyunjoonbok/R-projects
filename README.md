@@ -80,7 +80,7 @@ I tried to include the usage of packages and methods that have been consistently
    </p>
    May 6, 2017   
 
-   ### [Machine Learning Problem Solving Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Machine%20Learning%20Problem%20Solving.R) ####(*data not included*): 
+   ### [Machine Learning Problem Solving Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Machine%20Learning%20Problem%20Solving.R) (*data not included*): 
    <p>
    Contatins a complete steps in model-building and explanation of what's actaully going on in ML. Using 4 different method/packages (PDP, ICE, LIME, Shapley), it shows how Machine Learning can be explainable in some sense.
    </p>
@@ -148,21 +148,111 @@ I tried to include the usage of packages and methods that have been consistently
 
 - ## Time Series Forecasting & Anomaly Detection
 
+   ### [ARIMA Time-series Forecast](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/ARIMA%20Time-series%20Forecast%20method.R): 
+   <p>
+   ARIMA model to understand and predict value in time series. Has steps to Decomspose, Stationary, Autocorrelations, Model Fitting/Evaluation 
+   </p>
+   May 10, 2018 
+
+   ### [Anomaly Detection in R](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R): 
+   <p>
+   A very simple but powerful Anomaly Dection model with the toy package download data. 
+   </p>
+   Nov 7, 2019 
+   
+   ### [3 Simple TimeSeries forecast Model](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R): 
+   <p>
+   Breif introduction on choosing forecast model. Exponential State Smoothing, ARIMA and TBATS and their comparison is shown. 
+   </p>
+   Jul 19, 2019   
+   
+   ## TimeSeries Machine Learning 
+   
+   ### [TimeSeries Machine Learning using TIMETK](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/TIMETK%20for%20Time%20series%20machine%20learning.R):
+   ### [Tidying up TimeSeries Machine Learning using Sweep](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Use%20SWEEP%20for%20Forecast.R):
+   <p>
+   Time series machine learning to forecast time series data of beer sales. Augmentation on the data is supported. Then we clean the model (i.e. retrieve the model coefficients, residuals). Modeling / Error Investigation are followed.
+   </p>
+   Mar 4, 2019  
+
+   ### [3 Simple TimeSeries forecast Model](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R): 
+   <p>
+   Breif introduction on choosing forecast model. Exponential State Smoothing, ARIMA and TBATS and their comparison is shown. 
+   </p>
+   Jul 19, 2019   
+
 <hr>
 
 - ## Database & Pararell Computing
+
+   ### [Google BigQuery Connection with R](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/Analyzing%20Google%20Analytics%20with%20BigQuery.R): 
+   <p>
+   Analyzing Google Analytics data (built-in as sample data) with BigQuery using R interface. It shows how we can locally connect to BigQuery using DBI pacakge.
+   </p>
+   Sept 7, 2018  
+
+   ### [Database Fundamentals in R](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/Database%20in%20R.Rmd): 
+   <p>
+   Connection to BigQuery, usage of dplyr commands, Calculate k-means inside the data, and fianlly visualization of data using ggplot. 
+   </p>
+   Oct 2, 2018 
+
+   ### [Parallel Computing in R](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/Parallel%20Computing%20in%20R.R): 
+   <p>
+   R provides a number of convenient facilities for parallel computing. This script shows how to setup and run a parallel process on your current multi-core device, without need for additional hardware.   
+   </p>
+   Feb 15, 2019 
+
+   ### [SparklyR Complete Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/sparklyr%20Guide.R): 
+   <p>
+   Introduces a R interface for Apache Spark. Connecting to Spark from a local machine. Learn to use distributed computing by fully utilizing Spark's engine, as Hadoop-based Data Lake is becoming a common practice at companies. 
+   </p>
+   Apr 4, 2019 
 
 <hr>
 
 - ## Text Mining / Social Media Analysis
 
+   ### [Text-Mining using SparklyR](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Text%20Mining%20using%20Sparklyr.R)
+   <p>
+   For real-world text data that goes beyond GB/TB in file size, it's necessary to leverage Spark engine load and transform data. Eventally genearate a list of the most used words, and create basic wordcloud. 
+   </p>
+   May 16, 2019 
+
+   ### [Complete Text-Mining Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Text_mining.R)
+   <p>
+   Looking at the Jane Austen Book's text to learn a full function of Text-Mining (tidying up data, Sentiment analysis, word-frequnecy, TF-IDF, Wordcloud, Tokenizing by n-gram, Topic-modeling). Ready-to-be used in any real-world datasets.  
+   </p>
+   Jul 28, 2019 
+   
+   ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
+   <p>
+   Learn to serach tweets by length, location or any criteria set. Retrieve a list of all the accounts a user follows. Then plot the frequency of tweets for each user over time.
+   </p>
+   Jul 28, 2019    
+
 <hr>
 
 - ## Visualization (ggplot2)
 
+   ### Ready-to-Use ggplot2 
+   
+   #### [ggplot2 code 1](https://github.com/hyunjoonbok/R-projects/blob/master/GGPLOT2%20guide/Ready-to-use%20GGplot2%20codes%201.R):
+   #### [ggplot2 code 2](https://github.com/hyunjoonbok/R-projects/blob/master/GGPLOT2%20guide/Ready-to-use%20GGplot2%20codes%202.R):
+   <p>
+   A few curated list of ggplot codes that generates beautiful plot with examples. Basic understanding of ggplot codes is required. 
+   </p>
+   Apr 18, 2020      
+
 <hr>
 
 - ## Statistic Concepts with real-world examples
+
+   ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
+   <p>
+   Learn to serach tweets by length, location or any criteria set. Retrieve a list of all the accounts a user follows. Then plot the frequency of tweets for each user over time.
+   </p>
+   Jul 28, 2019  
 
 <hr>
 
