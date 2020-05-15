@@ -1,15 +1,32 @@
-# Predict the number of hostipal opening/closure (Deeplearning) 
-# 병원 개·폐업 분류 예측
+# Predict the number of hostipal opening/closure
 
-setwd("C:/Users/bokhy/Desktop/dacon_data_competition/hospitals")
 
-training <- read.csv("train.csv")
-testing <- read.csv("test.csv")
-submission <- read.csv("submission_sample.csv")
+# Read files
+pack <- c("googledrive","dplyr","tidyr","purrr","data.table","dtplyr")
+invisible(lapply(pack, library, character.only = TRUE))
+
+dir.create("./data")
+
+drive_auth()
+ids <- drive_ls(as_id("1-GTQhq5HyxE5ePfjV0OwDIFiouHe2l5l"))
+for(i in 1: nrow(ids)){
+  drive_download(as_id(ids$id[i]), paste0("./data/",ids$name[i]))
+}
+
+unz <- list.files("./data", pattern = "zip")
+for(i in 1:length(unz)){
+  unzip(zipfile = paste0("./data/",unz[i]), exdir = "./data")
+}
+file.remove(paste0("./data/",unz))
+
+train <- fread("./data/train.csv")
+test <- fread("./data/test.csv")
+submission <- fread("./data/submission.csv")
 
 ## =============================================================== ##
 
 # Load Pacakges
+
 require(purrr)
 require(Boruta)
 require(lubridate)
@@ -21,6 +38,7 @@ require(tidyverse)
 require(skimr)
 require(mice)
 require(missForest)
+
 ## =============================================================== ##
 
 training$days_since_2016 <- as.integer(as.POSIXct(strptime(20160101, "%Y%m%d",tz = "UTC")) - as.POSIXct(strptime(training$openDate, "%Y%m%d",tz = "UTC"))) 
@@ -219,46 +237,3 @@ best_model <- h2o.getModel(grid@model_ids[[1]])
 perf <- h2o.performance(model = best_model, newdata = df.h2o_test)
 
 pred <- h2o.predict(best_model, newdata = df.h2o_test)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Read files
-pack <- c("googledrive","dplyr","tidyr","purrr","data.table","dtplyr")
-invisible(lapply(pack, library, character.only = TRUE))
-
-dir.create("./data")
-
-drive_auth()
-ids <- drive_ls(as_id("1-GTQhq5HyxE5ePfjV0OwDIFiouHe2l5l"))
-for(i in 1: nrow(ids)){
-  drive_download(as_id(ids$id[i]), paste0("./data/",ids$name[i]))
-}
-
-unz <- list.files("./data", pattern = "zip")
-for(i in 1:length(unz)){
-  unzip(zipfile = paste0("./data/",unz[i]), exdir = "./data")
-}
-file.remove(paste0("./data/",unz))
-
-train <- fread("./data/train.csv")
-test <- fread("./data/test.csv")
-submission <- fread("./data/submission.csv")
-
-
-
-

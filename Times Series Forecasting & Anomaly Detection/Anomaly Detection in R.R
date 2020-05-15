@@ -1,5 +1,7 @@
-##
 ## Anomaly Detection in R ##
+## From "https://business-science.github.io/anomalize/"
+
+# Load packages
 require(anomalize)
 require(tidyverse)
 
@@ -14,12 +16,11 @@ tidyverse_cran_downloads %>%
   plot_anomalies(time_recomposed = TRUE, ncol = 3, alpha_dots = 0.5)
 
 
-## OK, lets look at each step in detail
-
 # 1. TIME SERIES DECOMPOSITION
 # Frequency & trend is auto-selected
 tidyverse_cran_downloads %>%
   time_decompose(count, method = "stl", frequency = "auto", trend = "auto", message = TRUE)
+
 
 # 2. ANOMALY DETECTION OF REMAINDER
 tidyverse_cran_downloads %>%

@@ -1,5 +1,5 @@
-# TIMETK # 
-# Time series machine learning
+# Time series machine learning using TIMETK
+# From "https://github.com/business-science/timetk"
 
 # 1. LOAD LIBRARIES
 require(timetk)
@@ -111,9 +111,3 @@ mpe  <- mean(test_error_pct, na.rm = TRUE)
 
 tibble(me, rmse, mae, mape, mpe) %>% glimpse()
 # The MAPE error is approximately 3.8% from the actual value, which is pretty good
-
-
-
-
-
-
