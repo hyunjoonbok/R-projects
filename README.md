@@ -30,6 +30,16 @@ I tried to include the usage of packages and methods that have been consistently
 
 ## Projects
 
+### 2020 Edition
+   #### [GameTitle-Recommender with Market-Basket-Analysis (1)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(1)%20-%20Data%20Preparation.R)
+   #### [GameTitle-Recommender with Market-Basket-Analysis (2)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(2)%20-%20Recommendation%20System.R)
+   #### [GameTitle-Recommender with Market-Basket-Analysis (3)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(3)%20-%20WebApp.R)   
+   <p>
+   A End-to-End recommendation system model building using the game title from data wragling, to building an algorithm and deplying to Shiny WebApp. A full comprehension of recommender algorithm could be gained and can be applied to any real-world data.
+   </p>
+   Reference: [Diego Usai's Website](https://diegousai.io/categories/multi-article-studies/)
+   May 17, 2020
+
 <hr>
 
 - ## Machine Learning
@@ -82,7 +92,7 @@ I tried to include the usage of packages and methods that have been consistently
    <p>
    Contatins a complete steps in model-building and explanation of what's actaully going on in ML. Using 4 different method/packages (PDP, ICE, LIME, Shapley), it shows how Machine Learning can be explainable in some sense.
    </p>
-   May 6, 2020  
+   Nov 20, 2019  
 
    ### [Predict Airplane arrival delay](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Use%20H2o%20to%20predict%20arrival%20delay%20using%20historical%20airline%20data.R)
    <p>
@@ -110,7 +120,7 @@ I tried to include the usage of packages and methods that have been consistently
    <p>
    A real-world example to predict customer retention / churn using Telecommunication company's data. Data Pre-processing, modeling, evaluating, prediction, checking performance, model explanation, feature importance visualization. 
    </p>
-   Apr 14, 2020  
+   May 14, 2019  
    
    ### [Tensorflow Estimator API to build Regression Model](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/Estimator%20API.R)
    <p>
