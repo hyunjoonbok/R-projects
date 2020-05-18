@@ -298,7 +298,6 @@ c %>%
   labs(x= "Purchase term", y = "# of Purchases", size = 1) +
   theme_economist() +
   xlab("") +  
-  facet_wrap(month~., nrow = 3, strip.position = "top") +
   theme(axis.text=element_text(size=12))
 
 
