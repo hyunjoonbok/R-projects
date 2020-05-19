@@ -81,6 +81,10 @@ prod <- prod %>%
   filter(!grepl('desk',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('laptop',Game, ignore.case = TRUE)) %>%
   filter(!grepl('coin',Game, ignore.case = TRUE)) %>% 
+  filter(!grepl('Steam',Game, ignore.case = TRUE))  %>%
+  filter(!grepl('battlenet',Game, ignore.case = TRUE)) %>%
+  filter(!grepl('origin',Game, ignore.case = TRUE)) %>%
+  filter(!grepl('uplay',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('cloud',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('byog',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('VR',Game, ignore.case = FALSE)) %>% 
@@ -90,7 +94,8 @@ prod <- prod %>%
   filter(!grepl('dell',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('tv',Game, ignore.case = TRUE)) %>% 
   filter(!grepl('home',Game, ignore.case = TRUE)) %>% 
-  filter(!grepl('window',Game, ignore.case = TRUE)) 
+  filter(!grepl('window',Game, ignore.case = TRUE)) %>% 
+  filter(!grepl('Epic',Game, ignore.case = TRUE))
 
 
 prod$Game <- as.character(prod$Game)
