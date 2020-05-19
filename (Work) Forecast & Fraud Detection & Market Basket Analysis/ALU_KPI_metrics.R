@@ -1,6 +1,17 @@
 require(tidyverse)
 require(lubridate)
 require(purrr)
+require(readxl)
+require(tidyquant)
+require(ggplot2)
+require(hrbrthemes)
+require(data.table)
+require(dplyr)
+require(plotly)
+require(bbplot)
+require(ggplot2)
+require(stringr)
+library(ggthemes)
 setwd("C:/Users/bokhy/Desktop")
 
 ## Filter out Blank / 4.15.0 in Firmware version ##!!!
@@ -53,7 +64,7 @@ prod$activity.platform <- as.factor(prod$activity.platform)
 
 data <- prod
 
-#write.csv(data, file = "")
+write.csv(data, "weekly_cleaned.csv")
 
 ## ============================ ##
 # NOT USING #
@@ -76,22 +87,9 @@ prod <- prod %>% select(Date,Time,Weekdays,hour,timeoftheday, everything())
 
 ## ============================ ##
 
-require(readxl)
-require(tidyquant)
-require(ggplot2)
-require(hrbrthemes)
-require(data.table)
-require(dplyr)
-require(plotly)
-require(bbplot)
-require(ggplot2)
-require(stringr)
-library(ggthemes)
-
-setwd("C:/Users/bokhy/Desktop/ATG")
-
 #==== Class 1 ====#
 
+setwd("C:/Users/bokhy/Desktop/Python/Python-Projects/ATG_work")
 fw_count <- read.csv("fw_count.csv") ## Get file from Python ##
 glimpse(fw_count)
 
@@ -99,7 +97,7 @@ glimpse(fw_count)
 positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
-               "4.17.0","4.18.0")
+               "4.17.0","4.18.0","4.19.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -162,9 +160,6 @@ p3
 
 #==== Class 2 ====#
 
-# Read data
-setwd("C:/Users/bokhy/Desktop/ATG")
-
 # From above cleaned weekly data
 # data <- read.csv("production_new.csv") 
 
@@ -190,7 +185,8 @@ a %>% count(machine_uuid)
 # Weekly User Count per service
 a %>% group_by(activity.platform) %>% tally()
 
-# Cumulative Unique User 
+# Cumulative Unique User
+setwd("C:/Users/bokhy/Desktop/ATG")
 c <- read.csv('Production Arcade Logs_new.csv')
 c %>% group_by(machine_uuid) %>% count()
 
@@ -249,9 +245,10 @@ p5
 #==== Leaderboard ====#
 
 # Load the master logs
-c <- read.csv('Production Arcade Logs_new.csv')
+# c <- read.csv('Production Arcade Logs_new.csv')
+
 # leaderboard competition participant
-setwd("C:/Users/bokhy/Desktop/ATG")
+setwd("C:/Users/bokhy/Desktop/Python/Python-Projects/ATG_work")
 d <- read.csv('account.csv')
 
 d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
@@ -259,7 +256,7 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 d %>% group_by(name) %>% 
   count(opted_in$email) %>% 
   # Check for specific competition
-  filter(name == "Burnin' Rubberâ„¢ Competition") 
+  filter(name == "Lock 'N' Chase and Chain Reaction Competition") 
 
 
 #==== Usage Buckets ====#

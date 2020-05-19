@@ -7,11 +7,9 @@ require(purrr)
 require(readxl)
 require(tidyquant)
 require(ggplot2)
-require(hrbrthemes)
 require(data.table)
 require(dplyr)
 require(plotly)
-require(bbplot)
 require(ggplot2)
 require(stringr)
 library(ggthemes)
@@ -44,8 +42,8 @@ prod2$activity.game_id <- as.character(prod2$activity.game_id)
 prod <- bind_rows(prod1, prod2)
 
 ## Exclude 4.15.0 and people before 4.11.0?
-#prod <- prod %>% 
-#  filter(!activity.display_firmware == "4.15.0") %>% 
+prod <- prod %>% 
+  filter(!activity.display_firmware == "4.15.0") #%>% 
 #  filter(!activity.display_firmware == "") 
 
 prod$activity.platform <- as.character(prod$activity.platform)
@@ -81,11 +79,12 @@ nrow(data[data$activity.play_duration<0,]) # see if there are any negative recor
 data$activity.play_duration <- (data$activity.play_duration)/3600
 
 data <- data %>% mutate(activity.trackball = coalesce(activity.trackball, 0))
+# Exclude logs that's over 12hr recorded
 data <- data %>% filter(activity.play_duration < 12.0)
 
 
 # 1. Top 10 Most Played
-a <- data %>% 
+data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
   select(machine_uuid, activity.platform, activity.play_duration, activity.game_title, activity.play_start, activity.play_end) %>% 
@@ -102,7 +101,7 @@ a <- data %>%
 
 
 # 2. Top 10 Most Active User (Super Users of the Week)
-b <- data %>% 
+data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
   select(machine_uuid, account.email, activity.play_duration, activity.game_title) %>% 
@@ -115,7 +114,7 @@ b <- data %>%
 
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
-positions <- c("4.17.0", "4.18.0")
+positions <- c("4.17.0", "4.18.0","4.19.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
@@ -133,11 +132,11 @@ c <- data %>%
   
 ## (1) By Spinner
 c %>% arrange(desc(total_spinner)) %>%
-  slice(1:10)
+  slice(1:5)
 
 ## (2) By Trackball
 c %>% arrange(desc(total_trackball)) %>%
-  slice(1:10)
+  slice(1:5)
 
 
 # 4. Most-Played 2nd Player game
@@ -155,11 +154,11 @@ d <- data %>%
             total_2P_buttons = sum(activity.2p_buttons),
             total_2P_spinner = sum(activity.2p_spinner),
             total_2P_joystick = sum(activity.2p_joystick)) %>% 
-  arrange(desc(total_hours)) 
+  arrange(desc(total_2P_joystick)) 
 
 
 # 5. Top 10 State
-e <- data %>% 
+data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
   distinct() %>% 
@@ -169,7 +168,7 @@ e <- data %>%
   arrange(desc(total_hours))
 
 # 6. Top 10 City  
-f <- data %>% 
+data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
   distinct() %>% 
