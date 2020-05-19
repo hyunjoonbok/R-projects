@@ -69,7 +69,7 @@ h2o.auc(gbm, valid = TRUE)
 
 # Although DALEX does have native support for some ML model objects (i.e. lm, randomForest), 
 # it does not have native many of the preferred ML packages produced more recently 
-# (i.e. h2o, xgboost, ranger). To make DALEX compatible with these objects, we need three things:
+# (i.e. h2o, xgboost, ranger). To make DALEX compatible with these objects, we need these 3 things:
 
 # x_valid: Our feature set needs to be in its original form not as an h2o object.
 # y_valid: Our response variable needs to be a numeric vector. For regression problems this is simple, as it will already be in this format. For binary classification this requires you to convert the responses to 0/1.
@@ -125,10 +125,15 @@ explainer_gbm <- explain(
 
 summary(explainer_glm)
 
+# Residual Diagnostics
+
+
+# Assessing residuals of predicted versus actuals can allow you to identify where models deviate in their predictive accuracy
 # compute predictions & residuals
 resids_glm <- model_performance(explainer_glm);resids_glm
 resids_rf  <- model_performance(explainer_rf);resids_rf
 resids_gbm <- model_performance(explainer_gbm);resids_gbm
+
 
 ## In this example, the residuals are comparing the probability of attrition to the binary attrition value (1-yes, 0-no). 
 ## Looking at the quantiles you can see that the median residuals are lowest for the GBM model
@@ -140,3 +145,21 @@ p1 <- plot(resids_glm, resids_rf, resids_gbm)
 p2 <- plot(resids_glm, resids_rf, resids_gbm, geom = "boxplot")
 
 gridExtra::grid.arrange(p1, p2, nrow = 1)
+
+# Looking at the quantiles you can see that the median residuals are lowest for the GBM model
+# And looking at the boxplots you can see that the GBM model also had the lowest median absolute residual value. 
+# Thus, although the GBM model had the lowest AUC score, it actually performs best when considering the median absoluate residuals
+
+#  However, you can also see a higher number of residuals in the tail of the GBM residual distribution (left plot) 
+# suggesting that there may be a higher number of large residuals compared to the GLM model.
+
+
+# Variable importance
+
+# compute permutation-based variable importance
+vip_glm <- variable_importance(explainer_glm, n_sample = -1, loss_function = loss_root_mean_square) 
+vip_rf  <- variable_importance(explainer_rf, n_sample = -1, loss_function = loss_root_mean_square)
+vip_gbm <- variable_importance(explainer_gbm, n_sample = -1, loss_function = loss_root_mean_square)
+
+plot(vip_glm, vip_rf, vip_gbm, max_vars = 10)
+
