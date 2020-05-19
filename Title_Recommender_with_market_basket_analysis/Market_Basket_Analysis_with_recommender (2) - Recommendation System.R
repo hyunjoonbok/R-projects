@@ -1,6 +1,8 @@
 # We use
 # Collaborative Filtering
-# When a collaborative filtering is used, the recommendation system looks at either clients purchase history or clients product rating history. These are compiled into a user-item ratings matrix, with items (e.g. products) in the columns and users (e.g. customers or orders) in the rows. A measure of similarity is then calculated using methods like Cosine, Pearsons or Jaccard similarity to identify a hierarchy of probability to purchase.
+# When a collaborative filtering is used, the recommendation system looks at either clients purchase history or clients product rating history. 
+# These are compiled into a user-item ratings matrix, with items (e.g. products) in the columns and users (e.g. customers or orders) in the rows. 
+# A measure of similarity is then calculated using methods like Cosine, Pearsons or Jaccard similarity to identify a hierarchy of probability to purchase.
 
 # Two methodologies are made use of:
   
@@ -52,8 +54,7 @@ algorithms <- list(
   "popular items"     = list(name  = "POPULAR", param = NULL),
   "item-based CF"     = list(name  = "IBCF", param = list(k = 5)),
   "user-based CF"     = list(name  = "UBCF", 
-                             param = list(method = "Cosine", nn = 500)),
-  "SVD approximation" = list(name = "SVD", param = list(k = 50))
+                             param = list(method = "Cosine", nn = 500))
 )
 # 4. Estimate the Models
 # pass scheme and algoritms to the evaluate() function, 
