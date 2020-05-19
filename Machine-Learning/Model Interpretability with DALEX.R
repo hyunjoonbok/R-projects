@@ -154,12 +154,70 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 # suggesting that there may be a higher number of large residuals compared to the GLM model.
 
 
+## === Global Interpretation === ##
+
 # Variable importance
 
 # compute permutation-based variable importance
+# n_sample = -1 : use all observations
 vip_glm <- variable_importance(explainer_glm, n_sample = -1, loss_function = loss_root_mean_square) 
 vip_rf  <- variable_importance(explainer_rf, n_sample = -1, loss_function = loss_root_mean_square)
 vip_gbm <- variable_importance(explainer_gbm, n_sample = -1, loss_function = loss_root_mean_square)
 
 plot(vip_glm, vip_rf, vip_gbm, max_vars = 10)
 
+# Predictor-response relationship
+
+#[1] Numerical
+# For those numerical influential variables, we want to see their relationships with response variable
+# compute PDP for a given variable --> uses the pdp package
+# Looking at "Age" variable here
+pdp_glm  <- variable_response(explainer_glm, variable =  "Age", type = "pdp")
+pdp_rf   <- variable_response(explainer_rf,  variable =  "Age", type = "pdp")
+pdp_gbm  <- variable_response(explainer_gbm, variable =  "Age", type = "pdp")
+
+plot(pdp_glm, pdp_rf, pdp_gbm)
+# GBM and RF models are using the Age signal in a similar non-linear manner; 
+# But, GLM model is not able to capture this same non-linear relationship
+
+#[2] Categorical
+# For categorical influential varialbes, use type = "factor"
+cat_glm  <- variable_response(explainer_glm, variable = "EnvironmentSatisfaction", type = "factor")
+cat_rf  <- variable_response(explainer_rf, variable = "EnvironmentSatisfaction", type = "factor")
+cat_gbm  <- variable_response(explainer_gbm, variable = "EnvironmentSatisfaction", type = "factor")
+
+# left side of the plot shows the similarity between groups via hierarchical clustering
+plot(cat_glm, cat_rf, cat_gbm)
+# It shows those employees that have low level of satisfaction have, on average, higher probabilities of attrition. 
+# Whereas, employees with medium to very high have about the same likelihood of attriting
+
+
+## === Local Interpretation === ##
+
+# create a single observation
+new_cust <- splits$valid[1, ] %>% as.data.frame()
+
+# compute breakdown distances
+new_cust_glm <- prediction_breakdown(explainer_glm, observation = new_cust)
+new_cust_rf  <- prediction_breakdown(explainer_rf, observation = new_cust)
+new_cust_gbm <- prediction_breakdown(explainer_gbm, observation = new_cust)
+
+# check out the top 10 influential variables for this observation in GBM model
+new_cust_gbm[1:10, 1:5]
+
+plot(new_cust_gbm)
+# Green: positively influenced the response
+# yellow: negatively influenced the response
+
+library(ggplot2)
+
+# filter for top 10 influential variables for each model and plot
+list(new_cust_glm, new_cust_rf, new_cust_gbm) %>%
+  purrr::map(~ top_n(., 11, wt = abs(contribution))) %>%
+  do.call(rbind, .) %>%
+  mutate(variable = paste0(variable, " (", label, ")")) %>%
+  ggplot(aes(contribution, reorder(variable, contribution))) +
+  geom_point() +
+  geom_vline(xintercept = 0, size = 3, color = "white") +
+  facet_wrap(~ label, scales = "free_y", ncol = 1) +
+  ylab(NULL)
