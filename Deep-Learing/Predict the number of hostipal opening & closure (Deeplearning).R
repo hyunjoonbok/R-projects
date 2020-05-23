@@ -168,12 +168,12 @@ names(splits) <- c("train","valid")
 
 hyper_params <- list(
   activation = c("Rectifier","Tanh","Maxout","RectifierWithDropout","TanhWithDropout","MaxoutWithDropout"),
-  hidden = list(c(20,20),c(50,50),c(30,30,30),c(25,25,25,25),c(200,200),c(512,512),c(128,128,128),c(512,512,512),c(128,128,128,128)),
+  hidden = list(c(20,20),c(50,50),c(32,32,32),c(64,64),c(25,25,25,25),c(200,200),c(512,512),c(128,128,128),c(512,512,512),c(128,128,128,128)),
   input_dropout_ratio = c(0,0.01,0.05,0.1,0.2,0.4,0.5),
   l1 = seq(0,1e-4,1e-6), # add regularization
   l2 = seq(0,1e-4,1e-6),
   rate = c(0.01,0.02,0.04,0.05),
-  rate_annealing = c(2e-6,2e-7),
+  rate_annealing = c(2e-6,2e-7,2e-8),
   momentum_start = c(0.1,0.2,0.5),
   momentum_stable = c(0.1,0.4,0.5,0.99)
 )

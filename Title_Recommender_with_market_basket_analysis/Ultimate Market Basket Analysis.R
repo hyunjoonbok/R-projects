@@ -150,7 +150,7 @@ user_item_rlab@data
 
 user_item_rlab@data %>% summary()
 
-user_item_rlab@data %>%  glimpse()
+user_item_rlab@data %>% glimpse()
 
 
 # 6.3 Create an evaluate skema ====

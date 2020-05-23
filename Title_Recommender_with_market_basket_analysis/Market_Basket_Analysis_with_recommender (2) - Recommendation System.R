@@ -1,5 +1,7 @@
-# We use
-# Collaborative Filtering
+require(recommenderlab)
+require(arules)
+require(arulesViz)
+# We use Collaborative Filtering
 # When a collaborative filtering is used, the recommendation system looks at either clients purchase history or clients product rating history. 
 # These are compiled into a user-item ratings matrix, with items (e.g. products) in the columns and users (e.g. customers or orders) in the rows. 
 # A measure of similarity is then calculated using methods like Cosine, Pearsons or Jaccard similarity to identify a hierarchy of probability to purchase.
@@ -17,7 +19,7 @@ data_final <- readRDS(file = "C:/Users/bokhy/Documents/R-projects/Title_Recommen
 
 # 1. Modelling
 
-##(1). Create the Rating Matrix
+## 1.1 Create the Rating Matrix
 # We need binary rating matrix consisting of 0’s and 1’s, where 1’s indicate if the product was purchased. 
 # This does not require normalisation.
 ratings_matrix  <- data_final %>%
@@ -36,20 +38,45 @@ ratings_matrix  <- data_final %>%
 
 ratings_matrix
 
-#2. Evaluation Scheme and Model Validation
-scheme <- ratings_matrix  %>% 
-  evaluationScheme(method = "cross",
-                   k      = 5, # 5-fold cv
-                   train  = 0.85, #85/15 train/valid split on our case
-                   given  = -1) #given = -1 means that for the test users ‘all but 1’, randomly selected item is withheld for evaluation.
-scheme
 
-#3. Set up List of Algorithms
-# One of recommenderlab main features is 
-# the ability to estimate multiple algorithms in one go
+ratings_matrix@data %>% summary()
+
+
+## #2. Evaluation Scheme and Model Validation
+# We try to check which AR works best
+recommenderRegistry$get_entries()
+
+eval_recipe <- ratings_matrix %>% 
+  evaluationScheme(method = "cross-validation", # or just 'cv'
+                   k = 5, # 5-fold cv
+                   train  = 0.85, #85/15 train/valid split on our case
+                   given = -1) # given = -1 means that for the test users ‘all but 1’, randomly selected item is withheld for evaluation.
+
+eval_recipe
+
+algorithm_list <- list(
+  "assocation_rule_1" = list(name = "AR", param = list(supp=0.01, conf=0.01)),
+  "assocation_rule_2" = list(name = "AR", param = list(supp=0.01, conf=0.1)),
+  "assocation_rule_3" = list(name = "AR", param = list(supp=0.01, conf=0.5)),
+  "assocation_rule_4" = list(name = "AR", param = list(supp=0.1, conf=0.5))
+)
+
+results_rlab_arules <- eval_recipe %>% 
+  recommenderlab::evaluate(
+    method = algorithm_list,
+    type = "topNList",
+    n = 1:10
+  )
+
+plot(results_rlab_arules, annotate = TRUE)
+# "assocation_rule_2" works the best!
+
+
+# Set up List of Algorithms
+# One of recommenderlab main features is the ability to estimate multiple algorithms in one go
 algorithms <- list(
   "association rules" = list(name  = "AR", 
-                             param = list(supp = 0.01, conf = 0.01)),
+                             param = list(supp = 0.01, conf = 0.1)),
   "random items"      = list(name  = "RANDOM",  param = NULL),
   "popular items"     = list(name  = "POPULAR", param = NULL),
   "item-based CF"     = list(name  = "IBCF", param = list(k = 5)),
@@ -61,11 +88,13 @@ algorithms <- list(
 # select type = topNList to evaluate a Top N List of product recommendations 
 # and specify how many recommendations to calculate with the parameter 
 # n = c(1, 3, 5, 10, 15, 20).
-results <- recommenderlab::evaluate(scheme, 
-                                    algorithms, 
-                                    type  = "topNList", 
-                                    n     = c(1, 3, 5, 10, 15, 20)
-)
+
+results <- eval_recipe %>% 
+  recommenderlab::evaluate(
+    method = algorithms,
+    type = "topNList",
+    n     = c(1, 3, 5, 10, 15, 20)
+  )
 results # Stored as list
 
 
@@ -156,7 +185,7 @@ new_order_rat_matrx <- data_final %>%
 new_order_rat_matrx  
 #(3) Now, I can create a Recommender. 
 # I use "getData" to retrieve training data and set method = “UBCF” to select the best performing model (“User-based collaborative filtering”).
-recomm <- Recommender(getData(scheme, 'train'), 
+recomm <- Recommender(getData(eval_recipe, 'train'), 
                       method = "UBCF",  
                       param = list(k = 5))
 recomm

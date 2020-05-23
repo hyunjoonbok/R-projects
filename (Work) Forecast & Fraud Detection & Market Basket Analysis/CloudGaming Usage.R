@@ -38,7 +38,7 @@ a$Total.Serving.Time <- hms(a$Total.Serving.Time)
 a$Total.Serving.Time <- as.difftime(a$Total.Serving.Time, "%H:%M:%S")
 
 # Number of Unique Users
-a %>% count(Email) 
+a_0 <- a %>% group_by(Email) %>% select(Email) %>% distinct() %>% count()
 
 # Total Usage
 a_1 <- a %>% 
