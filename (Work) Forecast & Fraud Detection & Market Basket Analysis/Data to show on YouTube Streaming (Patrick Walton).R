@@ -43,8 +43,8 @@ prod <- bind_rows(prod1, prod2)
 
 ## Exclude 4.15.0 and people before 4.11.0?
 prod <- prod %>% 
-  filter(!activity.display_firmware == "4.15.0") #%>% 
-#  filter(!activity.display_firmware == "") 
+  filter(!activity.display_firmware == "4.15.0") %>% 
+  filter(!activity.display_firmware == "") 
 
 prod$activity.platform <- as.character(prod$activity.platform)
 prod$service <- as.character(prod$service)
@@ -79,7 +79,8 @@ nrow(data[data$activity.play_duration<0,]) # see if there are any negative recor
 data$activity.play_duration <- (data$activity.play_duration)/3600
 
 data <- data %>% mutate(activity.trackball = coalesce(activity.trackball, 0))
-# Exclude logs that's over 12hr recorded
+
+# Exclude data that's over 12hr recorded in a single log
 data <- data %>% filter(activity.play_duration < 12.0)
 
 
@@ -100,6 +101,7 @@ data %>%
          "Playtime(hrs)" = total_hours, "%_of_total" = percentage)
 
 
+### == Not giving this metric == ###
 # 2. Top 10 Most Active User (Super Users of the Week)
 data %>% 
   filter(!activity.platform == "AddOn") %>% 
@@ -110,11 +112,12 @@ data %>%
   summarise(total_hours = round(sum(activity.play_duration),1)) %>% 
   arrange(desc(total_hours)) %>%
   slice(1:10)
+### == Not giving this metric == ###
 
 
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
-positions <- c("4.17.0", "4.18.0","4.19.0")
+positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
@@ -155,7 +158,7 @@ d <- data %>%
             total_2P_spinner = sum(activity.2p_spinner),
             total_2P_joystick = sum(activity.2p_joystick)) %>% 
   arrange(desc(total_2P_joystick)) 
-
+d
 
 # 5. Top 10 State
 data %>% 

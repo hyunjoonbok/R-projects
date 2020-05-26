@@ -97,7 +97,7 @@ glimpse(fw_count)
 positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
-               "4.17.0","4.18.0","4.19.0")
+               "4.17.0","4.18.0","4.19.0","4.20.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -161,7 +161,6 @@ p3
 #==== Class 2 ====#
 
 # From above cleaned weekly data
-# data <- read.csv("production_new.csv") 
 
 # Pre-processing
 data$activity.play_duration <- gsub(",","",data$activity.play_duration)
@@ -256,7 +255,7 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 d %>% group_by(name) %>% 
   count(opted_in$email) %>% 
   # Check for specific competition
-  filter(name == "Lock 'N' Chase and Chain Reaction Competition") 
+  filter(name == "Astro Fantasia, Boogie Wings and Super Pool III Competition") 
 
 
 #==== Usage Buckets ====#

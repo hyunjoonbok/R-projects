@@ -5,6 +5,8 @@ a <- read.csv("export_all_total_serving_time_report.csv")
 b <- read.csv("session_byuser_export.csv")
 c <- read.csv("Streaming_payments.csv")
 
+d <- read.csv("employee.csv")
+
 ##=============================================================##
 # Load packages
 require(scales)
@@ -34,11 +36,25 @@ require(tidyquant)
 # Read data
 # a <- read.csv("export_all_total_serving_time_report.csv")
 
+# filter out atgames emplyee emails
+a <- a %>% 
+  filter(!Email %in% d$Email)
+b <- b %>% 
+  filter(!Email %in% d$Email)
+
+# change datetime
+
 a$Total.Serving.Time <- hms(a$Total.Serving.Time)
 a$Total.Serving.Time <- as.difftime(a$Total.Serving.Time, "%H:%M:%S")
 
 # Number of Unique Users
 a_0 <- a %>% group_by(Email) %>% select(Email) %>% distinct() %>% count()
+a_0
+
+# 3134 Apr.27 - May.3
+# 3201 May.4 - May.10
+# 3295 May.11 - May.17
+# 3337 May.18 - May.25
 
 # Total Usage
 a_1 <- a %>% 
@@ -47,13 +63,21 @@ a_1 <- a %>%
   summarise(total_hours = sum(Total.Serving.Time)/3600)
 sum(a_1$total_hours)
 a_1
+
 # 4600 Apr.27 - May.3
 # 4751 May.4 - May.10
 # 4829 May.11 - May.17
+# 4971 May.18 - May.25
 
 # Avg. Hours per user
 
-sum(a_1$total_hours)/3295
+sum(a_1$total_hours)/3337
+
+# NA Apr.27 - May.3
+# NA May.4 - May.10
+# 50,55 May.11 - May.17
+# 55,57 May.18 - May.25
+
 
 # Usage bucket per service
 
@@ -82,11 +106,13 @@ a_2 %>%
 
 
 
-# Avg. Usage per user per session(use)
+# Avg. Usage per user per session(graph)
 
 # read data
 #setwd("C:/Users/bokhy/Desktop/ATG")
-#b <- read.csv("session_byuser_export.csv")
+b <- read.csv("session_byuser_export.csv")
+b <- b %>% 
+  filter(!Email %in% d$Email)
 
 b$Service.Duration <- as.character(b$Service.Duration)
 b$Service.Duration <- ifelse(nchar(b$Service.Duration) > 20, as.character(b$Service.Start.Time), b$Service.Duration)
@@ -103,7 +129,8 @@ b$month <- month.abb[b$month]
 b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May"))
 
 
-b <- b %>% 
+b_new <- b %>% 
+  select(User, Service.Duration, Service.Type, month) %>% 
   group_by(User) %>%
   filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
                       "37cea104-cc49-459f-84ce-548bb6d1a54e",
@@ -127,12 +154,10 @@ b <- b %>%
                       "instant01571927166160",
                       "instant01571926879050",
                       "instant01571924112161",
-                      "instant01571924037842")) %>% 
-  mutate(count = n()) %>% 
-  select(User,Email, Service.Duration,Service.Type, month, count) 
+                      "instant01571924037842"))
   
 # Avg.Usage per Session per Service (graph)
-b_1 <- b %>% 
+b_1 <- b_new %>% 
   group_by(Email, Service.Type) %>% 
   filter(Service.Duration != 0) %>% 
   summarise(total_hours = round(sum(Service.Duration)/3600,2), count = n()) %>% 
@@ -148,15 +173,15 @@ b_1 %>%
   facet_wrap(~ Service.Type)
 
 # Total Session count per Month
-b_2 <- b %>% filter(Service.Duration != 0) %>% 
+b_2 <- b_new %>% filter(Service.Duration != 0) %>% 
   group_by(User,month, Service.Type) %>% 
   select(User,month,Service.Type) %>% 
-  distinct(User,month,Service.Type) 
+  tally()
 
 b_2_new <- b_2 %>%
   filter(month != 0) %>%
-  group_by(month, Service.Type) %>% 
-  summarise(Count = n()) %>% 
+  group_by(month, Service.Type)%>% 
+  summarise(Count = sum(n))%>% 
   mutate(highlight_flag = ifelse(month == 'May', T, F))
 
 b_2_new %>% 
@@ -168,17 +193,50 @@ b_2_new %>%
   theme(legend.position = 'none') +
   geom_text(aes(x= month, label=round(Count,0)), vjust=-0.25)
 
+# Total number of users last week was : 308
+b_temp <- read.csv("session_byuser_export.csv")
+b_temp <- b_temp %>% 
+  filter(!Email %in% d$Email)
+b_temp$Service.Duration <- as.character(b_temp$Service.Duration)
+b_temp$Service.Duration <- ifelse(nchar(b_temp$Service.Duration) > 20, as.character(b_temp$Service.Start.Time), b_temp$Service.Duration)
+b_temp$Service.Start.Time <- as.character(b_temp$Service.Start.Time)
+b_temp$Service.Start.Time <- ifelse(nchar(b_temp$Service.Start.Time) < 10, as.character(b_temp$temp1), b_temp$Service.Start.Time)
+b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
+
+b_temp <- b_temp %>% 
+  filter(between(Service.Start.Time, "2020-05-18", "2020-05-25"))
+
+b_temp_0 <- b_temp %>% 
+  group_by(Email,Service.Type) %>%  
+  summarise(Session_opened = n()) %>% 
+  distinct()
+
+b_temp_0 %>% group_by(Service.Type) %>% tally()
+
+b_temp_0 %>% group_by(Service.Type) %>% summarise(total = sum(Session_opened))
+
+
+# Avg.Hours played per user (chart C above)
+b_temp$Service.Duration <-  as.numeric(b_temp$Service.Duration)
+b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
+bb <- b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
+#ArcadeNet: 
+234231/3600/229
+#BYOG: 
+279525/3600/127
+
 
 # Hours played per month (chart)
-b_3 <- b %>% 
-  group_by(month,Service.Type) %>% 
+b_3 <- b_new %>% 
+  group_by(month) %>% 
   summarise(total_hours = format(round(sum(Service.Duration/3600),1), nsmall = 1, big.mark = ',' )) 
 
 ft <- flextable(b_3)
 ft <- autofit(ft)
 plot(ft)
 
-b_4 <- b%>% 
+# by service type?
+b_4 <- b_new %>% 
   group_by(Service.Type,month) %>% 
   summarise(total_hours = format(round(sum(Service.Duration/3600),1), nsmall = 1, big.mark = ',' ))
 
@@ -188,26 +246,7 @@ b_4 <- b%>%
 
 
 # Hours Consumed per month (graph)
-# In numbers
-b %>% 
-  rename("Service" = Service.Type) %>% 
-  filter(month != "") %>% 
-  group_by(month, Service) %>% 
-  summarise(Hours_consumed = sum(Service.Duration/3600)) %>%
-  mutate(percentage = prop.table(Hours_consumed)) %>% 
-  ggplot(aes(x = month , y = Hours_consumed, fill = Service)) +
-  geom_bar(position="dodge", stat="identity") +
-  labs(x= "Month", y = "Streaming Hours Consumed") +
-  theme_ipsum() +
-  xlab("") +
-  ylab("") +
-  theme(legend.box = "horizontal",
-        legend.background = element_rect(fill = "lightblue",
-                                         size = 0.5, linetype = "solid", 
-                                         colour = "#e9ecef")) +
-  geom_text(aes(x= month, label=round(Hours_consumed,0)), position=position_dodge(width=0.9), vjust=-0.25) 
-# In Percetanges
-b %>% 
+b_new %>% 
   rename("Service" = Service.Type) %>% 
   filter(month != "") %>% 
   group_by(month, Service) %>% 
@@ -223,7 +262,9 @@ b %>%
         legend.background = element_rect(fill = "lightblue",
                                          size = 0.5, linetype = "solid", 
                                          colour = "#e9ecef")) +
-  geom_text(position=position_dodge(width=0.9), vjust=-0.2, size = 3.2) 
+  geom_text(position=position_dodge(width=0.9), vjust=-0.2, size = 3.2) +
+  geom_text(aes(x= month, label=round(Hours_consumed,0)), position=position_dodge(width=0.9), vjust=2) 
+
 
 
 
@@ -248,10 +289,6 @@ plot(ft)
 
 c_1_1 <- c %>% group_by(Customer.Email) %>% tally() %>% arrange(desc(n)) %>% 
   rename(Number_of_purchases = n) %>% top_n(5)# any mutiple purchase user?
-
-ft <- flextable(c_1_1)
-ft <- autofit(ft)
-plot(ft)
 
 # Processing
 c <- c %>%
@@ -382,7 +419,7 @@ last_week_top_5 <- data %>% select(activity.platform,activity.play_duration,
   mutate(percentage = percent(prop.table(total_hours))) %>% 
   slice(1:5) %>% 
   rename("Title" = activity.game_title, "Service" = activity.platform, 
-         "Playtime(hrs)" = total_hours, "%_of_total" = percentage)
+         "Playtime(hrs)" = total_hours, "%_of_total_lastweek" = percentage)
 
 ft <- flextable(last_week_top_5)
 ft <- autofit(ft)
@@ -421,7 +458,7 @@ prod <- bind_rows(prod1, prod2)
 
 
 positions <- c("4.11.0","4.11.1","4.12.0","4.13.0",
-               "4.14.0","4.14.1","4.16.0","4.17.0","4.18.0","4.19.0")
+               "4.14.0","4.14.1","4.16.0","4.17.0","4.18.0","4.19.0","4.20.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
