@@ -154,6 +154,7 @@ data_final %>% skim()
 
 # Save dataset for later use
 saveRDS(data_final, "C:/Users/bokhy/Documents/R-projects/Title_Recommender_with_market_basket_analysis/data_final.rds")
+#write.csv(data_final, 'data_final.csv')
 
 # Exploratory Data Analysis
 # [1] What items do user buy most often?
