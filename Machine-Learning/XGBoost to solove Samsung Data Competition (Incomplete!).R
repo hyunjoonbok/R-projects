@@ -54,8 +54,7 @@ rec_obj <- recipe(Day.and.night ~ .,
   
   step_center(all_numeric(), -all_outcomes()) %>% 
   step_scale(all_numeric(), -all_outcomes()) %>% 
-  step_dummy(all_nominal()) %>%
-  #step_log(X_UTMK, Y_UTMK) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>%
   
   step_discretize(Number.of.casualties) %>%
   step_discretize(Number.of.seriously.injured.person) %>%

@@ -6,7 +6,7 @@ require(h2o)
 require(corrplot)
 require(correlationfunnel)
 
-# 1. EDA & Data cleaning====
+# 1.EDA & Data cleaning ====
 
 transaction <- read.csv("transaction_product_item.csv")
 glimpse(transaction)
@@ -38,6 +38,7 @@ transaction <- transaction %>% filter(type != "LivegamerPayment")
 # Make one consolidated title name for all three regions (delte UK,EU specification)
 transaction$title <- gsub("\\{EU}","",transaction$title)
 transaction$title <- gsub("\\{UK}","",transaction$title)
+
 
 # Adding newly created variables
 
@@ -87,12 +88,14 @@ transaction <- na.omit(transaction)
 require(Boruta)
 set.seed(0623)
 
-boruta_new <- Boruta(order_state ~., data = transaction, doTrace = 2)
+#boruta_new <- Boruta(order_state ~., data = transaction, doTrace = 2)
 
 plot(boruta_new, las = 2, cex.axis = 0.6)
-# all varialbes seems important
 Boruta::getSelectedAttributes(boruta_new)
+print(boruta_new)
 
+# Remove unimportant variables
+transaction <- transaction %>% select(-discounts)
 
 x <- cbind(transaction$at_games_price, transaction$coupons, transaction$gross_revenue,
            transaction$net_revenue, transaction$vip_discounts, transaction$charge_amount, transaction$sold_price)

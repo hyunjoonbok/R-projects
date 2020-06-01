@@ -54,7 +54,7 @@ h2o_glm <- h2o.glm(x, y, training_frame = train_obs.h2o, family = "binomial")
 h2o_gbm <- h2o.gbm(x, y, training_frame = train_obs.h2o)
 
 
-# ranger model --> model type not built in to LIME
+# ranger model --> This model type not built-in to LIME
 fit.ranger <- ranger::ranger(
   Attrition ~ ., 
   data        = train_obs, 

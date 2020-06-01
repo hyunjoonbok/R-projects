@@ -80,7 +80,7 @@ server <- function(input,output) {
     # Set prediction indices
     prediction_indices <- as.matrix(expand.grid(items_to_predict, users = users))
     
-    # Run IBCF model
+    # Run UBCF model
     recomm <- predict_cf(all_orders_dgc, prediction_indices, 
                          "ubcf", FALSE, cal_cos, 3, FALSE, 4000, 2000)
     
