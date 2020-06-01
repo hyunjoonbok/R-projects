@@ -31,6 +31,15 @@ I tried to include the usage of packages and methods that have been consistently
 ## Projects
 
 ### 2020 Edition
+
+   #### [Ultimate Muti-label Classification with H2O Deep Learning](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Muti-label%20Classification%20with%20H2O%20Deep%20Learning.R)   
+   <p>
+   Building a deeplearning model using H2O, perform hyperparameter tuning through random grid serach, to solve multi-label classification problem.  
+   </p>
+   
+   May 21, 2020  
+
+
    #### [GameTitle-Recommender with Market-Basket-Analysis (1)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(1)%20-%20Data%20Preparation.R)
    #### [GameTitle-Recommender with Market-Basket-Analysis (2)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(2)%20-%20Recommendation%20System.R)
    #### [GameTitle-Recommender with Market-Basket-Analysis (3)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(3)%20-%20WebApp.R)   
@@ -41,12 +50,6 @@ I tried to include the usage of packages and methods that have been consistently
    
    May 17, 2020
    
-   #### [Ultimate Muti-label Classification with H2O Deep Learning](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Muti-label%20Classification%20with%20H2O%20Deep%20Learning.R)   
-   <p>
-   Building a deeplearning model using H2O, perform hyperparameter tuning through random grid serach, to solve multi-label classification problem.  
-   </p>
-   
-   May 21, 2020   
 
 <hr>
 
