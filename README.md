@@ -32,6 +32,14 @@ I tried to include the usage of packages and methods that have been consistently
 
 ### 2020 Edition
 
+   #### [Customer Segmentation & Clustering with K-means](https://github.com/hyunjoonbok/R-projects/blob/master/Customer%20Segmentation%20%26%20Clustering%20with%20K-means%2C%20Principal%20Components%20Analysis%20and%20Bootstrap%20Evaluation.R)   
+   <p>
+   Looking at custmer transcation data to segment cusotmers into groups to better statify the business strategy. Use a K-means clustering Building and Bootstrap Evaluation to effectively group cusotmers, and create points of strategy to be possibly discussed with business stakeholders.   
+   </p>
+   
+   Jun 6, 2020  
+
+
    #### [Ultimate Muti-label Classification with H2O Deep Learning](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Muti-label%20Classification%20with%20H2O%20Deep%20Learning.R)   
    <p>
    Building a deeplearning model using H2O, perform hyperparameter tuning through random grid serach, to solve multi-label classification problem.  
