@@ -12,7 +12,7 @@ require(bbplot)
 require(ggplot2)
 require(stringr)
 library(ggthemes)
-setwd("C:/Users/bokhy/Desktop/ATG")
+setwd("C:/Users/bokhy/Desktop/")
 
 # 1. Pre-processing ====
 
@@ -101,7 +101,7 @@ glimpse(fw_count)
 positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
-               "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0")
+               "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -256,10 +256,18 @@ d <- read.csv('account.csv')
 
 d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 
-d %>% group_by(name) %>% 
-  count(opted_in$email) %>% 
+d_1 <- d %>% 
   # Check for specific competition
-  filter(name == "Tryout, P-47: The Phantom Fighter and Pinbo Competition") 
+  filter(name == "Fix-It Felix Jr. Competition") %>% 
+  group_by(email) %>% 
+  count(opted_in$email)
+# Weekly Leaderboard Competition Total Entry
+sum(d_1$n)
+# Weekly Leaderboard Competition Participant 
+nrow(d_1)
+# Opted-in users out of weekly participant
+nrow(d_1 %>% filter(`opted_in$email` == TRUE))
+
 
 
 #==== Usage Buckets ====#

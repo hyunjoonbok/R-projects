@@ -59,11 +59,11 @@ a_1 <- a %>%
 sum(a_1$total_hours)
 a_1
 
-# Avg. Hours per user (per service)
+# Avg. minutes per user (per service)
 
 temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>%  tally() 
 
-sum(a_1$total_hours)/3337
+sum(a_1$total_hours)/3406
 
 # Usage bucket per service
 
@@ -112,7 +112,7 @@ b$month <- month(b$Service.Start.Time)
 b$Service.Duration <-  as.numeric(b$Service.Duration)
 
 b$month <- month.abb[b$month]
-b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","June"))
+b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","Jun"))
 
 
 b_new <- b %>% 
@@ -168,7 +168,7 @@ b_2_new <- b_2 %>%
   filter(month != 0) %>%
   group_by(month, Service.Type)%>% 
   summarise(Count = sum(n))%>% 
-  mutate(highlight_flag = ifelse(month == 'May', T, F))
+  mutate(highlight_flag = ifelse(month == 'Jun', T, F))
 
 b_2_new %>% 
   ggplot(aes(x = month , y = Count, fill = highlight_flag)) +
@@ -191,7 +191,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-05-25", "2020-05-31"))
+  filter(between(Service.Start.Time, "2020-06-01", "2020-06-07"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -203,14 +203,16 @@ b_temp_0 %>% group_by(Service.Type) %>% tally()
 b_temp_0 %>% group_by(Service.Type) %>% summarise(total = sum(Session_opened))
 
 
-# Avg.Hours played per user (chart C above)
+# Avg. Minutes played per user (chart C above)
 b_temp$Service.Duration <-  as.numeric(b_temp$Service.Duration)
 b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 bb <- b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
-196860/3600/216
+# (playtime in hours / total weekly users)
+128443/3600/149
 #BYOG: 
-252730/3600/101
+# (playtime in hours / total weekly users)
+220703/3600/84
 
 
 # Hours played per month (chart)
@@ -446,7 +448,8 @@ prod <- bind_rows(prod1, prod2)
 
 
 positions <- c("4.11.0","4.11.1","4.12.0","4.13.0",
-               "4.14.0","4.14.1","4.16.0","4.17.0","4.18.0","4.19.0","4.20.0")
+               "4.14.0","4.14.1","4.16.0","4.17.0",
+               "4.18.0","4.19.0","4.20.0","4.21.0","4.22.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -541,7 +544,7 @@ Built_in_top_5 <- data %>%
   filter(!activity.game_title == "") %>% 
   group_by(month, activity.game_title) %>% 
   filter(activity.platform == 'Built-in 350') %>% 
-  filter(month == 'Apr' | month == 'May') %>% 
+  filter(month == 'Apr' | month == 'May' | month == 'Jun') %>% 
   summarise(total_hours = round(sum(activity.play_duration),1))%>% 
   select(activity.game_title,month, total_hours) %>% 
   arrange(desc(total_hours))%>% 

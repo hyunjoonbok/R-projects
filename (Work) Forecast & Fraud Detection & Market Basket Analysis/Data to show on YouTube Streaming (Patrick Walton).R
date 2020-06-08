@@ -48,6 +48,11 @@ prod <- prod %>%
   filter(!activity.display_firmware == "4.15.0") %>% 
   filter(!activity.display_firmware == "") 
 
+prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\¢ç","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\®","",prod$activity.game_title)
+prod$activity.game_title <- gsub("[[:blank:]]","",prod$activity.game_title)
+
 prod$activity.platform <- as.character(prod$activity.platform)
 prod$service <- as.character(prod$service)
 prod$activity.platform <- ifelse(prod$activity.platform == "", prod$service,prod$activity.platform)
@@ -119,7 +124,7 @@ data %>%
 
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
-positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0")
+positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0","4.22.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
@@ -137,6 +142,7 @@ c <- data %>%
   
 ## (1) By Spinner
 c %>% arrange(desc(total_spinner)) %>%
+  filter(total_trackball == 0) %>% 
   slice(1:5)
 
 ## (2) By Trackball
@@ -166,6 +172,7 @@ d
 data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
+  filter(!geoip.region_name == "") %>% 
   distinct() %>% 
   select(geoip.region_name, machine_uuid, activity.game_title, activity.play_duration) %>% 
   group_by(geoip.region_name) %>% 
@@ -176,6 +183,8 @@ data %>%
 data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
+  filter(!geoip.city_name == "") %>% 
+  filter(!geoip.region_name == "") %>% 
   distinct() %>% 
   select(geoip.city_name, geoip.region_name,machine_uuid, activity.game_title, activity.play_duration) %>% 
   group_by(geoip.city_name,geoip.region_name) %>% 
