@@ -228,6 +228,7 @@ data_final <- data %>%
 glimpse(data_final)
 
 data_final %>% skim()
+write.csv(tmp , 'tmp.csv')
 
 # Save dataset for later use
 saveRDS(data_final, "C:/Users/bokhy/Documents/R-projects/Title_Recommender_with_market_basket_analysis/data_final.rds")

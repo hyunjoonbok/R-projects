@@ -51,11 +51,6 @@ a$Total.Serving.Time <- as.difftime(a$Total.Serving.Time, "%H:%M:%S")
 a_0 <- a %>% group_by(Email) %>% select(Email) %>% distinct() %>% count()
 a_0
 
-# 3134 Apr.27 - May.3
-# 3201 May.4 - May.10
-# 3295 May.11 - May.17
-# 3337 May.18 - May.25
-
 # Total Usage
 a_1 <- a %>% 
   select(Email,Total.Serving.Time, Service.Type) %>% 
@@ -64,20 +59,11 @@ a_1 <- a %>%
 sum(a_1$total_hours)
 a_1
 
-# 4600 Apr.27 - May.3
-# 4751 May.4 - May.10
-# 4829 May.11 - May.17
-# 4971 May.18 - May.25
+# Avg. Hours per user (per service)
 
-# Avg. Hours per user
+temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>%  tally() 
 
 sum(a_1$total_hours)/3337
-
-# NA Apr.27 - May.3
-# NA May.4 - May.10
-# 50,55 May.11 - May.17
-# 55,57 May.18 - May.25
-
 
 # Usage bucket per service
 
@@ -126,7 +112,7 @@ b$month <- month(b$Service.Start.Time)
 b$Service.Duration <-  as.numeric(b$Service.Duration)
 
 b$month <- month.abb[b$month]
-b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May"))
+b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","June"))
 
 
 b_new <- b %>% 
@@ -158,7 +144,7 @@ b_new <- b %>%
   
 # Avg.Usage per Session per Service (graph)
 b_1 <- b_new %>% 
-  group_by(Email, Service.Type) %>% 
+  group_by(User, Service.Type) %>% 
   filter(Service.Duration != 0) %>% 
   summarise(total_hours = round(sum(Service.Duration)/3600,2), count = n()) %>% 
   mutate(usage_per_session = (total_hours / count)*60) %>% # in minutes
@@ -203,16 +189,17 @@ b_temp$Service.Start.Time <- as.character(b_temp$Service.Start.Time)
 b_temp$Service.Start.Time <- ifelse(nchar(b_temp$Service.Start.Time) < 10, as.character(b_temp$temp1), b_temp$Service.Start.Time)
 b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
-b_temp <- b_temp %>% 
-  filter(between(Service.Start.Time, "2020-05-18", "2020-05-25"))
+# Change the period we want to see for unique streaming user count per service
+b_temp <- b_temp %>%  
+  filter(between(Service.Start.Time, "2020-05-25", "2020-05-31"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
   summarise(Session_opened = n()) %>% 
   distinct()
-
+# Total weekly users
 b_temp_0 %>% group_by(Service.Type) %>% tally()
-
+# number of sessions
 b_temp_0 %>% group_by(Service.Type) %>% summarise(total = sum(Session_opened))
 
 
@@ -221,13 +208,14 @@ b_temp$Service.Duration <-  as.numeric(b_temp$Service.Duration)
 b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 bb <- b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
-234231/3600/229
+196860/3600/216
 #BYOG: 
-279525/3600/127
+252730/3600/101
 
 
 # Hours played per month (chart)
 b_3 <- b_new %>% 
+  filter(!month == "") %>% 
   group_by(month) %>% 
   summarise(total_hours = format(round(sum(Service.Duration/3600),1), nsmall = 1, big.mark = ',' )) 
 
@@ -378,8 +366,8 @@ c %>%
   facet_wrap(month ~.)
 
 
-# Last week Top 5 Titles (from Opt-in User)
-setwd("C:/Users/bokhy/Desktop/")
+# Last week Top 5 Titles (from Opt-in User) - Chart J
+setwd("C:/Users/bokhy/Desktop")
 data <- read.csv("weekly_cleaned.csv")
 
 data$activity.play_duration <- gsub(",","",data$activity.play_duration)

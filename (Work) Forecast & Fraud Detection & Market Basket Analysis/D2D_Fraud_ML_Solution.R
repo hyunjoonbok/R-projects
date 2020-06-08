@@ -1,8 +1,3 @@
-colnames(dtest_prepared %>% select(1:81, vip_discount_lev_x_8, everything()))
-
-
-
-setwd("C:/Users/bokhy/Desktop/ATG")
 require("DBI")
 require("odbc")
 require("RMySQL")
@@ -33,6 +28,11 @@ require(knitr)
 require(Matrix)
 #library(tidymodels)  
 library(dplyr, warn.conflicts = FALSE)
+
+#transaction <- read_csv("aa.csv",col_names = TRUE)
+
+setwd("C:/Users/bokhy/Desktop/ATG")
+
 # 1. Data cleaning ====
 transaction <- read_csv("d2d_transactions.csv",col_names = TRUE)
 
@@ -64,7 +64,7 @@ transaction <- transaction %>%
   # Too old transactions
   filter(!type == 'LivegamerPayment') %>% 
   # incomplete transactions
-  filter(!order_state == 'FAILED') %>% 
+  filter(order_state == 'CHARGED' | order_state == 'REFUNDED') %>% 
   filter(!company_name == 'AtGames Test Publisher 1') %>% 
   filter(!company_name == 'AtGames Test Publisher 2') %>% 
   filter(!company_name == 'AtGames Test Publisher 3') %>% 
@@ -72,9 +72,10 @@ transaction <- transaction %>%
   select(title, company_name, currency_full_name, country_full_name,
          msrp, publisher_price, coupons, discounts, rev_share_1,
          order_state, type, gross_revenue, net_revenue, 
-         vip_discount, vip_discounts, payment_date
+         vip_discount, vip_discounts, payment_date, account_id
          ) 
 
+transaction$account_id <- as.factor(transaction$account_id)
 # Create uniform title name for all regions (Remove UK,EU specification)
 transaction$title <- gsub("\\{EU}","",transaction$title)
 transaction$title <- gsub("\\{UK}","",transaction$title)
@@ -118,7 +119,7 @@ transaction$timeoftheday <- as.factor(transaction$timeoftheday)
 # Adding newly created variables
 transaction$sold_price <- transaction$gross_revenue + transaction$vip_discounts
 transaction <- transaction %>% 
-  select(-payment_date) %>% 
+#  select(-payment_date) %>% 
   filter(gross_revenue >= 0) %>% 
   filter(sold_price >= 0) %>% 
   filter(net_revenue >= 0)
@@ -130,6 +131,10 @@ transaction %>% na_if("NULL") %>% map_df(~sum(is.na(.)))
 transaction %>% select_if(is.numeric) %>% skim()
 
 glimpse(transaction)
+
+# Save dataset for later use
+# saveRDS(transaction, "C:/Users/bokhy/Desktop/d2d_transactions.rds")
+
 
 
 # 2. Data Pre-processing ====

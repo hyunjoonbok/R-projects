@@ -12,9 +12,9 @@ require(bbplot)
 require(ggplot2)
 require(stringr)
 library(ggthemes)
-setwd("C:/Users/bokhy/Desktop")
+setwd("C:/Users/bokhy/Desktop/ATG")
 
-## Filter out Blank / 4.15.0 in Firmware version ##!!!
+# 1. Pre-processing ====
 
 # Adding "service" column
 prod <- read.csv("Production Arcade Logs.csv") 
@@ -44,11 +44,15 @@ prod2$activity.game_id <- as.character(prod2$activity.game_id)
 prod <- bind_rows(prod1, prod2)
 
 
-## We are excluding 4.15.0 and people before 4.11.0
+## We are excluding 4.15.0 and people before 4.11.0 ##
 prod <- prod %>% 
   filter(!activity.display_firmware == "4.15.0") %>% # Filter out 4.15.0 in Firmware version 
   filter(!activity.display_firmware == "") # Filter out Blank
-## 
+
+## Title formatting
+prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\®","",prod$activity.game_title)
+prod$activity.game_title <- gsub("[[:blank:]]","",prod$activity.game_title)
 
 prod$activity.platform <- as.character(prod$activity.platform)
 prod$service <- as.character(prod$service)
@@ -97,7 +101,7 @@ glimpse(fw_count)
 positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
-               "4.17.0","4.18.0","4.19.0","4.20.0")
+               "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -255,7 +259,7 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 d %>% group_by(name) %>% 
   count(opted_in$email) %>% 
   # Check for specific competition
-  filter(name == "Astro Fantasia, Boogie Wings and Super Pool III Competition") 
+  filter(name == "Tryout, P-47: The Phantom Fighter and Pinbo Competition") 
 
 
 #==== Usage Buckets ====#

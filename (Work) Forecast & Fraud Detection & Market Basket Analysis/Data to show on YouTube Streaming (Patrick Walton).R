@@ -18,7 +18,9 @@ require(scales)
 # Data Pre-Processing 
 setwd("C:/Users/bokhy/Desktop")
 prod <- read.csv("Production Arcade Logs.csv") 
-prod <- prod %>% filter(!log_type == "AttractMode")
+prod <- prod %>% 
+  filter(!log_type == "AttractMode") %>% 
+  filter(geoip.continent_name == 'North America')
 prod$activity.game_id <- as.character(prod$activity.game_id)
 prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
 prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
@@ -117,7 +119,7 @@ data %>%
 
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
-positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0")
+positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
