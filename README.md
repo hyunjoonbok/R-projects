@@ -240,19 +240,19 @@ I tried to include the usage of packages and methods that have been consistently
 
    - ## Text Mining / Social Media Analysis
 
-      ### [Text-Mining using SparklyR](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Text%20Mining%20using%20Sparklyr.R)
+      ### [Text-Mining using SparklyR](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis/Text%20Mining%20using%20Sparklyr.R)
       <p>
       For real-world text data that goes beyond GB/TB in file size, it's necessary to leverage Spark engine load and transform data. Eventally genearate a list of the most used words, and create basic wordcloud. 
       </p>
       May 16, 2019 
 
-      ### [Complete Text-Mining Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Text_mining.R)
+      ### [Complete Text-Mining Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis/Text_mining.R)
       <p>
       Looking at the Jane Austen Book's text to learn a full function of Text-Mining (tidying up data, Sentiment analysis, word-frequnecy, TF-IDF, Wordcloud, Tokenizing by n-gram, Topic-modeling). Ready-to-be used in any real-world datasets.  
       </p>
       Jul 28, 2019 
 
-      ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis%20%26/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
+      ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
       <p>
       Learn to serach tweets by length, location or any criteria set. Retrieve a list of all the accounts a user follows. Then plot the frequency of tweets for each user over time.
       </p>
