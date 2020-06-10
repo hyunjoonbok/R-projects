@@ -54,7 +54,8 @@ I tried to include the usage of packages and methods that have been consistently
    <p>
    A End-to-End recommendation system model building using the game title from data wragling, to building an algorithm and deplying to Shiny WebApp. A full comprehension of recommender algorithm could be gained and can be applied to any real-world data.
    </p>
-   Reference: [Diego Usai's Website](https://diegousai.io/categories/multi-article-studies/)
+   
+   ######## Reference: [Diego Usai's Website](https://diegousai.io/categories/multi-article-studies/)
    
    May 17, 2020
    
