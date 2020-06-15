@@ -19,7 +19,9 @@ setwd("C:/Users/bokhy/Desktop/")
 # Adding "service" column
 prod <- read.csv("Production Arcade Logs.csv") 
 
-prod <- prod %>% filter(!log_type == "AttractMode")
+prod <- prod %>% 
+  filter(!log_type == "AttractMode") %>% 
+  filter(!log_type == "ConnectDevice")
 prod$activity.game_id <- as.character(prod$activity.game_id)
 prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
 prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
@@ -51,6 +53,7 @@ prod <- prod %>%
 
 ## Title formatting
 prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\?","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\®","",prod$activity.game_title)
 prod$activity.game_title <- gsub("[[:blank:]]","",prod$activity.game_title)
 
@@ -101,7 +104,8 @@ glimpse(fw_count)
 positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
-               "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0")
+               "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0",
+               "4.23.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -258,7 +262,7 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 
 d_1 <- d %>% 
   # Check for specific competition
-  filter(name == "Fix-It Felix Jr. Competition") %>% 
+  filter(name == "City Connection, Rod-Land and Sky Fox Leaderboard Competition") %>% 
   group_by(email) %>% 
   count(opted_in$email)
 # Weekly Leaderboard Competition Total Entry

@@ -61,9 +61,9 @@ a_1
 
 # Avg. minutes per user (per service)
 
-temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>%  tally() 
+temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>% tally() 
 
-sum(a_1$total_hours)/3406
+sum(a_1$total_hours)/3424
 
 # Usage bucket per service
 
@@ -171,6 +171,7 @@ b_2_new <- b_2 %>%
   mutate(highlight_flag = ifelse(month == 'Jun', T, F))
 
 b_2_new %>% 
+  filter(!Service.Type == 'MGR') %>% 
   ggplot(aes(x = month , y = Count, fill = highlight_flag)) +
   geom_bar(position="dodge", stat="identity") +
   scale_fill_manual(values = c('grey', 'red')) +
@@ -179,7 +180,7 @@ b_2_new %>%
   theme(legend.position = 'none') +
   geom_text(aes(x= month, label=round(Count,0)), vjust=-0.25)
 
-# Total number of users last week was : 308
+# Total number of users last week was : 301
 b_temp <- read.csv("session_byuser_export.csv")
 b_temp <- b_temp %>% 
   filter(!Email %in% d$Email)
@@ -191,7 +192,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-06-01", "2020-06-07"))
+  filter(between(Service.Start.Time, "2020-06-08", "2020-06-13"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -206,13 +207,13 @@ b_temp_0 %>% group_by(Service.Type) %>% summarise(total = sum(Session_opened))
 # Avg. Minutes played per user (chart C above)
 b_temp$Service.Duration <-  as.numeric(b_temp$Service.Duration)
 b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
-bb <- b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
+b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-128443/3600/149
+112437/3600/143
 #BYOG: 
 # (playtime in hours / total weekly users)
-220703/3600/84
+260415/3600/68
 
 
 # Hours played per month (chart)
@@ -238,6 +239,7 @@ b_4 <- b_new %>%
 # Hours Consumed per month (graph)
 b_new %>% 
   rename("Service" = Service.Type) %>% 
+  filter(!Service == 'MGR') %>% 
   filter(month != "") %>% 
   group_by(month, Service) %>% 
   summarise(Hours_consumed = sum(Service.Duration/3600)) %>%
@@ -449,7 +451,8 @@ prod <- bind_rows(prod1, prod2)
 
 positions <- c("4.11.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
-               "4.18.0","4.19.0","4.20.0","4.21.0","4.22.0")
+               "4.18.0","4.19.0","4.20.0","4.21.0",
+               "4.22.0","4.22.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
