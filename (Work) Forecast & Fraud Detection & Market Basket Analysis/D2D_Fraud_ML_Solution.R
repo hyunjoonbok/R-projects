@@ -77,6 +77,8 @@ transaction <- transaction %>%
 
 transaction$account_id <- as.factor(transaction$account_id)
 # Create uniform title name for all regions (Remove UK,EU specification)
+transaction$title <- gsub("\\â„¢","",transaction$title)
+transaction$title <- gsub("\\??","",transaction$title)
 transaction$title <- gsub("\\{EU}","",transaction$title)
 transaction$title <- gsub("\\{UK}","",transaction$title)
 transaction$title <- gsub("\\®","",transaction$title)
