@@ -63,7 +63,7 @@ a_1
 
 temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>% tally() 
 
-sum(a_1$total_hours)/3424
+sum(a_1$total_hours)/3439
 
 # Usage bucket per service
 
@@ -192,7 +192,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-06-08", "2020-06-13"))
+  filter(between(Service.Start.Time, "2020-06-15", "2020-06-21"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -210,10 +210,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-112437/3600/143
+167708/3600/179
 #BYOG: 
 # (playtime in hours / total weekly users)
-260415/3600/68
+162292/3600/72
 
 
 # Hours played per month (chart)
@@ -380,7 +380,8 @@ nrow(data[data$activity.play_duration<0,]) # see if there are any negative recor
 data$activity.play_duration <- (data$activity.play_duration)/3600
 
 data <-  data %>% 
-  filter(activity.play_duration < 12)
+  filter(activity.play_duration < 12) %>% 
+  distinct(activity.play_duration, .keep_all = TRUE)  
 data <- data %>% separate(log.timestamp,
                           c("Date","a"), sep = '@')
 data$Time <- gsub("\\..*","",data$a)
@@ -452,7 +453,7 @@ prod <- bind_rows(prod1, prod2)
 positions <- c("4.11.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
-               "4.22.0","4.22.0","4.23.0")
+               "4.22.0","4.22.0","4.23.0","4.24.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -461,6 +462,11 @@ prod <- prod %>%
   filter(!activity.platform == "Byog") %>%
   filter(activity.display_firmware %in% positions)   # Filter out 4.15.0 in Firmware version 
 #  filter(!activity.display_firmware == "") # Filter out Blank
+
+prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\?","",prod$activity.game_title)
+prod$activity.game_title <- gsub("\\®","",prod$activity.game_title)
+prod$activity.game_title <- gsub("[[:blank:]]","",prod$activity.game_title)
 
 
 prod$activity.platform <- as.character(prod$activity.platform)
