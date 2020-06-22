@@ -68,6 +68,9 @@ data <- prod
 
 data$activity.play_duration <- gsub(",","",data$activity.play_duration)
 data <- transform(data, activity.play_duration = abs(as.numeric(activity.play_duration))) # Change negative value to positive (absolute)
+data <- data %>% 
+  distinct(activity.game_title, activity.play_duration, .keep_all = TRUE) 
+
 data$activity.1p_spinner <- gsub(",","",data$activity.1p_spinner)
 data$activity.2p_spinner <- gsub(",","",data$activity.2p_spinner)
 data$activity.1p_joystick <- gsub(",","",data$activity.1p_joystick)
@@ -127,7 +130,7 @@ data %>%
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
 positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0",
-               "4.22.0","4.23.0")
+               "4.22.0","4.23.0","4.24.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
