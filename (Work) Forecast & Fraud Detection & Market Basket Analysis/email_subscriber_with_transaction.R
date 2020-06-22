@@ -21,7 +21,6 @@ require(ggfittext)
 require(timetk)     # Toolkit for working with time series in R
 require(tidyquant) 
 
-
 setwd("C:/Users/bokhy/Desktop/ATG/")
 
 transaction <- read_csv("ddd.csv")
