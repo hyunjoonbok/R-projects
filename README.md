@@ -7,9 +7,7 @@ For a detailed code example and images, please refer to readme file in each fold
 
 *Note: Data used in the projects is for learning and demo purposes only*
 
-
 <hr>
-
 
 ## Motivation / Thought Process
 As R is often less preferrable compared to other languages in terms of less production-ready codes, I think R is still a very powerful language. I personally am fond of and use R for everyday analysis from simple EDA to creating stunning visualizations and building a complex ML/DL models. I think R has its strong advantage in looking at codes and results at a controlled enviornmenets.  
