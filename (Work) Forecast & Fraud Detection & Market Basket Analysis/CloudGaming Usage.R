@@ -96,9 +96,8 @@ a_2 %>%
 
 # read data
 #setwd("C:/Users/bokhy/Desktop/ATG")
-b <- read.csv("session_byuser_export.csv")
-b <- b %>% 
-  filter(!Email %in% d$Email)
+# b <- read.csv("session_byuser_export.csv")
+# b <- b %>% filter(!Email %in% d$Email)
 
 b$Service.Duration <- as.character(b$Service.Duration)
 b$Service.Duration <- ifelse(nchar(b$Service.Duration) > 20, as.character(b$Service.Start.Time), b$Service.Duration)
@@ -192,7 +191,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-06-15", "2020-06-21"))
+  filter(between(Service.Start.Time, "2020-06-22", "2020-06-28"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -210,10 +209,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-167708/3600/179
+267183/3600/239
 #BYOG: 
 # (playtime in hours / total weekly users)
-162292/3600/72
+204596/3600/94
 
 
 # Hours played per month (chart)
@@ -453,7 +452,8 @@ prod <- bind_rows(prod1, prod2)
 positions <- c("4.11.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
-               "4.22.0","4.22.0","4.23.0","4.24.0")
+               "4.22.0","4.22.0","4.23.0","4.24.0",
+               "4.25.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -523,7 +523,7 @@ data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb",
 
 
 
-# Cumulative Top 5 Titles per service  
+# Chart L. Cumulative Top 5 Titles per service  
 
 consol_top_5 <- data %>% 
   select(activity.platform,activity.play_duration, activity.game_title, activity.play_start, activity.play_end, month, geoip.city_name, account.email) %>% 

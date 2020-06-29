@@ -105,7 +105,7 @@ positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.7.0","4.8.0","4.9.0","4.10.0","4.11.0","4.11.1",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
                "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0",
-               "4.23.0","4.24.0")
+               "4.23.0","4.24.0","4.25.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -265,7 +265,7 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 
 d_1 <- d %>% 
   # Check for specific competition
-  filter(name == "Battle Wings, Earth Defense Force, Terranean and Valtric competition") %>% 
+  filter(name == "Crystal Castles, Darwin 4078, Midnight Resistance, and Millipede Competition") %>% 
   group_by(email) %>% 
   count(opted_in$email)
 # Weekly Leaderboard Competition Total Entry
