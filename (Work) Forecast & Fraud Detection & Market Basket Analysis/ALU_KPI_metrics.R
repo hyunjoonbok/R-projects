@@ -15,7 +15,6 @@ library(ggthemes)
 setwd("C:/Users/bokhy/Desktop/")
 
 # 1. Pre-processing ====
-
 # Adding "service" column
 prod <- read.csv("Production Arcade Logs.csv") 
 
@@ -275,6 +274,13 @@ nrow(d_1)
 # Opted-in users out of weekly participant
 nrow(d_1 %>% filter(`opted_in$email` == TRUE))
 
+## === Optional == ##
+# Participant for each game
+# for selected competition
+d %>% 
+  filter(name == "Crystal Castles, Darwin 4078, Midnight Resistance, and Millipede Competition") %>%
+  group_by(name, GAME) %>% 
+  count()
 
 
 #==== Usage Buckets ====#
