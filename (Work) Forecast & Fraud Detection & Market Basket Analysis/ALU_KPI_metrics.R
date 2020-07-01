@@ -121,9 +121,12 @@ temp2 <- fw_count %>%
   tally()
 sum(temp2$n)
 
-# Latest Firmware count
+# Latest Firmware count (2)
 sum(temp2$n[temp2$display_version_number %in% tail(positions,2)])  
-
+# others
+sum(temp2$n[temp2$display_version_number %in% tail(positions,3)]) 
+sum(temp2$n[temp2$display_version_number %in% tail(positions,4)]) 
+sum(temp2$n[temp2$display_version_number %in% tail(positions,5)]) 
 
 # All Users Firmware Version Count 
 p <- fw_count %>%
