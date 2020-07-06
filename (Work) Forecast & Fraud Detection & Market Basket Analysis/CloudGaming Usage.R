@@ -111,7 +111,7 @@ b$month <- month(b$Service.Start.Time)
 b$Service.Duration <-  as.numeric(b$Service.Duration)
 
 b$month <- month.abb[b$month]
-b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","Jun"))
+b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","Jun","Jul"))
 
 
 b_new <- b %>% 
@@ -167,7 +167,7 @@ b_2_new <- b_2 %>%
   filter(month != 0) %>%
   group_by(month, Service.Type)%>% 
   summarise(Count = sum(n))%>% 
-  mutate(highlight_flag = ifelse(month == 'Jun', T, F))
+  mutate(highlight_flag = ifelse(month == 'Jul', T, F))
 
 b_2_new %>% 
   filter(!Service.Type == 'MGR') %>% 
@@ -179,7 +179,7 @@ b_2_new %>%
   theme(legend.position = 'none') +
   geom_text(aes(x= month, label=round(Count,0)), vjust=-0.25)
 
-# Total number of users last week was : 301
+# Total number of users last week was :
 b_temp <- read.csv("session_byuser_export.csv")
 b_temp <- b_temp %>% 
   filter(!Email %in% d$Email)
@@ -191,7 +191,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-06-22", "2020-06-28"))
+  filter(between(Service.Start.Time, "2020-06-29", "2020-07-05"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -209,10 +209,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-267183/3600/239
+295374/3600/282
 #BYOG: 
 # (playtime in hours / total weekly users)
-204596/3600/94
+339176/3600/112
 
 
 # Hours played per month (chart)
@@ -453,7 +453,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
-               "4.25.0")
+               "4.25.0","4.26.0","4.26.1")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 

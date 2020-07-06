@@ -130,7 +130,7 @@ data %>%
 # 3. Top 10 Games by Input
 # (Use the fimware above 4.17.0 -- Trackball fixed)
 positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0",
-               "4.22.0","4.23.0","4.24.0","4.25.0")
+               "4.22.0","4.23.0","4.24.0","4.25.0","4.26.0","4.26.1")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
