@@ -265,15 +265,30 @@ d <- read.csv('account.csv')
 
 d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 
+# by email
 d_1 <- d %>% 
   # Check for specific competition
   filter(name == "BurgerTime, Burnin' Rubber, Heavy Barrel and Zippy Bug competition") %>% 
   group_by(email) %>% 
   count(opted_in$email)
+# by Initials
+d_2 <- d %>% 
+  # Check for specific competition
+  filter(name == "Side Pocket Competition") %>% 
+  group_by(signature,email) %>% 
+  count(opted_in$email)
+
+
+
 # Weekly Leaderboard Competition Total Entry
-sum(d_1$n)
-# Weekly Leaderboard Competition Participant 
+sum(d_2$n)
+
+# Weekly Leaderboard Competition Participant (by email)
 nrow(d_1)
+
+# Weekly Leaderboard Competition Participant (by Initials)
+nrow(d_2)
+
 # Opted-in users out of weekly participant
 nrow(d_1 %>% filter(`opted_in$email` == TRUE))
 
