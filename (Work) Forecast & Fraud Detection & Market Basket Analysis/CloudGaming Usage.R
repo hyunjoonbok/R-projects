@@ -7,6 +7,7 @@ c <- read.csv("Streaming_payments.csv")
 
 d <- read.csv("employee.csv")
 
+
 ##=============================================================##
 # Load packages
 require(scales)
@@ -28,7 +29,6 @@ library(magick)
 library(webshot)
 library(kableExtra)
 library(flextable)
-require(ggfittext)
 require(timetk)     # Toolkit for working with time series in R
 require(tidyquant) 
 
