@@ -1,9 +1,7 @@
 # R Portfolio
 R Portfolio of data science projects from either original work or revised for a study and learning purpose. Portfolio in this repo is presented in the form of .R and .Rmd(R-markdown) files.
 
-For a curated list of more visually-pleasant portfolio with graphs, check out [My Portfolio Website](https://hyunjoonbok.github.io/)
-
-For a detailed code example and images, please refer to readme file in each folder under framework names (*Work-In-Progress*).
+For a detailed code example and images, please refer to readme file in each folder by popular business topics.
 
 
 *Note: Data used in the projects is for learning and demo purposes only*
