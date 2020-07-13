@@ -19,8 +19,7 @@ require(ggplot2)
 require(data.table)
 require(dplyr)
 require(plotly)
-require(bbplot)
-require(ggplot2)
+#require(bbplot)
 require(stringr)
 require(ggthemes)
 library(viridis)
@@ -60,10 +59,6 @@ sum(a_1$total_hours)
 a_1
 
 # Avg. minutes per user (per service)
-
-temp <- a %>% group_by(Service.Type, Email) %>% distinct() %>% tally() 
-
-sum(a_1$total_hours)/3439
 
 # Usage bucket per service
 
@@ -191,7 +186,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-06-29", "2020-07-05"))
+  filter(between(Service.Start.Time, "2020-07-06", "2020-07-12"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -209,10 +204,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-295374/3600/282
+245376/3600/253
 #BYOG: 
 # (playtime in hours / total weekly users)
-339176/3600/112
+299948/3600/98
 
 
 # Hours played per month (chart)
@@ -453,7 +448,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
-               "4.25.0","4.26.0","4.26.1")
+               "4.25.0","4.26.0","4.26.1","4.27.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
