@@ -29,6 +29,13 @@ I tried to include the usage of packages and methods that have been consistently
 
 ### 2020 Edition
 
+   #### [Time Series Forecasting using ModelTime](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Time%20Series%20Forecasting%20using%20ModelTime.R)   
+   <p>
+   This is a Replicate of ModelTime introduction example presented in ModelTime github. We are looking bike_sharing_daily time series data from 2011 to 2013 to predict the sales of it for the next 3 months. We set aside last 3-months of data as the testing set, and levere modeltime package to build different SOTA timeseires models including, ARIMA, Prophet, XGBoost, randomforest. Then we evaluate the Model by refitting data from the errors we got from initial models, and eventually multi-visualize the model. 
+   </p>
+   
+   Jul 10, 2020  
+
    #### [Customer Segmentation & Clustering with K-means](https://github.com/hyunjoonbok/R-projects/blob/master/Customer%20Segmentation%20%26%20Clustering%20with%20K-means%2C%20Principal%20Components%20Analysis%20and%20Bootstrap%20Evaluation.R)   
    <p>
    Looking at custmer transcation data to segment cusotmers into groups to better statify the business strategy. Use a K-means clustering Building and Bootstrap Evaluation to effectively group cusotmers, and create points of strategy to be possibly discussed with business stakeholders.   
