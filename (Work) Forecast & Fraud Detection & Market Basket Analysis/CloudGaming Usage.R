@@ -88,11 +88,11 @@ a_2 %>%
 
 
 # Avg. Usage per user per session(graph)
-
+library(modeltime)
 # read data
-#setwd("C:/Users/bokhy/Desktop/ATG")
-# b <- read.csv("session_byuser_export.csv")
-# b <- b %>% filter(!Email %in% d$Email)
+setwd("C:/Users/bokhy/Desktop/ATG")
+b <- read.csv("session_byuser_export.csv")
+b <- b %>% filter(!Email %in% d$Email)
 
 b$Service.Duration <- as.character(b$Service.Duration)
 b$Service.Duration <- ifelse(nchar(b$Service.Duration) > 20, as.character(b$Service.Start.Time), b$Service.Duration)
@@ -100,13 +100,242 @@ b$Service.Duration <- ifelse(nchar(b$Service.Duration) > 20, as.character(b$Serv
 b$Service.Start.Time <- as.character(b$Service.Start.Time)
 b$Service.Start.Time <- ifelse(nchar(b$Service.Start.Time) < 10, as.character(b$temp1), b$Service.Start.Time)
 
-b$Service.Start.Time <- as.Date(b$Service.Start.Time)
-b$month <- month(b$Service.Start.Time)
-
 b$Service.Duration <-  as.numeric(b$Service.Duration)
 
+b <- b %>% separate(Service.Start.Time,
+                          c("Date","a",'timezone'), sep = ' ')
+
+b$Time <- gsub("\\..*","",b$a)
+
+b$Date <- as.Date(b$Date, "%Y-%m-%d")
+
+b$Weekdays <- weekdays(b$Date)
+b$month <- month(b$Date)
+b$date <- date(b$Date)
+b$year <- year(b$Date)
+
+b$hour <- as.numeric(gsub("\\:.*$", "", b$Time))
+b$timeoftheday<- with(b, ifelse(hour >= 5 & hour<=11, "morning",
+                                      ifelse(hour>11 & hour<=16, "afternoon",
+                                             ifelse(hour>16 & hour<=21, "evening" ,"night"))))
+
 b$month <- month.abb[b$month]
-b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr","May","Jun","Jul"))
+b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", 
+                                              "Apr",'May','Jun','Jul','Aug','Sep'))
+
+
+# Daily/Weekly/Monthly Active Users
+
+users <- b %>% 
+  select(User, date, Service.Duration, Service.Type, month) %>% 
+  filter(!Service.Type == "MGR") %>% 
+  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
+                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
+                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
+                      "instant01571898606570",
+                      "instant01571906403420",
+                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
+                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
+                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
+                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
+                      "136308a8-5696-4e82-909c-0e8b901e90b9",
+                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
+                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
+                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
+                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
+                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
+                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
+                      "2faad4cf-0927-490e-910e-1078894e2254",
+                      "instant01571991043043",
+                      "instant01571970793132",
+                      "instant01571927166160",
+                      "instant01571926879050",
+                      "instant01571924112161",
+                      "instant01571924037842")) %>%
+  group_by(Service.Type, User, date) %>% 
+  summarise(Session_opened = n()) %>% 
+  distinct()
+
+users <- users %>% 
+  group_by(Service.Type, date) %>% 
+  tally() %>% 
+  set_names(c("Service","date", "value"))
+
+## Get Built-in and Add on From KPI file
+builtin350 <- data %>% 
+  select(machine_uuid, date, activity.play_duration, 
+         activity.platform, activity.display_firmware, month,
+         hour, year, Weekdays, timeoftheday) %>% 
+  filter(activity.platform == "Built-in 350") %>% 
+  group_by(activity.platform, machine_uuid, date) %>% 
+  summarise(Session_opened = n()) %>% 
+  distinct()
+
+builtin350 <- builtin350 %>% 
+  group_by(activity.platform, date) %>% 
+  tally() %>% 
+  set_names(c("Service","date", "value"))
+
+
+AddOn <- data %>% 
+  select(machine_uuid, date, activity.play_duration, 
+         activity.platform, activity.display_firmware, month,
+         hour, year, Weekdays, timeoftheday) %>% 
+  filter(activity.platform == "AddOn") %>% 
+  group_by(activity.platform, machine_uuid, date) %>% 
+  summarise(Session_opened = n()) %>% 
+  distinct()
+
+AddOn <- AddOn %>% 
+  group_by(activity.platform, date) %>% 
+  tally() %>% 
+  set_names(c("Service","date", "value"))
+
+# Aggregated data
+users <- read.csv("users_daily.csv")
+users$date <- as.Date(users$date, "%m/%d/%Y")
+
+# Daily
+users_daily <- users %>%
+  tq_transmute(select     = value,
+               mutate_fun = apply.daily,
+               FUN        = sum)
+# Weekly
+users_weekly <- users %>%
+  tq_transmute(select     = value,
+               mutate_fun = apply.weekly,
+               FUN        = sum)
+# Monthly
+users_monthly <- users %>%
+  tq_transmute(select     = value,
+               mutate_fun = apply.monthly,
+               FUN        = sum)
+
+# Daily Graph
+users %>% 
+  ggplot(aes(x = date, y = value,  color = Service)) +
+  geom_line(size = 1) +
+  facet_wrap(~ Service, ncol = 2) +
+  scale_y_continuous() +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(title = "Daily Active Users",
+       x = "", y = "User Count", color = "")
+
+# Weekly Graph
+users_weekly %>% 
+  ggplot(aes(x = date, y = value,  color = Service)) +
+  geom_line(size = 1) +
+  scale_y_continuous() +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(title = "Weekly Active Users",
+       x = "", y = "User Count", color = "")
+
+# Monthly Graph
+users_monthly %>% 
+  ggplot(aes(x = date, y = value,  color = Service)) +
+  geom_line(size = 1) +
+  scale_y_continuous() +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(title = "Monthly Active Users",
+       x = "", y = "User Count", color = "")
+
+
+
+###### Concurrent User during a day (all daily user in a 24 hour graph)
+
+b$hour <- as.factor(b$hour)
+
+concurrent_usrs_1 <- b %>% 
+  select(User, Service.Duration, Service.Type,
+         date, hour, month, Weekdays, timeoftheday) %>% 
+  filter(!Service.Type == "MGR") %>% 
+  group_by(Service.Type, User, hour, month) %>% 
+  summarise(usercount = n()) %>% 
+  distinct()
+
+data$hour <- as.factor(data$hour)
+
+concurrent_usrs_2 <- data %>% 
+  group_by(activity.platform, machine_uuid, hour, month) %>% 
+  filter(activity.platform == 'AddOn' | activity.platform == 'Built-in 350') %>% 
+  summarise(usercount = n()) %>% 
+  set_names(c("Service.Type","User", "hour","month", "usercount"))
+
+# Merge for all 4 services
+concurrent_usrs <- rbind(concurrent_usrs_1,concurrent_usrs_2)
+
+
+# Graph (Cumulative)  
+concurrent_usrs %>% 
+  group_by(hour,Service.Type) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = hour, y = count,  fill = Service.Type)) +
+  geom_col() +
+  facet_wrap(~ Service.Type, ncol = 2) +
+  theme_tq() + 
+  scale_color_tq()
+
+# Graph (June, July)
+concurrent_usrs %>% 
+  filter(month == 'Jul' | month == 'Jun') %>% 
+  group_by(hour,Service.Type) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = hour, y = count,  fill = Service.Type)) +
+  facet_wrap(~ Service.Type, ncol = 2) +
+  geom_col() +
+  theme_tq() + 
+  scale_color_tq()
+
+
+## Time Series Modeling ================================================ ##
+## Not using ##
+options(scipen=999)
+daily <- b %>% 
+  select(User, Service.Start.Time, Service.Duration, Service.Type, month) %>% 
+  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
+                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
+                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
+                      "instant01571898606570",
+                      "instant01571906403420",
+                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
+                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
+                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
+                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
+                      "136308a8-5696-4e82-909c-0e8b901e90b9",
+                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
+                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
+                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
+                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
+                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
+                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
+                      "2faad4cf-0927-490e-910e-1078894e2254",
+                      "instant01571991043043",
+                      "instant01571970793132",
+                      "instant01571927166160",
+                      "instant01571926879050",
+                      "instant01571924112161",
+                      "instant01571924037842")) %>%
+  group_by(Service.Start.Time, Service.Type) %>% 
+  summarise(playtime = round(sum(Service.Duration)/3600,2))
+
+# ArcadeNet usage
+daily_arcadenet <- daily %>%
+  filter(Service.Type == 'ArcadeNet') %>% 
+  select(Service.Start.Time, playtime) %>%
+  set_names(c("date", "value"))
+
+write.csv(daily_arcadenet, "daily_arcadenet.csv", row.names=FALSE)
+daily_arcadenet <- read.csv("daily_arcadenet.csv")
+
+daily_arcadenet$value <- as.numeric(daily_arcadenet$value)
+daily_arcadenet$date <- as.Date(daily_arcadenet$date)
+daily_arcadenet %>%
+  plot_time_series(date, value, .interactive = TRUE)
+
+## ===================================================================== ##
 
 
 b_new <- b %>% 
@@ -456,7 +685,7 @@ prod <- prod %>%
   filter(!service == "AddOn") %>% 
   filter(!activity.platform == "Byog") %>%
   filter(activity.display_firmware %in% positions)   # Filter out 4.15.0 in Firmware version 
-#  filter(!activity.display_firmware == "") # Filter out Blank
+#  filter(!activity.display_firmware == "4.15.0") # Filter out Blank
 
 prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\?","",prod$activity.game_title)
@@ -515,7 +744,7 @@ data$month <- month.abb[data$month]
 data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", 
                                      "Apr",'May','Jun','Jul','Aug','Sep'))
 
-
+data <- data %>% filter(!year == 1969)
 
 
 # Chart L. Cumulative Top 5 Titles per service  
