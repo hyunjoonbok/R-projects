@@ -46,7 +46,7 @@ prod <- bind_rows(prod1, prod2)
 
 ## We are excluding 4.15.0 and people before 4.11.0 ##
 prod <- prod %>% 
-  filter(!activity.display_firmware == "4.15.0") %>% # Filter out 4.15.0 in Firmware version 
+  filter(!activity.display_firmware == "4.15.0")%>% # Filter out 4.15.0 in Firmware version 
   filter(!activity.display_firmware == "") # Filter out Blank
 
 ## Title formatting
