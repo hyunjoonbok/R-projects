@@ -192,6 +192,7 @@ AddOn <- AddOn %>%
   set_names(c("Service","date", "value"))
 
 # Aggregated data
+setwd("C:/Users/bokhy/Desktop/")
 users <- read.csv("users_daily.csv")
 users$date <- as.Date(users$date, "%m/%d/%Y")
 
@@ -199,7 +200,7 @@ users$date <- as.Date(users$date, "%m/%d/%Y")
 users_daily <- users %>%
   tq_transmute(select     = value,
                mutate_fun = apply.daily,
-               FUN        = sum)
+               FUN        = sum,na.pad = TRUE)
 # Weekly
 users_weekly <- users %>%
   tq_transmute(select     = value,
@@ -404,6 +405,7 @@ b_2_new %>%
   geom_text(aes(x= month, label=round(Count,0)), vjust=-0.25)
 
 # Total number of users last week was :
+setwd("C:/Users/bokhy/Desktop/ATG")
 b_temp <- read.csv("session_byuser_export.csv")
 b_temp <- b_temp %>% 
   filter(!Email %in% d$Email)
@@ -415,7 +417,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-07-06", "2020-07-12"))
+  filter(between(Service.Start.Time, "2020-07-13", "2020-07-19"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -433,10 +435,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-245376/3600/253
+204338/3600/180
 #BYOG: 
 # (playtime in hours / total weekly users)
-299948/3600/98
+175270/3600/63
 
 
 # Hours played per month (chart)
@@ -605,7 +607,7 @@ data$activity.play_duration <- (data$activity.play_duration)/3600
 data <-  data %>% 
   filter(activity.play_duration < 12) %>% 
   distinct(activity.play_duration, .keep_all = TRUE)  
-data <- data %>% separate(log.timestamp,
+data <- data %>% separate(log_at,
                           c("Date","a"), sep = '@')
 data$Time <- gsub("\\..*","",data$a)
 data$Date <- as.Date(data$Date, "%B %d, %Y")
@@ -632,10 +634,11 @@ last_week_top_5 <- data %>% select(activity.platform,activity.play_duration,
   summarise(total_hours = round(sum(activity.play_duration),1)) %>% 
   select(activity.game_title,activity.platform, total_hours) %>% 
   arrange(desc(total_hours)) %>% 
-  mutate(percentage = percent(prop.table(total_hours))) %>% 
+  mutate(percentage = percent(prop.table(total_hours),1)) %>% 
   slice(1:5) %>% 
   rename("Title" = activity.game_title, "Service" = activity.platform, 
          "Playtime(hrs)" = total_hours, "%_of_total_lastweek" = percentage)
+last_week_top_5
 
 ft <- flextable(last_week_top_5)
 ft <- autofit(ft)
@@ -677,7 +680,8 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.14.0","4.14.1","4.16.0","4.17.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
-               "4.25.0","4.26.0","4.26.1","4.27.0")
+               "4.25.0","4.26.0","4.26.1","4.27.0",
+               "4.28.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -757,7 +761,7 @@ consol_top_5 <- data %>%
   summarise(total_hours = round(sum(activity.play_duration),1)) %>% 
   select(activity.game_title,activity.platform, total_hours) %>% 
   arrange(desc(total_hours)) %>% 
-  mutate(percentage = percent(prop.table(total_hours))) %>% 
+  mutate(percentage = percent(prop.table(total_hours),1)) %>% 
   slice(1:5) %>% 
   rename("Title" = activity.game_title, "Service" = activity.platform, 
          "Playtime(hrs)" = total_hours, "%_of_total" = percentage)
