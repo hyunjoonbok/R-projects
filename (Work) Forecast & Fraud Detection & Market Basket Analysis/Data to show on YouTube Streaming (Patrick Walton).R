@@ -97,7 +97,7 @@ data <- data %>% filter(activity.play_duration < 12.0)
 
 
 # 1. Top 10 Most Played
-data %>% 
+ppp <- data %>% 
   filter(!activity.platform == "AddOn") %>% 
   filter(!activity.platform == "BYOG") %>% 
   select(machine_uuid, activity.platform, activity.play_duration, activity.game_title, activity.play_start, activity.play_end) %>% 
@@ -131,7 +131,7 @@ data %>%
 # (Use the fimware above 4.17.0 -- Trackball fixed)
 positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.23.0","4.24.0","4.25.0","4.26.0","4.26.1",
-               "4.27.0")
+               "4.27.0","4.28.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
