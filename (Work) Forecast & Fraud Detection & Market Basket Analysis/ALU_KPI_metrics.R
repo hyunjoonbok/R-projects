@@ -12,10 +12,15 @@ require(plotly)
 require(stringr)
 library(ggthemes)
 setwd("C:/Users/bokhy/Desktop/")
+prod <- read.csv("Production Arcade Logs.csv") 
+
+prod <- prod %>% distinct(activity.play_start, activity.play_end, activity.game_title, activity.play_duration, .keep_all= TRUE)
+
+# write.csv(prod, 'Production Arcade Logs.csv')
+# prod <- read.csv("Production Arcade Logs.csv") 
 
 # 1. Pre-processing ====
 # Adding "service" column
-prod <- read.csv("Production Arcade Logs.csv") 
 
 prod <- prod %>% 
   filter(!log_type == "AttractMode") %>% 
@@ -104,7 +109,7 @@ positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
                "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0",
                "4.23.0","4.24.0","4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0")
+               "4.28.0","4.29.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -268,13 +273,13 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 # by email
 d_1 <- d %>% 
   # Check for specific competition
-  filter(name == "Argus, Asteroids Deluxe, Gondomania, and Missile Command competition") %>% 
+  filter(name == "Black Widow, Liberator, Super BurgerTime and Valtric competition") %>% 
   group_by(email) %>% 
   count(opted_in$email)
 # by Initials
 d_2 <- d %>% 
   # Check for specific competition
-  filter(name == "Argus, Asteroids Deluxe, Gondomania, and Missile Command competition") %>% 
+  filter(name == "Black Widow, Liberator, Super BurgerTime and Valtric competition") %>% 
   group_by(signature,email) %>% 
   count(opted_in$email)
 
