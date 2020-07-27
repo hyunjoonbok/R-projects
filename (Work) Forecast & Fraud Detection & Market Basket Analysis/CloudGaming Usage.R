@@ -124,7 +124,7 @@ b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
                                               "Apr",'May','Jun','Jul','Aug','Sep'))
 
 
-# Daily/Weekly/Monthly Active Users
+# Active Users
 
 users <- b %>% 
   select(User, date, Service.Duration, Service.Type, month) %>% 
@@ -161,7 +161,33 @@ users <- users %>%
   tally() %>% 
   set_names(c("Service","date", "value"))
 
-## Get Built-in and Add on From KPI file
+## Getting  Built-in and Add on From KPI file
+data <- prod
+# Pre-processing
+data$activity.play_duration <- gsub(",","",data$activity.play_duration)
+data <- transform(data, activity.play_duration = abs(as.numeric(activity.play_duration))) # Change negative value to positive (absolute)
+nrow(data[data$activity.play_duration<0,]) # see if there are any negative record remaining
+data$activity.play_duration <- (data$activity.play_duration)/3600
+
+
+data <-  data %>% 
+  filter(activity.play_duration < 12) %>% 
+  distinct(activity.play_duration, .keep_all = TRUE)  
+data <- data %>% separate(X.NAME.,
+                          c("Date","a"), sep = '@')
+data$Time <- gsub("\\..*","",data$a)
+data$Date <- as.Date(data$Date, "%B %d, %Y")
+data$Weekdays <- weekdays(data$Date)
+data$month <- month(data$Date)
+data$date <- date(data$Date)
+data$year <- year(data$Date)
+data$hour <- as.numeric(gsub("\\:.*$", "", data$Time))
+data$timeoftheday<- with(data, ifelse(hour >= 5 & hour<=11, "morning",
+                                      ifelse(hour>11 & hour<=16, "afternoon",
+                                             ifelse(hour>16 & hour<=21, "evening" ,"night"))))
+data$month <- month.abb[data$month]
+
+# Built-in Users
 builtin350 <- data %>% 
   select(machine_uuid, date, activity.play_duration, 
          activity.platform, activity.display_firmware, month,
@@ -176,7 +202,7 @@ builtin350 <- builtin350 %>%
   tally() %>% 
   set_names(c("Service","date", "value"))
 
-
+# AddOn Users
 AddOn <- data %>% 
   select(machine_uuid, date, activity.play_duration, 
          activity.platform, activity.display_firmware, month,
@@ -191,26 +217,37 @@ AddOn <- AddOn %>%
   tally() %>% 
   set_names(c("Service","date", "value"))
 
+## At this moment, add new week's value to 
+## 'users_daily.csv' and 'Daily Active User' file in Desktop
+
 # Aggregated data
 setwd("C:/Users/bokhy/Desktop/")
 users <- read.csv("users_daily.csv")
 users$date <- as.Date(users$date, "%m/%d/%Y")
+users <- users %>% group_by(Service)
+users <- na.omit(users) 
+
+# Only filter out Arcade
 
 # Daily
 users_daily <- users %>%
   tq_transmute(select     = value,
                mutate_fun = apply.daily,
-               FUN        = sum,na.pad = TRUE)
-# Weekly
+               FUN        = sum,
+               na.pad = TRUE)
+
+# Weekkly
 users_weekly <- users %>%
   tq_transmute(select     = value,
                mutate_fun = apply.weekly,
-               FUN        = sum)
+               FUN        = sum,
+               na.pad = TRUE)
 # Monthly
 users_monthly <- users %>%
   tq_transmute(select     = value,
                mutate_fun = apply.monthly,
-               FUN        = sum)
+               FUN        = sum,
+               na.pad = TRUE)
 
 # Daily Graph
 users %>% 
@@ -248,7 +285,7 @@ users_monthly %>%
 ###### Concurrent User during a day (all daily user in a 24 hour graph)
 
 b$hour <- as.factor(b$hour)
-
+# ArcadeNet / BYOG
 concurrent_usrs_1 <- b %>% 
   select(User, Service.Duration, Service.Type,
          date, hour, month, Weekdays, timeoftheday) %>% 
@@ -257,8 +294,10 @@ concurrent_usrs_1 <- b %>%
   summarise(usercount = n()) %>% 
   distinct()
 
+# Built-in / AddOn
+####
+# MUST@@ run '==== Top 10 for each month ===='  part below
 data$hour <- as.factor(data$hour)
-
 concurrent_usrs_2 <- data %>% 
   group_by(activity.platform, machine_uuid, hour, month) %>% 
   filter(activity.platform == 'AddOn' | activity.platform == 'Built-in 350') %>% 
@@ -279,9 +318,9 @@ concurrent_usrs %>%
   theme_tq() + 
   scale_color_tq()
 
-# Graph (June, July)
+# Graph (July)
 concurrent_usrs %>% 
-  filter(month == 'Jul' | month == 'Jun') %>% 
+  filter(month == 'Jul') %>% 
   group_by(hour,Service.Type) %>% 
   summarise(count = n()) %>% 
   ggplot(aes(x = hour, y = count,  fill = Service.Type)) +
@@ -417,7 +456,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-07-13", "2020-07-19"))
+  filter(between(Service.Start.Time, "2020-07-20", "2020-07-26"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -435,10 +474,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-204338/3600/180
+217014/3600/152
 #BYOG: 
 # (playtime in hours / total weekly users)
-175270/3600/63
+319254/3600/46
 
 
 # Hours played per month (chart)
@@ -595,7 +634,7 @@ c %>%
   facet_wrap(month ~.)
 
 
-# Last week Top 5 Titles (from Opt-in User) - Chart J
+# Last week Top 5 Titles (from Opt-in User) - Chart H
 setwd("C:/Users/bokhy/Desktop")
 data <- read.csv("weekly_cleaned.csv")
 
@@ -649,6 +688,8 @@ plot(ft)
 
 # ==== Top 10 for each month ==== #
 
+# Cumulative Top 5 Titles per service - Chart J
+
 setwd("C:/Users/bokhy/Desktop/ATG")
 
 prod <- read.csv("Production Arcade Logs_new.csv")
@@ -681,12 +722,12 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0")
+               "4.28.0",'"4.29.0"')
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
 prod <- prod %>% 
-  filter(!service == "AddOn") %>% 
+#  filter(!service == "AddOn") %>% 
   filter(!activity.platform == "Byog") %>%
   filter(activity.display_firmware %in% positions)   # Filter out 4.15.0 in Firmware version 
 #  filter(!activity.display_firmware == "4.15.0") # Filter out Blank
@@ -750,12 +791,10 @@ data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb",
 
 data <- data %>% filter(!year == 1969)
 
-
-# Chart L. Cumulative Top 5 Titles per service  
-
 consol_top_5 <- data %>% 
   select(activity.platform,activity.play_duration, activity.game_title, activity.play_start, activity.play_end, month, geoip.city_name, account.email) %>% 
   distinct() %>% # remove dupplicate
+  filter(activity.platform == "ArcadeNet" | activity.platform == "Built-in 350") %>% 
   filter(!activity.game_title == "") %>% 
   group_by(activity.platform, activity.game_title) %>% 
   summarise(total_hours = round(sum(activity.play_duration),1)) %>% 
