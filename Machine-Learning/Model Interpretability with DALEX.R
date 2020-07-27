@@ -3,6 +3,9 @@
 require(rsample)
 require(dplyr)
 require(h2o)
+setwd("C:/Users/bokhy/Desktop/Python/")
+
+df <- read.csv('df.csv', row.names = NULL)
 
 # initialize h2o session
 h2o.init()
@@ -13,15 +16,23 @@ df <- rsample::attrition %>%
   mutate(Attrition = recode(Attrition, "Yes" = "1", "No" = "0") %>% factor(levels = c("1", "0")))
 
 # convert to h2o object
+
+df <- df %>% 
+  mutate_if(is.ordered, factor, ordered = FALSE) %>%
+  mutate(return_real = factor(return_real, levels = c("1", "0"))) %>% 
+  select(-X)
+
+glimpse(df)
+
 df.h2o <- as.h2o(df)
 
 # create train, validation, and test splits
 set.seed(0623)
-splits <- h2o.splitFrame(df.h2o, ratios = c(.7, .15), destination_frames = c("train","valid","test"))
-names(splits) <- c("train","valid","test")
+splits <- h2o.splitFrame(df.h2o, ratios = 0.7, destination_frames = c("train","test"))
+names(splits) <- c("train","test")
 
 # variable names for resonse & features
-y <- "Attrition"
+y <- "return_real"
 x <- setdiff(names(df), y)
 
 # elastic net model 
@@ -29,7 +40,7 @@ glm <- h2o.glm(
   x = x, 
   y = y, 
   training_frame = splits$train,
-  validation_frame = splits$valid,
+  #validation_frame = splits$valid,
   family = "binomial",
   seed = 0623
 )
@@ -39,7 +50,6 @@ rf <- h2o.randomForest(
   x = x, 
   y = y,
   training_frame = splits$train,
-  validation_frame = splits$valid,
   ntrees = 1000,
   stopping_metric = "AUC",    
   stopping_rounds = 10,         
@@ -52,7 +62,7 @@ gbm <-  h2o.gbm(
   x = x, 
   y = y,
   training_frame = splits$train,
-  validation_frame = splits$valid,
+  #validation_frame = splits$valid,
   ntrees = 1000,
   stopping_metric = "AUC",    
   stopping_rounds = 10,         
