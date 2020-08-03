@@ -49,6 +49,7 @@ prod <- prod %>%
   filter(!activity.display_firmware == "4.15.0") %>% 
   filter(!activity.display_firmware == "") 
 
+prod$activity.game_title <- gsub("\\Â","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\?","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\¢ç","",prod$activity.game_title)
@@ -111,7 +112,7 @@ ppp <- data %>%
   slice(1:10) %>% 
   rename("Title" = activity.game_title, "Service" = activity.platform, 
          "Playtime(hrs)" = total_hours, "%_of_total" = percentage)
-
+ppp
 
 ### == Not giving this metric == ###
 # 2. Top 10 Most Active User (Super Users of the Week)
@@ -131,7 +132,7 @@ data %>%
 # (Use the fimware above 4.17.0 -- Trackball fixed)
 positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.23.0","4.24.0","4.25.0","4.26.0","4.26.1",
-               "4.27.0","4.28.0")
+               "4.27.0","4.28.0","4.29.0","4.30.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
