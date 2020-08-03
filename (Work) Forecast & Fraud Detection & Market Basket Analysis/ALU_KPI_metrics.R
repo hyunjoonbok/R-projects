@@ -14,9 +14,10 @@ library(ggthemes)
 setwd("C:/Users/bokhy/Desktop/")
 prod <- read.csv("Production Arcade Logs.csv") 
 
+# Remove duplicates
 prod <- prod %>% distinct(activity.play_start, activity.play_end, activity.game_title, activity.play_duration, .keep_all= TRUE)
 
-# write.csv(prod, 'Production Arcade Logs.csv')
+# write.csv(prod, 'Production Arcade Logs1.csv')
 # prod <- read.csv("Production Arcade Logs.csv") 
 
 # 1. Pre-processing ====
