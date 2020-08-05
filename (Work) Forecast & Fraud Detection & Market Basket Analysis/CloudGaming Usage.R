@@ -30,7 +30,7 @@ library(kableExtra)
 library(flextable)
 require(timetk)     # Toolkit for working with time series in R
 require(tidyquant) 
-
+library(data.table)
 
 # Read data
 # a <- read.csv("export_all_total_serving_time_report.csv")
@@ -107,6 +107,11 @@ b <- b %>% separate(Service.Start.Time,
 
 b$Time <- gsub("\\..*","",b$a)
 
+# Change to PST (UTC - 8 hours)
+b$Time <- as.POSIXct(b$Time, format = "%H:%M:%S")
+b$Time <- as_datetime(b$Time, tz = "America/Los_Angeles") - 3600 *8
+b$Time <- as.ITime(b$Time)
+
 b$Date <- as.Date(b$Date, "%Y-%m-%d")
 
 b$Weekdays <- weekdays(b$Date)
@@ -122,7 +127,13 @@ b$timeoftheday<- with(b, ifelse(hour >= 5 & hour<=11, "morning",
 b$month <- month.abb[b$month]
 b$month <- factor(b$month,levels = c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", 
                                               "Apr",'May','Jun','Jul','Aug','Sep'))
+b$weeknum <- WEEKNUM(b$date)
+b$quarter <- QUARTER(b$date)
 
+## Quarterly / Monthly Hours Played
+tt <- b %>% group_by(month, Service.Type) %>% summarise(total_hours = sum(Service.Duration))
+
+tt <- b %>% group_by(quarter, Service.Type) %>% summarise(total_hours = sum(Service.Duration))
 
 # Active Users
 
@@ -160,6 +171,7 @@ users <- users %>%
   group_by(Service.Type, date) %>% 
   tally() %>% 
   set_names(c("Service","date", "value"))
+## Add number to 'users_daily.csv' here
 
 ## Getting  Built-in and Add on From KPI file
 data <- prod
@@ -173,7 +185,7 @@ data$activity.play_duration <- (data$activity.play_duration)/3600
 data <-  data %>% 
   filter(activity.play_duration < 12) %>% 
   distinct(activity.play_duration, .keep_all = TRUE)  
-data <- data %>% separate(X.NAME.,
+data <- data %>% separate(X.timestamp,
                           c("Date","a"), sep = '@')
 data$Time <- gsub("\\..*","",data$a)
 data$Date <- as.Date(data$Date, "%B %d, %Y")
@@ -282,10 +294,10 @@ users_monthly %>%
 
 
 
-###### Concurrent User during a day (all daily user in a 24 hour graph)
+## Daily Users Trend in time of the day (PST) (in a 24 hour graph)
 
 b$hour <- as.factor(b$hour)
-# ArcadeNet / BYOG
+# ArcadeNet / BYOG 
 concurrent_usrs_1 <- b %>% 
   select(User, Service.Duration, Service.Type,
          date, hour, month, Weekdays, timeoftheday) %>% 
@@ -330,52 +342,39 @@ concurrent_usrs %>%
   scale_color_tq()
 
 
-## Time Series Modeling ================================================ ##
-## Not using ##
-options(scipen=999)
-daily <- b %>% 
-  select(User, Service.Start.Time, Service.Duration, Service.Type, month) %>% 
-  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
-                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
-                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
-                      "instant01571898606570",
-                      "instant01571906403420",
-                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
-                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
-                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
-                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
-                      "136308a8-5696-4e82-909c-0e8b901e90b9",
-                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
-                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
-                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
-                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
-                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
-                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
-                      "2faad4cf-0927-490e-910e-1078894e2254",
-                      "instant01571991043043",
-                      "instant01571970793132",
-                      "instant01571927166160",
-                      "instant01571926879050",
-                      "instant01571924112161",
-                      "instant01571924037842")) %>%
-  group_by(Service.Start.Time, Service.Type) %>% 
-  summarise(playtime = round(sum(Service.Duration)/3600,2))
+# Unique Daily Active Users (graph)
+# Get Streaming
+concurrent_usrs_a <- b %>% 
+  select(Email, Service.Type, date) %>% 
+  filter(!Service.Type == "MGR") %>% 
+  distinct(Email, date, .keep_all = TRUE) %>% 
+  set_names(c("Email","Service", "date"))
+# Get Builtin/Addon
+concurrent_usrs_b <- data %>% 
+  filter(activity.platform == 'AddOn' | activity.platform == 'Built-in 350') %>%
+  select(account.email, service, date) %>% 
+  distinct(account.email, date, .keep_all = TRUE) %>% 
+  set_names(c("Email","Service", "date"))
+# Merge for all 4 services
+Daily_Active_Users <- rbind(concurrent_usrs_a,concurrent_usrs_b)
 
-# ArcadeNet usage
-daily_arcadenet <- daily %>%
-  filter(Service.Type == 'ArcadeNet') %>% 
-  select(Service.Start.Time, playtime) %>%
-  set_names(c("date", "value"))
+# Sort to have date and unique users
+## Update to latest date ##
+Daily_Active_Users_chart <- Daily_Active_Users %>%
+  distinct(Email, date, .keep_all = TRUE) %>% 
+  filter(between(date, "2019-10-25", "2020-08-02")) %>% 
+  group_by(date)%>%
+  tally() %>% 
+  set_names(c("date", "Users"))
 
-write.csv(daily_arcadenet, "daily_arcadenet.csv", row.names=FALSE)
-daily_arcadenet <- read.csv("daily_arcadenet.csv")
+# Chart
+Daily_Active_Users_chart %>% 
+  ggplot(aes(x=date, y=Users))+
+  geom_line(color="#69b3a2", size=1) +
+  theme_ipsum() +
+  ggtitle("Unique Daily Active User")
 
-daily_arcadenet$value <- as.numeric(daily_arcadenet$value)
-daily_arcadenet$date <- as.Date(daily_arcadenet$date)
-daily_arcadenet %>%
-  plot_time_series(date, value, .interactive = TRUE)
-
-## ===================================================================== ##
+## ================================== ##
 
 
 b_new <- b %>% 
@@ -431,7 +430,7 @@ b_2_new <- b_2 %>%
   filter(month != 0) %>%
   group_by(month, Service.Type)%>% 
   summarise(Count = sum(n))%>% 
-  mutate(highlight_flag = ifelse(month == 'Jul', T, F))
+  mutate(highlight_flag = ifelse(month == 'Aug', T, F))
 
 b_2_new %>% 
   filter(!Service.Type == 'MGR') %>% 
@@ -456,7 +455,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-07-20", "2020-07-26"))
+  filter(between(Service.Start.Time, "2020-07-27", "2020-08-02"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -474,10 +473,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-217014/3600/152
+212449/3600/187
 #BYOG: 
 # (playtime in hours / total weekly users)
-319254/3600/46
+188749/3600/64
 
 
 # Hours played per month (chart)
@@ -518,7 +517,7 @@ b_new %>%
         legend.background = element_rect(fill = "lightblue",
                                          size = 0.5, linetype = "solid", 
                                          colour = "#e9ecef")) +
-  geom_text(position=position_dodge(width=0.9), vjust=-0.2, size = 3.2) +
+  geom_text(position=position_dodge(width=0.9), vjust=-0.1, size = 3.2) +
   geom_text(aes(x= month, label=round(Hours_consumed,0)), position=position_dodge(width=0.9), vjust=2) 
 
 
@@ -722,7 +721,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0",'"4.29.0"')
+               "4.28.0","4.29.0","4.30.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
