@@ -25,7 +25,9 @@ prod <- prod %>% distinct(activity.play_start, activity.play_end, activity.game_
 
 prod <- prod %>% 
   filter(!log_type == "AttractMode") %>% 
-  filter(!log_type == "ConnectDevice")
+  filter(!log_type == "ConnectDevice") %>% 
+  filter(!log_type == "Notification") 
+  
 prod$activity.game_id <- as.character(prod$activity.game_id)
 prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
 prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
@@ -110,7 +112,7 @@ positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
                "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0",
                "4.23.0","4.24.0","4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0","4.29.0","4.30.0")
+               "4.28.0","4.29.0","4.30.0","4.31.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
@@ -274,13 +276,13 @@ d$opted_in <- purrr::map_dfr(d, ~ .x %in% c$account.email)
 # by email
 d_1 <- d %>% 
   # Check for specific competition
-  filter(name == "Astro Fantasia, Canyon Bomber, Congo's Caper, Lunar Lander competition") %>% 
+  filter(name == "Avalanche, Chameleon, Super Breakout, Sky Fox competition") %>% 
   group_by(email) %>% 
   count(opted_in$email)
 # by Initials
 d_2 <- d %>% 
   # Check for specific competition
-  filter(name == "Astro Fantasia, Canyon Bomber, Congo's Caper, Lunar Lander competition") %>% 
+  filter(name == "Avalanche, Chameleon, Super Breakout, Sky Fox competition") %>% 
   group_by(signature,email) %>% 
   count(opted_in$email)
 
