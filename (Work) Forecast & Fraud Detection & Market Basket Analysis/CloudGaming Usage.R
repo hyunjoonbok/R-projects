@@ -171,7 +171,7 @@ users <- users %>%
   group_by(Service.Type, date) %>% 
   tally() %>% 
   set_names(c("Service","date", "value"))
-## Add number to 'users_daily.csv' here
+## At this point, Add ARcadeNet / BYOG latest number to 'users_daily.csv' 
 
 ## Getting  Built-in and Add on From KPI file
 data <- prod
@@ -330,9 +330,9 @@ concurrent_usrs %>%
   theme_tq() + 
   scale_color_tq()
 
-# Graph (July)
+# Graph (Aug)
 concurrent_usrs %>% 
-  filter(month == 'Jul') %>% 
+  filter(month == 'Aug') %>% 
   group_by(hour,Service.Type) %>% 
   summarise(count = n()) %>% 
   ggplot(aes(x = hour, y = count,  fill = Service.Type)) +
@@ -362,7 +362,7 @@ Daily_Active_Users <- rbind(concurrent_usrs_a,concurrent_usrs_b)
 ## Update to latest date ##
 Daily_Active_Users_chart <- Daily_Active_Users %>%
   distinct(Email, date, .keep_all = TRUE) %>% 
-  filter(between(date, "2019-10-25", "2020-08-02")) %>% 
+  filter(between(date, "2019-10-25", "2020-08-09")) %>% 
   group_by(date)%>%
   tally() %>% 
   set_names(c("date", "Users"))
@@ -455,7 +455,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-07-27", "2020-08-02"))
+  filter(between(Service.Start.Time, "2020-08-03", "2020-08-09"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -473,10 +473,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-212449/3600/187
+170795/3600/167
 #BYOG: 
 # (playtime in hours / total weekly users)
-188749/3600/64
+161293/3600/42
 
 
 # Hours played per month (chart)
@@ -721,7 +721,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0","4.29.0","4.30.0")
+               "4.28.0","4.29.0","4.30.0","4.31.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -792,7 +792,7 @@ data <- data %>% filter(!year == 1969)
 
 consol_top_5 <- data %>% 
   select(activity.platform,activity.play_duration, activity.game_title, activity.play_start, activity.play_end, month, geoip.city_name, account.email) %>% 
-  distinct() %>% # remove dupplicate
+  distinct(activity.play_start, activity.play_end,activity.game_title,activity.play_duration, .keep_all= TRUE) %>% # remove dupplicate
   filter(activity.platform == "ArcadeNet" | activity.platform == "Built-in 350") %>% 
   filter(!activity.game_title == "") %>% 
   group_by(activity.platform, activity.game_title) %>% 
@@ -815,7 +815,7 @@ plot(ft)
 # Top 5 per month [Built-in 350]
 Built_in_top_5 <- data %>% 
   select(activity.platform,activity.play_duration, activity.game_title, activity.play_start, activity.play_end, month, geoip.city_name, account.email) %>% 
-  distinct() %>% # remove dupplicate
+  distinct(activity.play_start, activity.play_end,activity.game_title,activity.play_duration, .keep_all= TRUE) %>% # remove dupplicate
   filter(!activity.game_title == "") %>% 
   group_by(month, activity.game_title) %>% 
   filter(activity.platform == 'Built-in 350') %>% 
