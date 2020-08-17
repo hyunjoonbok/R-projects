@@ -362,7 +362,7 @@ Daily_Active_Users <- rbind(concurrent_usrs_a,concurrent_usrs_b)
 ## Update to latest date ##
 Daily_Active_Users_chart <- Daily_Active_Users %>%
   distinct(Email, date, .keep_all = TRUE) %>% 
-  filter(between(date, "2019-10-25", "2020-08-09")) %>% 
+  filter(between(date, "2019-10-25", "2020-08-16")) %>% 
   group_by(date)%>%
   tally() %>% 
   set_names(c("date", "Users"))
@@ -455,7 +455,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-08-03", "2020-08-09"))
+  filter(between(Service.Start.Time, "2020-08-10", "2020-08-16"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -473,10 +473,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-170795/3600/167
+251857/3600/200
 #BYOG: 
 # (playtime in hours / total weekly users)
-161293/3600/42
+175936/3600/49
 
 
 # Hours played per month (chart)
@@ -721,7 +721,8 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0","4.29.0","4.30.0","4.31.0")
+               "4.28.0","4.29.0","4.30.0","4.31.0",
+               "4.32.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
