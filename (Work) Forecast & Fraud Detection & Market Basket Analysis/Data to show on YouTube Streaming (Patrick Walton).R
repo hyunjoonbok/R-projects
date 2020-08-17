@@ -17,32 +17,33 @@ require(scales)
 
 # Data Pre-Processing 
 setwd("C:/Users/bokhy/Desktop")
-prod <- read.csv("Production Arcade Logs.csv") 
-prod <- prod %>% 
-  filter(!log_type == "AttractMode") %>% 
-  filter(!log_type == "ConnectDevice") %>% 
-  filter(geoip.continent_name == 'North America')
-prod$activity.game_id <- as.character(prod$activity.game_id)
-prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
-prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
-prod2 <- prod %>% filter(nchar(activity.game_id) >= 10)
+prod <- read.csv("weekly_cleaned.csv") 
+#prod <- prod %>% 
+#  filter(!log_type == "AttractMode") %>% 
+#  filter(!log_type == "ConnectDevice") %>% 
+#  filter(!log_type == "Notification") %>%
+#  filter(geoip.continent_name == 'North America')
+#prod$activity.game_id <- as.character(prod$activity.game_id)
+#prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
+#prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
+#prod2 <- prod %>% filter(nchar(activity.game_id) >= 10)
 
-prod1 <- prod1 %>%
-  mutate(
-    service = case_when(
-      activity.game_id < 10000 ~ 'Built-in 350',
-      activity.game_id < 10000000 ~ 'BYOG',
-      activity.game_id >= 10000000 ~ 'ArcadeNet',
-      TRUE ~ 'AddOn'
-    )
-  ) 
+#prod1 <- prod1 %>%
+#  mutate(
+#    service = case_when(
+#      activity.game_id < 10000 ~ 'Built-in 350',
+#      activity.game_id < 10000000 ~ 'BYOG',
+#      activity.game_id >= 10000000 ~ 'ArcadeNet',
+#      TRUE ~ 'AddOn'
+#    )
+#  ) 
 
-prod2$service <- "AddOn" 
+#prod2$service <- "AddOn" 
 
-prod1$activity.game_id <- as.character(prod1$activity.game_id)
-prod2$activity.game_id <- as.character(prod2$activity.game_id)
+#prod1$activity.game_id <- as.character(prod1$activity.game_id)
+#prod2$activity.game_id <- as.character(prod2$activity.game_id)
 
-prod <- bind_rows(prod1, prod2)
+#prod <- bind_rows(prod1, prod2)
 
 ## Exclude 4.15.0 and people before 4.11.0?
 prod <- prod %>% 
@@ -69,8 +70,6 @@ data <- prod
 
 data$activity.play_duration <- gsub(",","",data$activity.play_duration)
 data <- transform(data, activity.play_duration = abs(as.numeric(activity.play_duration))) # Change negative value to positive (absolute)
-data <- data %>% 
-  distinct(activity.game_title, activity.play_duration, .keep_all = TRUE) 
 
 data$activity.1p_spinner <- gsub(",","",data$activity.1p_spinner)
 data$activity.2p_spinner <- gsub(",","",data$activity.2p_spinner)
@@ -132,7 +131,7 @@ data %>%
 # (Use the fimware above 4.17.0 -- Trackball fixed)
 positions <- c("4.17.0", "4.18.0","4.19.0","4.20.0","4.21.0",
                "4.22.0","4.23.0","4.24.0","4.25.0","4.26.0","4.26.1",
-               "4.27.0","4.28.0","4.29.0","4.30.0")
+               "4.27.0","4.28.0","4.29.0","4.30.0","4.31.0","4.32.0")
 
 c <- data %>% 
   filter(activity.display_firmware %in% positions) %>% 
