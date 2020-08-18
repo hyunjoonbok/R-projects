@@ -196,5 +196,3 @@ bucket_data %>%
   geom_histogram(colour = "#1F3552") +
   labs(x = 'Purchase Amount ($)', y = 'Number of Customers',
        title = "How much did customers spend on average?")
-  
-
