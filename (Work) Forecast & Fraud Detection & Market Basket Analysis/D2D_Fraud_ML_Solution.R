@@ -47,6 +47,9 @@ transaction$currency_full_name[transaction$currency_full_name == "Euro Member Co
 transaction$currency_full_name[transaction$currency_full_name == "United Kingdom Pound"] <- "GBP"
 transaction$currency_full_name[transaction$currency_full_name == "United States Dollar"] <- "USD"
 
+transaction <- transaction %>% 
+  filter(currency_full_name == 'USD' | currency_full_name == 'GBP' | currency_full_name == 'EUR')
+
 table(transaction$company_name)
 transaction$company_name[transaction$company_name == "1C Company"] <- "1C Entertainment"
 transaction$company_name[transaction$company_name == "Axis Game Factory, Inc."] <- "Axis Game Factory LLC"
@@ -62,7 +65,8 @@ transaction$company_name[transaction$company_name == "Team 17"] <- "Team17"
 # Filter-out incomplete transactions
 transaction <- transaction %>% 
   # Too old transactions
-  filter(!type == 'LivegamerPayment') %>% 
+  filter(!type == 'LivegamerPayment') %>%
+  filter(!country_full_name == 'Taiwan, Province of China') %>% 
   # incomplete transactions
   filter(order_state == 'CHARGED' | order_state == 'REFUNDED') %>% 
   filter(!company_name == 'AtGames Test Publisher 1') %>% 
@@ -70,19 +74,19 @@ transaction <- transaction %>%
   filter(!company_name == 'AtGames Test Publisher 3') %>% 
   filter(!company_name == 'Ravenscourt - DUPLICATE') %>% 
   select(title, company_name, currency_full_name, country_full_name,
-         msrp, publisher_price, coupons, discounts, rev_share_1,
-         order_state, type, gross_revenue, net_revenue, 
-         vip_discount, vip_discounts, payment_date, account_id
-         ) 
+         msrp, order_state, type, gross_revenue,vip_discount, vip_discounts, payment_date) 
 
-transaction$account_id <- as.factor(transaction$account_id)
 # Create uniform title name for all regions (Remove UK,EU specification)
 transaction$title <- gsub("\\â„¢","",transaction$title)
+transaction$title <- gsub("\\?","",transaction$title)
 transaction$title <- gsub("\\??","",transaction$title)
 transaction$title <- gsub("\\{EU}","",transaction$title)
 transaction$title <- gsub("\\{UK}","",transaction$title)
 transaction$title <- gsub("\\®","",transaction$title)
 transaction$title <- gsub("[[:blank:]]","",transaction$title)
+
+transaction <- transaction %>% 
+  filter(!company_name == 'Sony Interactive Entertainment')
 
 # check game list for any duplicates
 game_list <- transaction %>% 
@@ -112,9 +116,7 @@ transaction$currency_full_name <- as.factor(transaction$currency_full_name)
 transaction$country_full_name <- as.factor(transaction$country_full_name)
 transaction$order_state <- as.factor(transaction$order_state)
 transaction$type <- as.factor(transaction$type)
-transaction$rev_share_1 <- as.factor(transaction$rev_share_1)
 transaction$gross_revenue <- as.numeric(transaction$gross_revenue)
-transaction$net_revenue <- as.numeric(transaction$net_revenue)
 transaction$vip_discount <- as.factor(transaction$vip_discount)
 transaction$timeoftheday <- as.factor(transaction$timeoftheday)
 
@@ -123,8 +125,7 @@ transaction$sold_price <- transaction$gross_revenue + transaction$vip_discounts
 transaction <- transaction %>% 
 #  select(-payment_date) %>% 
   filter(gross_revenue >= 0) %>% 
-  filter(sold_price >= 0) %>% 
-  filter(net_revenue >= 0)
+  filter(sold_price >= 0) 
 
 # Check NA values
 transaction %>% na_if("NULL") %>% map_df(~sum(is.na(.)))
@@ -133,6 +134,9 @@ transaction %>% na_if("NULL") %>% map_df(~sum(is.na(.)))
 transaction %>% select_if(is.numeric) %>% skim()
 
 glimpse(transaction)
+
+setwd("C:/Users/bokhy/Desktop/")
+write.csv(transaction, file = 'd2d_transactions.csv')
 
 # Save dataset for later use
 # saveRDS(transaction, "C:/Users/bokhy/Desktop/d2d_transactions.rds")
