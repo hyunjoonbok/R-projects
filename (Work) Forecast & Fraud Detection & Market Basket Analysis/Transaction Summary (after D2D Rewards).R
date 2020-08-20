@@ -24,7 +24,7 @@ library(tidymodels)
 library(beeswarm)
 library(ggbeeswarm)
 setwd("C:/Users/bokhy/Desktop/")
-transaction <- read_csv("aa.csv",col_names = TRUE)
+transaction <- read_csv("a.csv",col_names = TRUE)
 
 table(transaction$currency_full_name)
 transaction$currency_full_name[transaction$currency_full_name == "Euro Member Countries"] <- "EUR"
@@ -49,7 +49,7 @@ transaction$company_name[transaction$company_name == "Team 17"] <- "Team17"
 transaction <- transaction %>% 
   # Too old transactions
   filter(!type == 'LivegamerPayment') %>% 
-  filter(!country_full_name == 'Taiwan, Province of China')
+  filter(!country_full_name == 'Taiwan, Province of China') %>% 
   # incomplete transactions
 #  filter(order_state == 'CHARGED' | order_state == 'REFUNDED') %>% 
   filter(!company_name == 'AtGames Test Publisher 1') %>% 
@@ -57,7 +57,7 @@ transaction <- transaction %>%
   filter(!company_name == 'AtGames Test Publisher 3') %>% 
   filter(!company_name == 'Ravenscourt - DUPLICATE') %>% 
   select(title, company_name, currency_full_name, country_full_name,
-         msrp,type, gross_revenue, 
+         msrp,type, gross_revenue, account_id,
          vip_discount, vip_discounts, payment_date 
   ) 
 
@@ -110,6 +110,7 @@ transaction$gross_revenue <- as.numeric(transaction$gross_revenue)
 #transaction$net_revenue <- as.numeric(transaction$net_revenue)
 transaction$vip_discount <- as.factor(transaction$vip_discount)
 transaction$timeoftheday <- as.factor(transaction$timeoftheday)
+transaction$account_id <- as.factor(transaction$account_id)
 
 # Adding newly created variables
 transaction$sold_price <- transaction$gross_revenue + transaction$vip_discounts
@@ -162,7 +163,46 @@ set_base_theme <- function() {
 
 set_base_theme()
 
-# Visulaization
+# ====== Summary Statistics ========
+##[1] Unique Customer
+transaction %>% group_by(account_id) %>% tally()
+
+##[2] 
+tmp <- transaction %>% group_by(title, vip_discount) %>% tally() %>% arrange(desc(n))
+tmp
+##[3] 
+library(flextable)
+t1 <- transaction %>% group_by(currency_full_name) %>% 
+  tally() %>% 
+  arrange(desc(n)) %>% 
+  set_names(c("Currency","# of Purchases")) 
+ft <- flextable(t1)
+ft <- autofit(ft)
+plot(ft)
+
+t2 <- transaction %>% group_by(country_full_name) %>% 
+  tally() %>% 
+  arrange(desc(n)) %>% 
+  top_n(10) %>% 
+  set_names(c("Country","# of Purchases")) 
+ft <- flextable(t2)
+ft <- autofit(ft)
+plot(ft)
+
+##[4]
+t3 <- transaction %>% 
+  group_by(ddate) %>% 
+  summarise(total_rev = sum(gross_revenue))
+t3 %>% 
+  ggplot(aes(x = ddate, y =total_rev)) +
+  geom_line(color="#69b3a2") +
+  ylim(0, 1000) +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(title = "Daily Revenue Trend",
+       x = "", y = "Gross Revenue", color = "")
+
+# ====== Visulaization ========
 #[1] Number of Purchases per discount level (cumulative)
 transaction %>% 
   drop_na(title) %>% 
