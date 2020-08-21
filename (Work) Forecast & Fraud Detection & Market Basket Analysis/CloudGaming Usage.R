@@ -375,6 +375,63 @@ Daily_Active_Users_chart %>%
   ggtitle("Unique Daily Active User")
 
 ## ================================== ##
+## Usage per Service Provider
+b_t <- b %>% 
+  select(User,Service.Duration, Service.Type, date, Instance.platform) %>% 
+  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
+                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
+                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
+                      "instant01571898606570",
+                      "instant01571906403420",
+                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
+                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
+                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
+                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
+                      "136308a8-5696-4e82-909c-0e8b901e90b9",
+                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
+                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
+                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
+                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
+                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
+                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
+                      "2faad4cf-0927-490e-910e-1078894e2254",
+                      "instant01571991043043",
+                      "instant01571970793132",
+                      "instant01571927166160",
+                      "instant01571926879050",
+                      "instant01571924112161",
+                      "instant01571924037842")) %>% 
+  filter(Instance.platform == 'Azure' | Instance.platform =='Paperspace') %>% 
+  group_by(Instance.platform, date) %>% 
+  summarise(value = sum(Service.Duration)/3600)
+
+b_t <- b_t %>%
+  tq_transmute(select     = value,
+               mutate_fun = apply.weekly,
+               FUN        = sum,
+               na.pad = TRUE)
+
+# Weekly Hours Streamed Trend by Service Provider
+b_t %>% 
+  set_names(c('Service_Provider', "date", "Hours_Played")) %>% 
+  ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider, color = Service_Provider)) +
+  geom_line() +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(title = "Weekly Hours Streamed by Service Provider",
+       x = "", y = "Hours Played", color = "")
+
+# Weekly Hours Streamed by Service Provider 
+b_t %>%
+  set_names(c('Service_Provider', "date", "Hours_Played")) %>%
+  filter(between(date, "2020-04-26", "2020-08-16")) %>% 
+  ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider)) +
+  geom_bar(stat = "identity", position = 'stack') +
+  theme_tq() + 
+  scale_color_tq()
+
+
+## ================================== ##
 
 
 b_new <- b %>% 
