@@ -80,25 +80,6 @@ data <- prod
 write.csv(data, "weekly_cleaned.csv")
 
 ## ============================ ##
-# NOT USING #
-
-prod <- prod %>% separate(activity.play_start,
-                          c("Date","a"), sep = '@')
-
-prod$Time <- gsub("\\..*","",prod$a)
-
-prod$Date <- as.Date(prod$Date, "%B %d, %Y")
-
-prod$Weekdays <- weekdays(prod$Date)
-
-prod$hour <- as.numeric(gsub("\\:.*$", "", prod$Time))
-prod$timeoftheday<- with(prod, ifelse(hour >= 5 & hour<=11, "morning",
-                                      ifelse(hour>11 & hour<=16, "afternoon",
-                                             ifelse(hour>16 & hour<=21, "evening" ,"night"))))
-prod$a <- NULL
-prod <- prod %>% select(Date,Time,Weekdays,hour,timeoftheday, everything())
-
-## ============================ ##
 
 #==== Class 1 ====#
 
@@ -112,7 +93,7 @@ positions <- c("4.1.0", "4.2.0","4.3.0","4.4.0","4.5.0","4.6.0",
                "4.12.0","4.13.0","4.14.0","4.14.1","4.15.0","4.16.0",
                "4.17.0","4.18.0","4.19.0","4.20.0","4.21.0","4.22.0",
                "4.23.0","4.24.0","4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0","4.29.0","4.30.0","4.31.0","4.32.0")
+               "4.28.0","4.29.0","4.30.0","4.31.0","4.32.0","4.33.0")
 
 # 4.1.0 and over count
 temp <- fw_count %>% 
