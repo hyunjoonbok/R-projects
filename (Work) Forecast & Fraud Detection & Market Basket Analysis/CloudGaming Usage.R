@@ -109,7 +109,7 @@ b$Time <- gsub("\\..*","",b$a)
 
 # Change to PST (UTC - 8 hours)
 b$Time <- as.POSIXct(b$Time, format = "%H:%M:%S")
-b$Time <- as_datetime(b$Time, tz = "America/Los_Angeles") - 3600 *8
+b$Time <- as_datetime(b$Time, tz = "America/Los_Angeles") - (3600*8)
 b$Time <- as.ITime(b$Time)
 
 b$Date <- as.Date(b$Date, "%Y-%m-%d")
@@ -163,14 +163,16 @@ users <- b %>%
                       "instant01571926879050",
                       "instant01571924112161",
                       "instant01571924037842")) %>%
-  group_by(Service.Type, User, date) %>% 
+  group_by(Service.Type, date, User) %>% 
   summarise(Session_opened = n()) %>% 
   distinct()
 
 users <- users %>% 
   group_by(Service.Type, date) %>% 
-  tally() %>% 
+  summarise(value =  n()) %>% 
   set_names(c("Service","date", "value"))
+
+
 ## At this point, Add ARcadeNet / BYOG latest number to 'users_daily.csv' 
 
 ## Getting  Built-in and Add on From KPI file
@@ -262,7 +264,7 @@ users_monthly <- users %>%
                na.pad = TRUE)
 
 # Daily Graph
-users %>% 
+users_daily %>% 
   ggplot(aes(x = date, y = value,  color = Service)) +
   geom_line(size = 1) +
   facet_wrap(~ Service, ncol = 2) +
@@ -512,7 +514,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-08-10", "2020-08-16"))
+  filter(between(Service.Start.Time, "2020-08-17", "2020-08-24"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -530,10 +532,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-251857/3600/200
+220934/3600/209
 #BYOG: 
 # (playtime in hours / total weekly users)
-175936/3600/49
+114758/3600/50
 
 
 # Hours played per month (chart)
@@ -779,7 +781,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
                "4.28.0","4.29.0","4.30.0","4.31.0",
-               "4.32.0")
+               "4.32.0","4.33.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
