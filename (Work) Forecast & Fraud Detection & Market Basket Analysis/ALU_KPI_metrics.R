@@ -11,6 +11,7 @@ require(plotly)
 #require(bbplot)
 require(stringr)
 library(ggthemes)
+require(scales)
 setwd("C:/Users/bokhy/Desktop/")
 prod <- read.csv("Production Arcade Logs.csv") 
 
@@ -117,6 +118,11 @@ sum(temp2$n[temp2$display_version_number %in% tail(positions,3)])
 sum(temp2$n[temp2$display_version_number %in% tail(positions,4)]) 
 sum(temp2$n[temp2$display_version_number %in% tail(positions,5)]) 
 
+table(fw_count$State)
+fw_count$State[fw_count$State == "DOWNLOADED"] <- "CHECKING"
+fw_count$State[fw_count$State == "CHECKING"] <- "Failed"
+fw_count$State[fw_count$State == "Success"] <- "Updated"
+
 # All Users Firmware Version Count 
 p <- fw_count %>%
   filter(display_version_number %in% positions) %>%
@@ -126,7 +132,8 @@ p <- fw_count %>%
   ggplot(aes(x = display_version_number, fill = State)) +
   geom_bar(colour="black", stat = 'count') +
   scale_x_discrete(limits = positions) +
-  coord_flip() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+#  coord_flip() +
   labs(x = "Firmware Version", y = "User Count")
 p
 
@@ -148,14 +155,14 @@ p3 <- fw_count %>%
   ggplot(aes(x = date_taken_date, fill = early_adopt)) + 
   geom_histogram(stat='count', colour = barlines, alpha=.9, width=.7) +
   geom_hline(yintercept = 0, size = 1, colour="#333333") +
-  theme_economist() +
+#  theme_economist() +
   labs(x = "Days taken", y = "User Count",
        subtitle = "How long does the user take to update the firmware after its release? ") +
   stat_count(color = "black", geom="text", aes(label=..count..),  position=position_stack(vjust = 0.5))
 
 p3
-
-
+sum(fw_count$date_taken_date)
+table(fw_count$date_taken_date)
 
 #==== Class 2 ====#
 
