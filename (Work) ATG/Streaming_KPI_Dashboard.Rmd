@@ -1,0 +1,128 @@
+---
+title: "Streaming_KPI_Dashboard"
+author: "HyunJoon Bok"
+date: "August 25, 2020"
+output: html_document
+---
+
+# Check Below links to finish send-out emails 
+https://github.com/rstudio/blastula
+https://solutions.rstudio.com/post/rstudio-connect-custom-emails-with-blastula/
+
+```{r setup, include=FALSE}
+setwd("C:/Users/bokhy/Desktop/alu_kpis")
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(gt)
+library(blastula)
+library(glue)
+
+library(flexdashboard)
+library(DT)
+source("alu_kpis.R")
+```
+
+```{r data, include=FALSE}
+ALU_kpis <- get_kpis()
+# Get the KPIs for the most recent day in a list
+one_day_kpis <-
+  ALU_kpis %>%
+  select(value) %>%
+  head(1) %>% as.list()
+```
+
+```{r}
+highlight_weekends <- function(data) {
+
+  data %>%
+    tab_style(
+      style = cell_fill(color = "gray95"),
+      locations = cells_body(
+        columns = TRUE,
+        rows = wday %in% c(1, 7)
+      )
+    )
+}
+```
+
+
+## Summary of Business Health
+
+The following table shows our business health KPIs. Each row represents a daily view of the KPIs that determine the success of our product. These are DAU (*Daily Active Users*), DAC (*Daily Active Customers*), the ratio DAC/DAU, our daily New Users and Churned Users, and, our Daily Revenue. If any KPIs are problematic, their values are shaded in light red.
+
+```{r business_health_gt, echo=FALSE}
+gt_health <-
+  ALU_kpis %>%
+  select(Service, date, value,wday) %>% 
+  gt(rowname_col = "date", groupname_col = "Service") %>%
+  tab_header(
+    title = "Daily Unique Users",
+    subtitle = "Last 7 days of KPIs shown for Product (weekend in gray)"
+  ) %>% 
+  highlight_weekends() %>%
+  cols_hide(columns = vars(wday)) %>%
+  cols_align(align = "right", everything()) %>%
+  tab_options(table.width = px(740), data_row.padding = px(2.5)) %>%
+  cols_width(everything() ~ px(740 / 7)) %>%
+  opt_all_caps()
+```
+
+
+## Daily Users Chart
+
+The following time-series plot gives us a picture of how our user-based KPIs have been performing over the last 30 days.
+
+```{r ggplot_users, fig.align="center", echo=FALSE}
+ALU_kpis %>%
+  ggplot() +
+  geom_line(aes(x = date, y = value,  color = Service)) +
+  theme_tq() + 
+  scale_color_tq() +
+  labs(
+    title = "Daily Unique Users per Service",
+    x = "", y = "Users", color = "Service"
+  ) +
+  #theme_minimal() +
+  theme(
+    plot.title.position = "plot",
+    plot.caption.position =  "plot",
+    legend.position = "top"
+  )
+```
+
+
+## Daily Playtime Chart
+
+The following time-series plot gives us a picture of how our daily playtime revenue has been changing over time.
+
+```{r ggplot_revenue, fig.align="center", echo=FALSE}
+ALU_kpis %>%
+  select(date, playtime, Service) %>%
+  ggplot(aes(x = date, y = playtime, color = Service)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, shape = 21, fill = "white", stroke = 1) +
+  scale_y_continuous(position = "left",
+                     label = label_number(suffix = " (Hrs)")) +
+  labs(
+    title = "Daily Playtime for each service",
+    subtitle = "Playtime in Hours (Add-On and Built-in are Opt-in User Only)\n",
+    x = "", y = ""
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title.position = "plot",
+    plot.caption.position =  "plot"
+  )
+```
+
+```{r connect_email_setup, echo=FALSE}
+render_connect_email(input = "business_health_email.Rmd") %>%
+    attach_connect_email(
+      subject = glue(
+        "One or more KPIs ({total_exceed}) broke thresholds: \\
+        {paste(names_exceed, collapse = ', ')}"
+      ),
+      attachments = "All_services.csv")
+
+```
