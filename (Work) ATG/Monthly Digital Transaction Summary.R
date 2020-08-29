@@ -26,16 +26,16 @@ D2D <- read_csv("D2D.csv")
 WMT <- read_csv("WMT.csv")
 
 
-D2D$`Product Title` <- gsub("\\<U+0099>s","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\<U+393C>","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\<U+3E39>s","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\â„¢","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\?","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\??","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\{EU}","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\{UK}","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("\\®","",D2D$`Product Title`)
-D2D$`Product Title` <- gsub("[[:blank:]]","",D2D$`Product Title`)
+D2D$title <- gsub("\\<U+0099>s","",D2D$title )
+D2D$title  <- gsub("\\<U+393C>","",D2D$title )
+D2D$title  <- gsub("\\<U+3E39>s","",D2D$title )
+D2D$title  <- gsub("\\â„¢","",D2D$title )
+D2D$title  <- gsub("\\?","",D2D$title )
+D2D$title  <- gsub("\\??","",D2D$title )
+D2D$title  <- gsub("\\{EU}","",D2D$title )
+D2D$title  <- gsub("\\{UK}","",D2D$title )
+D2D$title  <- gsub("\\®","",D2D$title )
+D2D$title  <- gsub("[[:blank:]]","",D2D$title )
 
 
 WMT$Products <- gsub("\\<U+0099>s","",WMT$Products)
@@ -49,21 +49,21 @@ WMT$Products <- gsub("\\{UK}","",WMT$Products)
 WMT$Products <- gsub("\\®","",WMT$Products)
 WMT$Products <- gsub("[[:blank:]]","",WMT$Products)
 
-D2D$Publisher[D2D$Publisher == "HandyGames, THQ Nordic"] <- "HandyGames"
+D2D$company_name[D2D$company_name == "HandyGames, THQ Nordic"] <- "HandyGames"
 
 # Daily Revenue
 
-dd <- D2D %>% select(`Product Title`, Publisher, Email, `Final Gross collection`) %>% 
-  group_by(`Product Title`,Publisher) %>% tally() %>% arrange(desc(n))
+dd <- D2D %>% select(title, company_name, account_id, gross_revenue) %>% 
+  group_by(title,company_name) %>% tally() %>% arrange(desc(n))
 
 ww <- WMT %>% select(Products, Publishers) %>% 
   group_by(Products,Publishers) %>% tally() %>% arrange(desc(n))
 
 
-D2D <- D2D %>% separate(`Date Purchased`,
-                        c("Date","a",'timezone'), sep = ' ')
+D2D <- D2D %>% separate(payment_date,
+                        c("Date","a"), sep = ' ')
 D2D$Time <- gsub("\\..*","",D2D$a)
-D2D$Date <- as.Date(D2D$Date, "%Y-%m-%d")
+D2D$Date <- as.Date(D2D$Date, "%m/%d/%Y")
 D2D$Weekdays <- weekdays(D2D$Date)
 D2D$month <- month(D2D$Date)
 D2D$date <- date(D2D$Date)
@@ -91,7 +91,7 @@ WMT$month <- month.abb[WMT$month]
 
 d2d_users <- D2D %>% 
   group_by(date) %>% 
-  summarise(value =  sum(`Final Gross collection`)) %>%
+  summarise(value =  sum(gross_revenue)) %>%
   pad_by_time(date, .by = "auto") %>% 
   mutate(Service = 'D2D') %>% 
   replace_na(list(value = 0)) %>% 
