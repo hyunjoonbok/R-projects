@@ -172,14 +172,16 @@ users <- users %>%
   summarise(value =  n()) %>% 
   set_names(c("Service","date", "value"))
 
+write.csv(users, 'aa.csv')
+
 ## Change the Date below each week ##
 
 ArcadeNet <- users %>% 
-  filter(between(date, "2020-08-17", "2020-08-23")) %>%
+  filter(between(date, "2020-08-24", "2020-08-30")) %>%
   filter(Service == "ArcadeNet")
 
 BYOG <- users %>% 
-  filter(between(date, "2020-08-17", "2020-08-23")) %>%
+  filter(between(date, "2020-08-24", "2020-08-30")) %>%
   filter(Service == "Cloud BYOG")
 
 
@@ -427,7 +429,7 @@ Daily_Active_Users <- rbind(concurrent_usrs_a,concurrent_usrs_b)
 ## Update to latest date ##
 Daily_Active_Users_chart <- Daily_Active_Users %>%
   distinct(Email, date, .keep_all = TRUE) %>% 
-  filter(between(date, "2019-10-25", "2020-08-16")) %>% 
+  filter(between(date, "2019-10-25", "2020-08-30")) %>% 
   group_by(date)%>%
   tally() %>% 
   set_names(c("date", "Users"))
@@ -479,6 +481,7 @@ b_t <- b_t %>%
 # Weekly Hours Streamed Trend by Service Provider
 b_t %>% 
   set_names(c('Service_Provider', "date", "Hours_Played")) %>% 
+  filter(!date == '2020-08-31') %>% 
   ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider, color = Service_Provider)) +
   geom_line() +
   theme_tq() + 
@@ -489,7 +492,7 @@ b_t %>%
 # Weekly Hours Streamed by Service Provider 
 b_t %>%
   set_names(c('Service_Provider', "date", "Hours_Played")) %>%
-  filter(between(date, "2020-04-26", "2020-08-16")) %>% 
+  filter(between(date, "2020-04-26", "2020-08-30")) %>% 
   ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider)) +
   geom_bar(stat = "identity", position = 'stack') +
   theme_tq() + 
@@ -554,8 +557,11 @@ b_2_new <- b_2 %>%
   summarise(Count = sum(n))%>% 
   mutate(highlight_flag = ifelse(month == 'Aug', T, F))
 
+look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug')
+
 b_2_new %>% 
   filter(!Service.Type == 'MGR') %>% 
+  filter(month %in% look_month) %>%
   ggplot(aes(x = month , y = Count, fill = highlight_flag)) +
   geom_bar(position="dodge", stat="identity") +
   scale_fill_manual(values = c('grey', 'red')) +
@@ -577,7 +583,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-08-17", "2020-08-24"))
+  filter(between(Service.Start.Time, "2020-08-25", "2020-08-31"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -595,10 +601,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-220934/3600/209
+272076/3600/211
 #BYOG: 
 # (playtime in hours / total weekly users)
-114758/3600/50
+159279/3600/39
 
 
 # Hours played per month (chart)
@@ -610,23 +616,19 @@ b_3 <- b_new %>%
 ft <- flextable(b_3)
 ft <- autofit(ft)
 plot(ft)
-
-# by service type?
-b_4 <- b_new %>% 
-  group_by(Service.Type,month) %>% 
-  summarise(total_hours = format(round(sum(Service.Duration/3600),1), nsmall = 1, big.mark = ',' ))
-
-
 # save as on image
-#flextable::save_as_image(b_3, path = "test.png")
+#flextable::save_as_image(ft, path = "test.png")
 
 
 # Hours Consumed per month (graph)
+look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug')
+
 b_new %>% 
   rename("Service" = Service.Type) %>% 
   filter(!Service == 'MGR') %>% 
   filter(month != "") %>% 
-  group_by(month, Service) %>% 
+  group_by(month, Service) %>%
+  filter(month %in% look_month) %>% 
   summarise(Hours_consumed = sum(Service.Duration/3600)) %>%
   mutate(percentage = round(prop.table(Hours_consumed),2)) %>% 
   ggplot(aes(x = month , y = Hours_consumed, fill = Service, label = percent(percentage))) +
@@ -844,7 +846,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.22.0","4.22.0","4.23.0","4.24.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
                "4.28.0","4.29.0","4.30.0","4.31.0",
-               "4.32.0","4.33.0")
+               "4.32.0","4.33.0","4.34.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
