@@ -177,11 +177,11 @@ write.csv(users, 'aa.csv')
 ## Change the Date below each week ##
 
 ArcadeNet <- users %>% 
-  filter(between(date, "2020-08-24", "2020-08-30")) %>%
+  filter(between(date, "2020-08-31", "2020-09-06")) %>%
   filter(Service == "ArcadeNet")
 
 BYOG <- users %>% 
-  filter(between(date, "2020-08-24", "2020-08-30")) %>%
+  filter(between(date, "2020-08-31", "2020-09-06")) %>%
   filter(Service == "Cloud BYOG")
 
 
@@ -280,11 +280,11 @@ builtin350_playtime <- data %>%
 
 
 ArcadeNet_playtime <- uu %>% 
-  filter(between(date, "2020-08-17", "2020-08-23")) %>%
+  filter(between(date, "2020-08-31", "2020-09-06")) %>%
   filter(Service == "ArcadeNet")
 
 BYOG_playtime <- uu %>% 
-  filter(between(date, "2020-08-17", "2020-08-23")) %>%
+  filter(between(date, "2020-08-31", "2020-09-06")) %>%
   filter(Service == "Cloud BYOG")
 
 All_services_playtime <- rbind(builtin350_playtime,ArcadeNet_playtime,
@@ -429,7 +429,7 @@ Daily_Active_Users <- rbind(concurrent_usrs_a,concurrent_usrs_b)
 ## Update to latest date ##
 Daily_Active_Users_chart <- Daily_Active_Users %>%
   distinct(Email, date, .keep_all = TRUE) %>% 
-  filter(between(date, "2019-10-25", "2020-08-30")) %>% 
+  filter(between(date, "2019-10-25", "2020-09-06")) %>% 
   group_by(date)%>%
   tally() %>% 
   set_names(c("date", "Users"))
@@ -481,7 +481,7 @@ b_t <- b_t %>%
 # Weekly Hours Streamed Trend by Service Provider
 b_t %>% 
   set_names(c('Service_Provider', "date", "Hours_Played")) %>% 
-  filter(!date == '2020-08-31') %>% 
+  filter(!date == '2020-09-08') %>% 
   ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider, color = Service_Provider)) +
   geom_line() +
   theme_tq() + 
@@ -492,7 +492,7 @@ b_t %>%
 # Weekly Hours Streamed by Service Provider 
 b_t %>%
   set_names(c('Service_Provider', "date", "Hours_Played")) %>%
-  filter(between(date, "2020-04-26", "2020-08-30")) %>% 
+  filter(between(date, "2020-04-26", "2020-09-06")) %>% 
   ggplot(aes(x = date, y = Hours_Played,  fill = Service_Provider)) +
   geom_bar(stat = "identity", position = 'stack') +
   theme_tq() + 
@@ -555,9 +555,9 @@ b_2_new <- b_2 %>%
   filter(month != 0) %>%
   group_by(month, Service.Type)%>% 
   summarise(Count = sum(n))%>% 
-  mutate(highlight_flag = ifelse(month == 'Aug', T, F))
+  mutate(highlight_flag = ifelse(month == 'Sep', T, F))
 
-look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug')
+look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug','Sep')
 
 b_2_new %>% 
   filter(!Service.Type == 'MGR') %>% 
@@ -583,7 +583,7 @@ b_temp$Service.Start.Time <- as.Date(b_temp$Service.Start.Time)
 
 # Change the period we want to see for unique streaming user count per service
 b_temp <- b_temp %>%  
-  filter(between(Service.Start.Time, "2020-08-25", "2020-08-31"))
+  filter(between(Service.Start.Time, "2020-08-31", "2020-09-06"))
 
 b_temp_0 <- b_temp %>% 
   group_by(Email,Service.Type) %>%  
@@ -601,10 +601,10 @@ b_temp %>% group_by(Service.Type) %>% summarise(total = sum(Service.Duration))
 b_temp %>% select(Email, Service.Type) %>% distinct() %>% group_by(Service.Type) %>% summarise(count = n())
 #ArcadeNet: 
 # (playtime in hours / total weekly users)
-272076/3600/211
+415036/3600/356
 #BYOG: 
 # (playtime in hours / total weekly users)
-159279/3600/39
+111413/3600/54
 
 
 # Hours played per month (chart)
@@ -621,7 +621,7 @@ plot(ft)
 
 
 # Hours Consumed per month (graph)
-look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug')
+look_month <- c('Feb','Mar','Apr','May','Jun','Jul','Aug','Sep')
 
 b_new %>% 
   rename("Service" = Service.Type) %>% 
