@@ -174,7 +174,15 @@ users <- users %>%
 
 write.csv(users, 'aa.csv')
 
+####
+setwd("C:/Users/bokhy/Desktop/")
+write.csv(a,'export_all_total_serving_time_report.csv', row.names = FALSE)
+write.csv(b,"session_byuser_export.csv", row.names = FALSE)
+
+####
+
 ## Change the Date below each week ##
+setwd("C:/Users/bokhy/Desktop/ATG")
 
 ArcadeNet <- users %>% 
   filter(between(date, "2020-08-31", "2020-09-06")) %>%
