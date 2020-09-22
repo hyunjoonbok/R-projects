@@ -90,7 +90,8 @@ a_2 %>%
 # Avg. Usage per user per session(graph)
 library(modeltime)
 # read data
-setwd("C:/Users/bokhy/Desktop/ATG")
+
+setwd("C:/Users/bokhy/Desktop/ATG/")
 b <- read.csv("session_byuser_export.csv")
 b <- b %>% filter(!Email %in% d$Email)
 
