@@ -73,6 +73,12 @@ b <- b[,-1]
 write.csv(b,"session_byuser_export.csv", row.names = FALSE)
 
 
+#2. Cumulative Unique User ==== 
+setwd("C:/Users/bokhy/Desktop/ATG")
+c <- read.csv('Production Arcade Logs_new.csv')
+c %>% group_by(machine_uuid) %>% count()
+
+
 #2. Third-Party Data ==== (not using)
 
 # Read Data
