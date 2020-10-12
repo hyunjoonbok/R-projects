@@ -73,7 +73,7 @@ b <- b[,-1]
 write.csv(b,"session_byuser_export.csv", row.names = FALSE)
 
 
-#2. Cumulative Unique User ==== 
+#2. Cumulative Unique User (Opt-in User Count) ==== 
 setwd("C:/Users/bokhy/Desktop/ATG")
 c <- read.csv('Production Arcade Logs_new.csv')
 c %>% group_by(machine_uuid) %>% count()
@@ -165,7 +165,7 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
                "4.28.0","4.29.0","4.30.0","4.31.0",
                "4.32.0","4.33.0","4.34.0","5.0.0",
-               "5.1.0","5.2.0","5.3.0","5.4.0")
+               "5.1.0","5.2.0","5.3.0","5.4.0","5.5.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -265,18 +265,18 @@ AddOn <- AddOn %>%
 
 ## Selecting Dates per each service
 ArcadeNet <- users %>% 
-  filter(between(date, "2020-09-07", "2020-10-04")) %>%
+  filter(between(date, "2020-09-07", "2020-10-11")) %>%
   filter(Service == "ArcadeNet")
 
 BYOG <- users %>% 
-  filter(between(date, "2020-09-07", "2020-10-04")) %>%
+  filter(between(date, "2020-09-07", "2020-10-11")) %>%
   filter(Service == "Cloud BYOG")
 
 builtin350 <- builtin350 %>% 
-  filter(between(date, "2020-09-07", "2020-10-04")) 
+  filter(between(date, "2020-09-07", "2020-10-11")) 
 
 AddOn <- AddOn %>% 
-  filter(between(date, "2020-09-07", "2020-10-04")) 
+  filter(between(date, "2020-09-07", "2020-10-11")) 
 
 All_services <- rbind(builtin350,ArcadeNet,BYOG,AddOn)
 
