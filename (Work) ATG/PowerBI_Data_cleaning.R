@@ -165,7 +165,8 @@ positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
                "4.25.0","4.26.0","4.26.1","4.27.0",
                "4.28.0","4.29.0","4.30.0","4.31.0",
                "4.32.0","4.33.0","4.34.0","5.0.0",
-               "5.1.0","5.2.0","5.3.0","5.4.0","5.5.0")
+               "5.1.0","5.2.0","5.3.0","5.4.0","5.5.0",
+               "5.6.0")
 
 # Excluding bad entries (4.15.0) and people before 4.11.0
 
@@ -265,18 +266,18 @@ AddOn <- AddOn %>%
 
 ## Selecting Dates per each service
 ArcadeNet <- users %>% 
-  filter(between(date, "2020-09-07", "2020-10-11")) %>%
+  filter(between(date, "2020-09-07", "2020-10-18")) %>%
   filter(Service == "ArcadeNet")
 
 BYOG <- users %>% 
-  filter(between(date, "2020-09-07", "2020-10-11")) %>%
+  filter(between(date, "2020-09-07", "2020-10-18")) %>%
   filter(Service == "Cloud BYOG")
 
 builtin350 <- builtin350 %>% 
-  filter(between(date, "2020-09-07", "2020-10-11")) 
+  filter(between(date, "2020-09-07", "2020-10-18")) 
 
 AddOn <- AddOn %>% 
-  filter(between(date, "2020-09-07", "2020-10-11")) 
+  filter(between(date, "2020-09-07", "2020-10-18")) 
 
 All_services <- rbind(builtin350,ArcadeNet,BYOG,AddOn)
 
