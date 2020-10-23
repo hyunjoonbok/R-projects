@@ -157,30 +157,10 @@ prod2$activity.game_id <- as.character(prod2$activity.game_id)
 
 prod <- bind_rows(prod1, prod2)
 
-
-positions <- c("4.10.0","4.11.1","4.12.0","4.13.0",
-               "4.14.0","4.14.1","4.16.0","4.17.0",
-               "4.18.0","4.19.0","4.20.0","4.21.0",
-               "4.22.0","4.22.0","4.23.0","4.24.0",
-               "4.25.0","4.26.0","4.26.1","4.27.0",
-               "4.28.0","4.29.0","4.30.0","4.31.0",
-               "4.32.0","4.33.0","4.34.0","5.0.0",
-               "5.1.0","5.2.0","5.3.0","5.4.0","5.5.0",
-               "5.6.0")
-
-# Excluding bad entries (4.15.0) and people before 4.11.0
-
-prod <- prod %>% 
-  #  filter(!service == "AddOn") %>% 
-  filter(!activity.platform == "Byog") %>%
-  filter(activity.display_firmware %in% positions)   # Filter out 4.15.0 in Firmware version 
-#  filter(!activity.display_firmware == "4.15.0") # Filter out Blank
-
 prod$activity.game_title <- gsub("\\??","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\?","",prod$activity.game_title)
 prod$activity.game_title <- gsub("\\®","",prod$activity.game_title)
 prod$activity.game_title <- gsub("[[:blank:]]","",prod$activity.game_title)
-
 
 prod$activity.platform <- as.character(prod$activity.platform)
 prod$service <- as.character(prod$service)
@@ -190,14 +170,12 @@ prod$activity.platform <- ifelse(prod$activity.platform == "", prod$service,prod
 prod$activity.platform[prod$activity.platform == 'BuildIn'] <- 'Built-in 350'
 prod$activity.platform[prod$activity.platform == 'Byog'] <- 'BYOG'
 
-
 prod$activity.platform <- as.factor(prod$activity.platform)
 
-prod <- prod %>% 
-  filter(!activity.platform == "BYOG")
+#prod <- prod %>% filter(!activity.platform == "BYOG")
 
 table(prod$activity.platform)
-
+table(prod$service)
 
 data <- prod
 
@@ -231,9 +209,22 @@ data$month <- month.abb[data$month]
 
 # Make sure to add month
 data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", 
-                                              "Apr",'May','Jun','Jul','Aug','Sep'))
+                                              "Apr",'May','Jun','Jul','Aug','Sep','Oct'))
+## [Change Date]
+# !!Change End Date!!!
+data <- data %>% 
+  filter(!year == 1969) %>% 
+  filter(between(date, "2019-10-01", "2020-10-18")) 
 
-data <- data %>% filter(!year == 1969)
+
+setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
+write.csv(data, "active_users_opt_in.csv", row.names = FALSE)
+
+
+
+#### not using below ####
+
+
 
 builtin350 <- data %>% 
   select(machine_uuid, date, activity.play_duration, 
