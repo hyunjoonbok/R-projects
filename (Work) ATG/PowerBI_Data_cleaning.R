@@ -208,13 +208,13 @@ data$timeoftheday<- with(data, ifelse(hour >= 5 & hour<=11, "morning",
 data$month <- month.abb[data$month]
 
 # Make sure to add month
-data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", 
-                                              "Apr",'May','Jun','Jul','Aug','Sep','Oct'))
+# data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr",'May','Jun','Jul','Aug','Sep','Oct'))
+
 ## [Change Date]
 # !!Change End Date!!!
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2020-10-18")) 
+  filter(between(date, "2019-10-01", "2020-10-25")) 
 
 
 setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
