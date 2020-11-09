@@ -82,17 +82,16 @@ c %>% group_by(machine_uuid) %>% count()
 #2. Third-Party Data ==== (not using)
 
 # Read Data
-setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
-thrid_party <- read.csv('[New] 3rd Party Data.csv')
+#setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
+#thrid_party <- read.csv('[New] 3rd Party Data.csv')
 
-thrid_party <- thrid_party %>% filter(!account.email %in% d$Email)
+#thrid_party <- thrid_party %>% filter(!account.email %in% d$Email)
 
-thrid_party <- thrid_party %>% separate(X.timestamp,
-                    c("Date",'Time'), sep = '@')
+#thrid_party <- thrid_party %>% separate(X.timestamp,c("Date",'Time'), sep = '@')
 
-thrid_party$Time <- gsub("\\..*","",thrid_party$Time)
+#thrid_party$Time <- gsub("\\..*","",thrid_party$Time)
 
-write.csv(thrid_party,"[New] 3rd Party Data.csv", row.names = FALSE)
+#write.csv(thrid_party,"[New] 3rd Party Data.csv", row.names = FALSE)
 
 
 #3. Active Users (Daily,Weekly, Monthly) ====
@@ -214,7 +213,7 @@ data$month <- month.abb[data$month]
 # !!Change End Date!!!
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2020-11-01")) 
+  filter(between(date, "2019-10-01", "2020-11-08")) 
 
 
 #data_final <- data[,c(1,2,5,6,10,14,26,29,31,32,35,40,41,42,43,45)]
