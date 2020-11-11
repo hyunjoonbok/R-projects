@@ -224,9 +224,18 @@ write.csv(data, "active_users_opt_in.csv", row.names = FALSE)
 
 
 
+#### For Free-Hour-Type Tickets ####
+
+setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
+d <- read.csv("employee.csv")
+setwd("C:/Users/bokhy/Desktop/")
+free_hour <- read.csv('ticket_free_hour_type.csv')
+
+free_hour <- free_hour %>% filter(!Email %in% d$Email)
+
+write.csv(free_hour,"ticket_free_hour_type.csv", row.names = FALSE)
+
 #### not using below ####
-
-
 
 builtin350 <- data %>% 
   select(machine_uuid, date, activity.play_duration, 
