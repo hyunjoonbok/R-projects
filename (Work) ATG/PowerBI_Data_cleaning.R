@@ -213,7 +213,7 @@ data$month <- month.abb[data$month]
 # !!Change End Date!!!
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2020-11-08")) 
+  filter(between(date, "2019-10-01", "2020-11-15")) 
 
 
 #data_final <- data[,c(1,2,5,6,10,14,26,29,31,32,35,40,41,42,43,45)]
