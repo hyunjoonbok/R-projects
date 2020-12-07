@@ -297,25 +297,31 @@ I tried to include the usage of packages and methods that have been consistently
 
    - ## Statistic Concepts with real-world examples
 
-      ### [Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Logistic%20Regression.R)
+      ### [Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Logistic%20Regression.R)
       <p>
       Concept of Logistic Regression displayed in R code. Solves a binary classification problem.
       </p>
 
-      ### [Mutinomial Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Multinomial%20Regression.R)
+      ### [Mutinomial Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Multinomial%20Regression.R)
       <p>
       Multinomial regression is similar to logistic regression, but fits better when the response variable is a categorical variable with more than 2 levels.
       </p>   
 
-      ### [Ordinal Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ordinal%20logistic%20regression.R)
+      ### [Ordinal Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Ordinal%20logistic%20regression.R)
       <p>
        Ordinal logistic regression can be used to model a ordered factor response. Here, we use ordered logistic regression to predict the car evaluation.
       </p>   
 
-      ### [Ridge Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ridge%20Regression.R)
+      ### [Ridge Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Ridge%20Regression.R)
       <p>
        Ridge Regression is a commonly used technique to address the problem of "multi-collinearity". We looks at the result of Linear Regression vs Ridge Regression
       </p>   
+      
+      
+      ### [Network Analysis and Manipulation](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Network%20Analysis%20and%20Manipulation%20using%20R.R)
+      <p>
+        Social Network Analysis is a set of methods used to visualize networks, describe specific characteristics of overall network structure, and build mathematical and statistical models of network structures and dynamics
+      </p> 
 
 <hr>
 
