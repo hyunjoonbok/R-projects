@@ -10,7 +10,7 @@ For a detailed code example and images, please refer to .readme file presented b
 <hr>
 
 ## Motivation / Thought Process
-As R is often less preferrable compared to other languages in terms of less production-ready codes, I think R is still a very powerful language. I personally am fond of and use R for everyday analysis from simple EDA to creating stunning visualizations and building a complex ML/DL models. I think R has its strong advantage in looking at codes and results at a controlled enviornmenets.  
+These days R is less preferrable in industory for various reasons (i.e less production-ready, non-scalable). However, I think R is still a very powerful language. I personally am fond of and use R for everyday analysis from simple EDA to creating stunning visualizations and building a complex ML/DL models. I think R has its strong advantage in looking at codes and results at a controlled enviornmenets.  
 
 This repository was origianlly to have a record of project progress and my own learning process, but I found that it would be helpful to who wants to improve data-science skills to next-level using R language, as it contains a numerious real-life data science example and notebooks created by [@hyunjoonbok](https://www.linkedin.com/in/hyunjoonbok/) and codes borrowed from authors who produced state-of-the-art results.
 
