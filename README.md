@@ -1,15 +1,16 @@
 # R Portfolio
 R Portfolio of data science projects from either original work or revised for a study and learning purpose. Portfolio in this repo is presented in the form of .R and .Rmd(R-markdown) files.
 
-For a detailed code example and images, please refer to readme file in each folder by popular business topics.
+Each folder represents the fields of application (i.e. Timeseries, Deeplearning, MachineLearning, etc)
 
+For a detailed code example and images, please refer to .readme file presented below.
 
 *Note: Data used in the projects is for learning and demo purposes only*
 
 <hr>
 
 ## Motivation / Thought Process
-As R is often less preferrable compared to other languages in terms of less production-ready codes, I think R is still a very powerful language. I personally am fond of and use R for everyday analysis from simple EDA to creating stunning visualizations and building a complex ML/DL models. I think R has its strong advantage in looking at codes and results at a controlled enviornmenets.  
+These days R is less preferrable in industory for various reasons (i.e less production-ready, non-scalable). However, I think R is still a very powerful language. I personally am fond of and use R for everyday analysis from simple EDA to creating stunning visualizations and building a complex ML/DL models. I think R has its strong advantage in looking at codes and results at a controlled enviornmenets.  
 
 This repository was origianlly to have a record of project progress and my own learning process, but I found that it would be helpful to who wants to improve data-science skills to next-level using R language, as it contains a numerious real-life data science example and notebooks created by [@hyunjoonbok](https://www.linkedin.com/in/hyunjoonbok/) and codes borrowed from authors who produced state-of-the-art results.
 
@@ -18,20 +19,37 @@ I tried to include the usage of packages and methods that have been consistently
 <hr>
 
 ## Table of contents
-* [All Projects](#Projects)
+* [Projects](#Projects)
 * [Setup](#setup)
-* [TO-DOs](#TO-DOs)
+* [To-Do](#TO-DOs)
 * [Contact](#contact)
 
 <hr>
 
 ## Projects
 
-### 2020 Edition
+### 2020 
 
-   #### [Time Series Forecasting using ModelTime](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Time%20Series%20Forecasting%20using%20ModelTime.R)   
+
+   #### [(3) Time Series Forecasting with Modeltime (Advanced)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/%5BAdvanced%5D%20Time%20Series%20Forecasting%20with%20Nest%20%2B%20Modeltime_2020_11_23.R)   
    <p>
-   This is a Replicate of ModelTime introduction example presented in ModelTime github. We are looking bike_sharing_daily time series data from 2011 to 2013 to predict the sales of it for the next 3 months. We set aside last 3-months of data as the testing set, and levere modeltime package to build different SOTA timeseires models including, ARIMA, Prophet, XGBoost, randomforest. Then we evaluate the Model by refitting data from the errors we got from initial models, and eventually multi-visualize the model. 
+   This workbook covers complete advanced steps to create a SOTA time-series forecasting model at scale. We use Walmart M4 Kaggle competition dataset to create foreacst for (7) different time-series. It introduces latest functions in Modeltime and techniques in R, which load data, preprocess, modelling, fitting, calibration, ensembling, and visualization. The codes are experiment-ready to be applied to any of custom time-series dataset. 
+   </p>
+   
+   Nov 20, 2020  
+
+
+   #### [(2) Time Series Forecasting with Modeltime (+Nest) (Basic)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Forecasting%20ARIMA%20Models%20with%20Nest%20%2B%20Modeltime_2020_11_21.R)   
+   <p>
+   Often times, it's necceary for business who are performing any kind of time-series forecast model to scale it's model. This examples leverages "Nest" function to create several time-series at the same time in a single dataset, where the best-chosen ML algorithem is applied to create a forecast for entire groups. The possibility is endless. The model can be scaled to create thousands of models in pararell, with the help of "Nest" function.
+   </p>
+   
+   Oct 17, 2020  
+
+
+   #### [(1) Time Series Forecasting with ModelTime - Walkthrough (Basic)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Time%20Series%20Forecasting%20using%20ModelTime.R)   
+   <p>
+   The file walk-through key processes that need to be performed to generate time-series in high-level. We are looking bike_sharing_daily time series data from 2011 to 2013 to predict the sales of it for the next 3 months. We set aside last 3-months of data as the testing set, and levere modeltime package to build different SOTA timeseires models including, ARIMA, Prophet, XGBoost, randomforest. Then we evaluate the Model by refitting data from the errors we got from initial models, and eventually multi-visualize the model. 
    </p>
    
    Jul 10, 2020  
@@ -279,25 +297,31 @@ I tried to include the usage of packages and methods that have been consistently
 
    - ## Statistic Concepts with real-world examples
 
-      ### [Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Logistic%20Regression.R)
+      ### [Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Logistic%20Regression.R)
       <p>
       Concept of Logistic Regression displayed in R code. Solves a binary classification problem.
       </p>
 
-      ### [Mutinomial Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Multinomial%20Regression.R)
+      ### [Mutinomial Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Multinomial%20Regression.R)
       <p>
       Multinomial regression is similar to logistic regression, but fits better when the response variable is a categorical variable with more than 2 levels.
       </p>   
 
-      ### [Ordinal Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ordinal%20logistic%20regression.R)
+      ### [Ordinal Logistic Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Ordinal%20logistic%20regression.R)
       <p>
        Ordinal logistic regression can be used to model a ordered factor response. Here, we use ordered logistic regression to predict the car evaluation.
       </p>   
 
-      ### [Ridge Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Basic%20Statistic%20Concepts%20%26%20Implementation/Ridge%20Regression.R)
+      ### [Ridge Regression](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Ridge%20Regression.R)
       <p>
        Ridge Regression is a commonly used technique to address the problem of "multi-collinearity". We looks at the result of Linear Regression vs Ridge Regression
       </p>   
+      
+      
+      ### [Network Analysis and Manipulation](https://github.com/hyunjoonbok/R-projects/blob/master/Data%20EDA%20%26%20Statistics/Network%20Analysis%20and%20Manipulation%20using%20R.R)
+      <p>
+        Social Network Analysis is a set of methods used to visualize networks, describe specific characteristics of overall network structure, and build mathematical and statistical models of network structures and dynamics
+      </p> 
 
 <hr>
 
@@ -308,10 +332,11 @@ I tried to include the usage of packages and methods that have been consistently
 <hr>
 
 ## TO-DOs
-List of features ready and TODOs for future development
-* R Shiny Apps - Using work data : _in progress_
-* Kaggle examples : _in progress_
-* Data cleaning .ipynbs : _in progress_
+List of features ready and TO-DOs for future development
+
+* Introduction to R Shiny Apps : _in progress_
+* More Kaggle examples : _in progress_
+* Data cleaning .ipynbs : _in progress_ --> In Python Portfolio
 
 <hr>
 
