@@ -30,7 +30,9 @@ b <- read.csv("session_byuser_export.csv")
 d <- read.csv("employee.csv")
 
 ## Exclude Employee
-b <- b %>% filter(!Email %in% d$Email)
+b <- b %>% 
+  filter(!Email %in% d$Email) %>% 
+  filter(!str_detect(Email, 'atg'))
 
 b$Service.Duration <- as.character(b$Service.Duration)
 b$Service.Duration <- ifelse(nchar(b$Service.Duration) > 20, as.character(b$Service.Start.Time), b$Service.Duration)
