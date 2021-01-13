@@ -76,10 +76,15 @@ write.csv(b,"session_byuser_export.csv", row.names = FALSE)
 
 
 #2. Cumulative Unique User (Opt-in User Count) ==== 
-setwd("C:/Users/bokhy/Desktop/ATG")
-c <- read.csv('Production Arcade Logs_new.csv')
-c %>% group_by(machine_uuid) %>% count()
+library("readxl")
+setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
+#c <- read.csv('Production Arcade Logs_new.csv')
+#c %>% group_by(machine_uuid) %>% count()
 
+c1 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet1")
+c2 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet2")
+c <- rbind(c1,c2)
+c %>% group_by(machine_uuid) %>% count()
 
 #2. Third-Party Data ==== (not using)
 
@@ -132,9 +137,10 @@ users <- users %>%
   summarise(value =  n()) %>% 
   set_names(c("Service","date", "value"))
 
-setwd("C:/Users/bokhy/Desktop/ATG")
+#setwd("C:/Users/bokhy/Desktop/ATG")
 
-prod <- read.csv("Production Arcade Logs_new.csv")
+#prod <- read.csv("Production Arcade Logs_new.csv")
+prod <- c
 prod$activity.game_id <- as.character(prod$activity.game_id)
 prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
 prod1$activity.game_id <- as.numeric(prod1$activity.game_id)
@@ -215,7 +221,7 @@ data$month <- month.abb[data$month]
 # !!Change End Date!!!
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2020-11-29")) 
+  filter(between(date, "2019-10-01", "2021-01-10")) 
 
 
 #data_final <- data[,c(1,2,5,6,10,14,26,29,31,32,35,40,41,42,43,45)]
