@@ -221,14 +221,14 @@ data$month <- month.abb[data$month]
 # !!Change End Date!!!
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2021-01-10")) 
+  filter(between(date, "2019-10-01", "2021-01-20")) 
 
 
 #data_final <- data[,c(1,2,5,6,10,14,26,29,31,32,35,40,41,42,43,45)]
 
 
 setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
-write.csv(data, "active_users_opt_in.csv", row.names = FALSE)
+write.csv(data, "opt_in_prod.csv", row.names = FALSE)
 
 
 
