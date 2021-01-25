@@ -86,60 +86,6 @@ c2 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet2")
 c <- rbind(c1,c2)
 c %>% group_by(machine_uuid) %>% count()
 
-#2. Third-Party Data ==== (not using)
-
-# Read Data
-#setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
-#thrid_party <- read.csv('[New] 3rd Party Data.csv')
-
-#thrid_party <- thrid_party %>% filter(!account.email %in% d$Email)
-
-#thrid_party <- thrid_party %>% separate(X.timestamp,c("Date",'Time'), sep = '@')
-
-#thrid_party$Time <- gsub("\\..*","",thrid_party$Time)
-
-#write.csv(thrid_party,"[New] 3rd Party Data.csv", row.names = FALSE)
-
-
-#3. Active Users (Daily,Weekly, Monthly) ====
-users <- b %>% 
-  select(User, Date, Service.Duration, Service.Type, month) %>% 
-  filter(!Service.Type == "MGR") %>% 
-  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
-                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
-                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
-                      "instant01571898606570",
-                      "instant01571906403420",
-                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
-                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
-                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
-                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
-                      "136308a8-5696-4e82-909c-0e8b901e90b9",
-                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
-                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
-                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
-                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
-                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
-                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
-                      "2faad4cf-0927-490e-910e-1078894e2254",
-                      "instant01571991043043",
-                      "instant01571970793132",
-                      "instant01571927166160",
-                      "instant01571926879050",
-                      "instant01571924112161",
-                      "instant01571924037842")) %>%
-  group_by(Service.Type, Date, User) %>% 
-  summarise(Session_opened = n())%>% 
-  distinct()
-
-users <- users %>% 
-  group_by(Service.Type, Date) %>% 
-  summarise(value =  n()) %>% 
-  set_names(c("Service","date", "value"))
-
-#setwd("C:/Users/bokhy/Desktop/ATG")
-
-#prod <- read.csv("Production Arcade Logs_new.csv")
 prod <- c
 prod$activity.game_id <- as.character(prod$activity.game_id)
 prod1 <- prod %>% filter(nchar(activity.game_id) < 10)
@@ -217,19 +163,53 @@ data$month <- month.abb[data$month]
 # Make sure to add month
 # data$month <- factor(data$month,levels = data("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr",'May','Jun','Jul','Aug','Sep','Oct'))
 
-## [Change Date]
-# !!Change End Date!!!
+# ==== [Change End Date] ==== #
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2021-01-20")) 
-
-
-#data_final <- data[,c(1,2,5,6,10,14,26,29,31,32,35,40,41,42,43,45)]
-
+  filter(between(date, "2019-10-01", "2021-01-24")) 
+# === [Change End Date] === #
 
 setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
 write.csv(data, "opt_in_prod.csv", row.names = FALSE)
 
+
+
+
+#### Active Users (Daily,Weekly, Monthly) ==== ####
+users <- b %>% 
+  select(User, Date, Service.Duration, Service.Type, month) %>% 
+  filter(!Service.Type == "MGR") %>% 
+  filter(!User %in% c("2c3a79f1-e644-4b0d-a384-ebda19a749d1",
+                      "37cea104-cc49-459f-84ce-548bb6d1a54e",
+                      "741fd86f-9b6e-44e6-8407-68ce2cbbf7a3",
+                      "instant01571898606570",
+                      "instant01571906403420",
+                      "3fda3fc0-7d5c-4b06-8dd7-ea2cfb4d2a2f",
+                      "75b8ccd3-2202-44be-9b9d-65e7fe083600",
+                      "d3b9de81-9ada-41f7-8019-03c2b0881054",
+                      "16fff7ac-06d7-425b-84ad-9d17113fce5a",
+                      "136308a8-5696-4e82-909c-0e8b901e90b9",
+                      "153e9ab1-a3d2-4ce4-aafc-ad01b32bd035",
+                      "dde7faf3-2ffa-42c0-b133-d78ec81006d0",
+                      "38a7cfef-81d4-42cd-9ae2-57ed99331dc6",
+                      "1957f50a-3831-48a4-99fe-27c4d04f8f18",
+                      "156ae6f6-b76c-4128-9a6e-4d92e3cc7477",
+                      "00d6091a-6ac8-4156-910c-8994303ce0e8",
+                      "2faad4cf-0927-490e-910e-1078894e2254",
+                      "instant01571991043043",
+                      "instant01571970793132",
+                      "instant01571927166160",
+                      "instant01571926879050",
+                      "instant01571924112161",
+                      "instant01571924037842")) %>%
+  group_by(Service.Type, Date, User) %>% 
+  summarise(Session_opened = n())%>% 
+  distinct()
+
+users <- users %>% 
+  group_by(Service.Type, Date) %>% 
+  summarise(value =  n()) %>% 
+  set_names(c("Service","date", "value"))
 
 
 #### For Free-Hour-Type Tickets ####
