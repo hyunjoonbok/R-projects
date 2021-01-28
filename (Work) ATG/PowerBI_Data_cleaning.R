@@ -75,16 +75,21 @@ b <- b[,-1]
 write.csv(b,"session_byuser_export.csv", row.names = FALSE)
 
 
+# Most-Popular Daily 
+setwd("C:/Users/bokhy/Desktop/")
+c <- read.csv("aa.csv")
+
+
 #2. Cumulative Unique User (Opt-in User Count) ==== 
-library("readxl")
-setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
+#library("readxl")
+#setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
 #c <- read.csv('Production Arcade Logs_new.csv')
 #c %>% group_by(machine_uuid) %>% count()
 
-c1 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet1")
-c2 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet2")
-c <- rbind(c1,c2)
-c %>% group_by(machine_uuid) %>% count()
+#c1 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet1")
+#c2 <- read_excel("Production Arcade Logs_new.xlsx", sheet = "Sheet2")
+#c <- rbind(c1,c2)
+#c %>% group_by(machine_uuid) %>% count()
 
 prod <- c
 prod$activity.game_id <- as.character(prod$activity.game_id)
@@ -166,12 +171,14 @@ data$month <- month.abb[data$month]
 # ==== [Change End Date] ==== #
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2021-01-24")) 
+  filter(between(date, "2019-10-01", "2021-01-27")) 
 # === [Change End Date] === #
 
 setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
-write.csv(data, "opt_in_prod.csv", row.names = FALSE)
 
+#write.csv(data, "opt_in_prod.csv", row.names = FALSE)
+
+write.csv(data, "daily_top_playing.csv", row.names = FALSE)
 
 
 
