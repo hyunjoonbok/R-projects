@@ -1,4 +1,5 @@
-# Customer Segmentation / Clustering with K-means, Principal Components Analysis and Bootstrap Evaluation
+# Customer Segmentation / Clustering with K-means, 
+# Principal Components Analysis and Bootstrap Evaluation
 
 # 1. Business Objective
 # We want to better understand our customer, particularly 
