@@ -173,7 +173,7 @@ data$month <- month.abb[data$month]
 # ==== [Change End Date] ==== #
 data <- data %>% 
   filter(!year == 1969) %>% 
-  filter(between(date, "2019-10-01", "2021-02-03")) 
+  filter(between(date, "2019-10-01", "2021-02-09")) 
 # === [Change End Date] === #
 
 setwd("C:/Users/bokhy/Desktop/ATG/Power BI")
