@@ -28,46 +28,33 @@ I tried to include the usage of packages and methods that have been consistently
 
 ## Projects
 
-### 2020 
-
-
    #### [(3) Time Series Forecasting with Modeltime (Advanced)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/%5BAdvanced%5D%20Time%20Series%20Forecasting%20with%20Nest%20%2B%20Modeltime_2020_11_23.R)   
    <p>
    This workbook covers complete advanced steps to create a SOTA time-series forecasting model at scale. We use Walmart M4 Kaggle competition dataset to create foreacst for (7) different time-series. It introduces latest functions in Modeltime and techniques in R, which load data, preprocess, modelling, fitting, calibration, ensembling, and visualization. The codes are experiment-ready to be applied to any of custom time-series dataset. 
    </p>
-   
-   Nov 20, 2020  
 
 
    #### [(2) Time Series Forecasting with Modeltime (+Nest) (Basic)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Forecasting%20ARIMA%20Models%20with%20Nest%20%2B%20Modeltime_2020_11_21.R)   
    <p>
    Often times, it's necceary for business who are performing any kind of time-series forecast model to scale it's model. This examples leverages "Nest" function to create several time-series at the same time in a single dataset, where the best-chosen ML algorithem is applied to create a forecast for entire groups. The possibility is endless. The model can be scaled to create thousands of models in pararell, with the help of "Nest" function.
    </p>
-   
-   Oct 17, 2020  
 
 
    #### [(1) Time Series Forecasting with ModelTime - Walkthrough (Basic)](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20%26%20Anomaly%20Detection/Time%20Series%20Forecasting%20using%20ModelTime.R)   
    <p>
    The file walk-through key processes that need to be performed to generate time-series in high-level. We are looking bike_sharing_daily time series data from 2011 to 2013 to predict the sales of it for the next 3 months. We set aside last 3-months of data as the testing set, and levere modeltime package to build different SOTA timeseires models including, ARIMA, Prophet, XGBoost, randomforest. Then we evaluate the Model by refitting data from the errors we got from initial models, and eventually multi-visualize the model. 
-   </p>
-   
-   Jul 10, 2020  
+   </p> 
 
    #### [Customer Segmentation & Clustering with K-means](https://github.com/hyunjoonbok/R-projects/blob/master/Customer%20Segmentation%20%26%20Clustering%20with%20K-means%2C%20Principal%20Components%20Analysis%20and%20Bootstrap%20Evaluation.R)   
    <p>
    Looking at custmer transcation data to segment cusotmers into groups to better statify the business strategy. Use a K-means clustering Building and Bootstrap Evaluation to effectively group cusotmers, and create points of strategy to be possibly discussed with business stakeholders.   
    </p>
-   
-   Jun 6, 2020  
 
 
    #### [Ultimate Muti-label Classification with H2O Deep Learning](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Muti-label%20Classification%20with%20H2O%20Deep%20Learning.R)   
    <p>
    Building a deeplearning model using H2O, perform hyperparameter tuning through random grid serach, to solve multi-label classification problem.  
    </p>
-   
-   May 21, 2020  
 
 
    #### [GameTitle-Recommender with Market-Basket-Analysis (1)](https://github.com/hyunjoonbok/R-projects/blob/master/Title_Recommender_with_market_basket_analysis/Market_Basket_Analysis_with_recommender%20(1)%20-%20Data%20Preparation.R)
@@ -76,29 +63,19 @@ I tried to include the usage of packages and methods that have been consistently
    <p>
    A End-to-End recommendation system model building using the game title from data wragling, to building an algorithm and deplying to Shiny WebApp. A full comprehension of recommender algorithm could be gained and can be applied to any real-world data.
    </p>
-   May 17, 2020
    
 * Reference: [Diego Usai's Website](https://diegousai.io/categories/multi-article-studies/)   
 
 <hr>
 
-### 2019 and Before 
    - ## Machine Learning
-      ### [Titanic Survival ML Algorithm](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/First%20ML%20algorithm.Rmd)
-      <p>
-      The famous Titanic ML problem tackeld using R. Touches complete steps neccesary for ML modeling process (data-loading, data-cleaning, EDA, featureing engineering, ML modeling, Cross Validation, Scoring, and Next steps).
-      </p>
-      Sep 7, 2015
-
       ### [Time Series ML using H2O](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/H2O%20for%20Machine%20Learning.R)
       <p>
       Predicting a future beer sale number using a historical data. Using H20's AUTOML feature to easily obtint the state-of-the-art ensemble results, and plot the errors to improve. 
       </p>
-      July 10, 2017
 
       ### [ML Model Interpretability with DALEX](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/ML%20Model%20Interpretability%20with%20DALEX.R)
         #### [2nd DALEX R file](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Model%20Interpretability%20with%20DALEX.R)
-      May 25, 2018
       <p>
       Often times, ML models are critized as being black-box (untracakble complex inside that magiaclaly solves the problem). Here we look at the problem of predicting the apartment prices using Linear Regression, SVM, Random Forest, and get the pacakge DALEX to help look how much each variables affect this prediction. 
       </p>
@@ -109,37 +86,31 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       With the help of powerful Caret pacakge that help build ML model . Has complete steps to pre-process, fine-tune, train, and get ROC curve. Then, I use LIME (Local Interpretable Model-Agnostic Explanation) to understand ML model created. Use H2O to initiate modeling, and with the help of LIME, it gives both global and local interpretation of predictor variables. It gives a clear visual explanation of variable importance and how model is affected by those. 
       </p>
-      June 23, 2019
 
       ### [Naïve Bayes Classifier](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Na%C3%AFve%20Bayes%20Classifier.R)
       <p>
       The Naïve Bayes classifier is a simple probabilistic classifier which is based on Bayes Theorem but with strong assumptions regarding independence. Historically, this technique became popular with applications in email filtering, spam detection, and document categorization. Here, I built a simple classification model with Caret and H2O.  
       </p>
-      Feb 5, 2018
 
       ### [Predict Bank's Term Deposit (Classification) using H2O](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/PRedict%20Term%20Deposit%20(Yes%20or%20No%20label)%20using%20H2o.R)
       <p>
       Build a simple ML from H2O to predict which customers more likely to enroll in Bank's Term Deposit. Shows how random Grid Search combined with Stacked Ensembles is a very powerful combination  
       </p>
-      Nov 27, 2019
 
       ### [The Ultimate XGBoost Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/The%20Ultimate%20XGBoost%20Guide.R)
       <p>
       Contatins a complete steps in model-building with XGBoost in R. From CV, grid-serach, hyperparameter tuning to feature selection, optimization, training/evaluation and Prediction. Solves a real-world binary classification problem. 
-      </p>
-      May 6, 2017   
+      </p>  
 
       ### [Machine Learning Problem Solving Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Ultimate%20Machine%20Learning%20Problem%20Solving.R) (*data not included*) 
       <p>
       Contatins a complete steps in model-building and explanation of what's actaully going on in ML. Using 4 different method/packages (PDP, ICE, LIME, Shapley), it shows how Machine Learning can be explainable in some sense.
       </p>
-      Nov 20, 2019  
 
       ### [Predict Airplane arrival delay](https://github.com/hyunjoonbok/R-projects/blob/master/Machine-Learning/Use%20H2o%20to%20predict%20arrival%20delay%20using%20historical%20airline%20data.R)
       <p>
       Looking at a toy example here to see how we could use H2O to predict arrival delay using historical airline data with Destination to Chicago Airport. Give a easy glance how easily H2O package could be utilized in a simple ML problem.
-      </p>
-      Feb 19, 2018  
+      </p> 
 
    <hr>
 
@@ -149,49 +120,41 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       How to stack Keras layers to basic CNN model. Solve MNIST using CNN in just a few lines of code.
       </p>
-      Dec 13, 2017
 
       ### [Cat vs Dog Image classifier using CNN in R (Production)](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/CNN_R_Production_2.R)
       <p>
       A Complete steps to load images, generate, compile, train, and test model in CNN to solve the famous Cat vs Dog image classification
-      </p>
-      Jan 11, 2019   
+      </p> 
 
       ### [Predict Telco Customer Chrun using Keras](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/DEEP%20LEARNING%20WITH%20KERAS%20TO%20PREDICT%20CUSTOMER%20CHURN.R)
       <p>
       A real-world example to predict customer retention / churn using Telecommunication company's data. Data Pre-processing, modeling, evaluating, prediction, checking performance, model explanation, feature importance visualization. 
       </p>
-      May 14, 2019  
 
       ### [Tensorflow Estimator API to build Regression Model](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/Estimator%20API.R)
       <p>
       Use Tensorflow's low level API to build both a linear regression model and Deep NeuralNet with the toy dataset. Activation of Tensorboard in R interface is also introduced.      
-      </p>
-      Oct 29, 2018  
+      </p> 
 
       ### [High performance KERAS LSTM Algorithm](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/High%20performance%20deep%20learning%20algorithm.R)
       <p>
       Developt a State-of-the-Art Keras LSTM algorithm to predict a sunspot by connecting to the R TensorFlow backend. Perform Time Series Cross Validation using Backtesting with the rsample package rolling forecast origin resampling.
-      </p>
-      May 2, 2018    
+      </p>   
 
       ### [Predict the number of hostipal opening & closure](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/Predict%20the%20number%20of%20hostipal%20opening%20&%20closure%20(Deeplearning).R)
       <p>
       Use real compeitition-type tabular data to predict the number of hospital opening/closure. Followed by initial data pre-processing, Boruta package to perform feature selection and eventually use H2O's radnom grid-serach and deep-learning algorithm to build and evaluate the model.
       </p>
-      Feb 26, 2019 
 
       ### [IMDB Movie Rating prediction using Keras RNN and LSTM in R](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/Prediction%20of%20Movie%20Review%20using%20RNN%20and%20LSTM.R)
       <p>
       The famous Movie rating prediction problem tackled by Keras RNN and LSTM layers in R interface
-      </p>
-      Nov 30, 2016    
+      </p>  
 
       ### [IMDB Movie Review Sentiment Analysis  using Keras RNN and LSTM in R](https://github.com/hyunjoonbok/R-projects/blob/master/Deep-Learing/Sentiment%20Analysis%20for%20Movie%20review%20text%20using%20Keras.R)
       <p>
       2-way polarity (positive, negative) classification system for Movie Review texts. Goes through word-tokenizatino, modeling and evaluation using Keras. 
-      </p>
-      Dec 5, 2016  
+      </p> 
 
    <hr>
 
@@ -201,19 +164,16 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       ARIMA model to understand and predict value in time series. Has steps to Decomspose, Stationary, Autocorrelations, Model Fitting/Evaluation 
       </p>
-      May 10, 2018 
 
       ### [Anomaly Detection in R](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R)
       <p>
       A very simple but powerful Anomaly Dection model with the toy package download data. 
       </p>
-      Nov 7, 2019 
 
       ### [3 Simple TimeSeries forecast Model](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R)
       <p>
       Breif introduction on choosing forecast model. Exponential State Smoothing, ARIMA and TBATS and their comparison is shown. 
-      </p>
-      Jul 19, 2019   
+      </p>  
 
       ## TimeSeries Machine Learning 
 
@@ -222,13 +182,11 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       Time series machine learning to forecast time series data of beer sales. Augmentation on the data is supported. Then we clean the model (i.e. retrieve the model coefficients, residuals). Modeling / Error Investigation are followed.
       </p>
-      Mar 4, 2019  
 
       ### [3 Simple TimeSeries forecast Model](https://github.com/hyunjoonbok/R-projects/blob/master/Times%20Series%20Forecasting%20&%20Anomaly%20Detection/Anomaly%20Detection%20in%20R.R)
       <p>
       Breif introduction on choosing forecast model. Exponential State Smoothing, ARIMA and TBATS and their comparison is shown. 
-      </p>
-      Jul 19, 2019   
+      </p> 
 
    <hr>
 
@@ -238,25 +196,21 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       Analyzing Google Analytics data (built-in as sample data) with BigQuery using R interface. It shows how we can locally connect to BigQuery using DBI pacakge.
       </p>
-      Sept 7, 2018  
 
       ### [Database Fundamentals in R](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/Database%20in%20R.Rmd)
       <p>
       Connection to BigQuery, usage of dplyr commands, Calculate k-means inside the data, and fianlly visualization of data using ggplot. 
       </p>
-      Oct 2, 2018 
-
+      
       ### [Parallel Computing in R](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/Parallel%20Computing%20in%20R.R)
       <p>
       R provides a number of convenient facilities for parallel computing. This script shows how to setup and run a parallel process on your current multi-core device, without need for additional hardware.   
       </p>
-      Feb 15, 2019 
 
       ### [SparklyR Complete Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Database%20%26%20Pararell%20Computing/sparklyr%20Guide.R)
       <p>
       Introduces a R interface for Apache Spark. Connecting to Spark from a local machine. Learn to use distributed computing by fully utilizing Spark's engine, as Hadoop-based Data Lake is becoming a common practice at companies. 
       </p>
-      Apr 4, 2019 
 
    <hr>
 
@@ -266,19 +220,16 @@ I tried to include the usage of packages and methods that have been consistently
       <p>
       For real-world text data that goes beyond GB/TB in file size, it's necessary to leverage Spark engine load and transform data. Eventally genearate a list of the most used words, and create basic wordcloud. 
       </p>
-      May 16, 2019 
 
       ### [Complete Text-Mining Guide](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis/Text_mining.R)
       <p>
       Looking at the Jane Austen Book's text to learn a full function of Text-Mining (tidying up data, Sentiment analysis, word-frequnecy, TF-IDF, Wordcloud, Tokenizing by n-gram, Topic-modeling). Ready-to-be used in any real-world datasets.  
       </p>
-      Jul 28, 2019 
 
       ### [Twitter Analysis and Visualization](https://github.com/hyunjoonbok/R-projects/blob/master/Text%20Mining%20%26%20Social%20Media%20Analysis/Twitter%20(Social%20Media)%20Analysis%20and%20Visualization.R)
       <p>
       Learn to serach tweets by length, location or any criteria set. Retrieve a list of all the accounts a user follows. Then plot the frequency of tweets for each user over time.
-      </p>
-      Jul 28, 2019    
+      </p> 
 
    <hr>
 
@@ -290,8 +241,7 @@ I tried to include the usage of packages and methods that have been consistently
       #### [ggplot2 code 2](https://github.com/hyunjoonbok/R-projects/blob/master/GGPLOT2%20guide/Ready-to-use%20GGplot2%20codes%202.R)
       <p>
       A few curated list of ggplot codes that generates beautiful plot with examples. Basic understanding of ggplot codes is required. 
-      </p>
-      Apr 18, 2020      
+      </p>     
 
    <hr>
 
